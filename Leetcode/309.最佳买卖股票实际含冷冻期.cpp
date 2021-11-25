@@ -30,3 +30,27 @@ public:
         return maxn;
     }
 };
+
+//方法二
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        if (n < 2){
+            return 0;
+        }
+        vector<int> sell(n, 0);//表示当前没有股票
+        vector<int> hold(n, 0);//表示当前持有股票
+        hold[0] = -prices[0];
+        hold[1] = -prices[1] > -prices[0] ? -prices[1] : -prices[0];
+        // sell[1] = 0;
+        sell[1] = prices[1] > prices[0] ? prices[1] - prices[0] : 0;
+
+        for (int i = 2; i < n; i ++ ){
+            sell[i] = max(sell[i - 1], hold[i - 1] + prices[i]);
+            hold[i] = max(hold[i - 1], sell[i - 2] - prices[i]);
+        }
+
+        return sell[n - 1];
+    }
+};
