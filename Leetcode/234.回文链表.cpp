@@ -56,3 +56,50 @@ public:
         return true;
     }
 };
+
+
+
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        /*快慢指针做法*/
+        ListNode *slow = head, *fast = head, *pre = nullptr;
+        /*剪枝*/
+        if (!head -> next){
+            return true;
+        }
+        /*快慢指针，慢指针用于翻转前半段链表，快指针用于来判断慢指针是否指到中间的变量*/
+        while (fast && fast -> next){
+            fast = fast -> next -> next;
+            ListNode *mid = slow -> next;
+            slow -> next = pre;
+            pre = slow;
+            slow = mid;
+        }
+        /*如果快指针不为空，那就证明长度为奇数，则此时的slow为最中间的那个数，所以要把slow推到后面一个*/
+        if (fast){
+            slow = slow -> next;
+        }
+        /*从中间开始向两边移动指针，来看是否相等*/
+        while (pre && slow){
+            if (slow -> val != pre -> val){
+                return false;
+            }
+            pre = pre -> next;
+            slow = slow -> next;
+        }
+        return true;
+    }
+};
