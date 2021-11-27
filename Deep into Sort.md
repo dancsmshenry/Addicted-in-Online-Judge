@@ -1,7 +1,90 @@
 # QuickSort
 
-- 快速排序的实现（递归和非递归的版本，传统递归，非递归的需要用到栈）
-- 分析是否为稳定排序、时间复杂度的推导、时间和空间复杂度（平均、最好（nlogn）和最坏（n^2）情况下的）
+- 快速排序的实现：
+
+  - 递归版本实现
+
+  - ```cpp
+    /*arr为需要排序的数组，left为左边界，right为右边界*/
+    void quick_sort(int arr[], int left, int right)
+    {	
+        /*当前只有一个数（或边界left>right）的时候，就不用排序了*/
+    	if (left >= right) return;
+    	
+        /*选取最左边的那一个数作为排序的标准，i从左边开始，j从右边开始*/
+    	int temp = arr[left], i = left - 1, j = right + 1;
+    	while (i < j)
+    	{	
+            /*从左边开始，寻找大于等于temp的数*/
+    		do i ++ ; while (arr[i] < temp);
+            /*从右边开始，寻找小于等于temp的数*/
+    		do j -- ; while (arr[j] > temp);
+            /*交换数字*/
+    		if (i < j) swap(arr[i], arr[j]);
+    	}
+    	
+        /*对左边的部分进行快排*/
+    	quick_sort(arr, left, j);
+        /*对右边的部分进行快排*/
+    	quick_sort(arr, j + 1, right);
+    }
+    
+    /**
+    	Q：i<j可不可以换为i<=j
+    	A：可以，当i=j的时候，交换自身不会影响结果
+    	
+    	Q：arr[i]<temp可不可以换为arr[i]<=temp（或者arr[j]>temp可不可以换为arr[j]>=temp）
+    	A：不可以，对于一些数据，会因此陷入无限循环（例：9，8，7，6，5，4，3，2，1）
+    	原因分析：因为可能后面所有的数都会小于此时的temp，那么i就会一直往后面递增（对于j也是同理）
+    	
+    	Q：quick_sort(arr, left, j)，quick_sort()可否改为quick_sort(arr, left, i)
+    	A：不可以，因为我们是temp=arr[left]的，结合第二个问题提供的例子（9，8，7，6，5，4，3，2，1），即i是有可能会出界的
+    	或者也有可能是（1，2，3，4，5，6），到最后i为0，i-1还是会越界
+    	而以j为界则不会出现这样的情况，首先，面对例子（1，2，3，4，5，6），j最后会指向0的位置，j+1就不会越界
+    	又因为第一次循环的时候，arr[i]=temp，就一定会和arr[j]进行一次交换，导致j在第二次遍历的时候最多指向arr[j-1]，
+    	即最多指向arr[n - 2]，那么此时的j+1也不会越界
+    **/
+    ```
+
+  - 非递归版本实现
+
+  - ```cpp
+    /*arr为需要排序的数组*/
+    void quick_sort(vector<int> &arr)
+    {
+        /*栈用于记录需要排序的区间，存储的分别是left和right两个端点的下标*/
+        stack<array<int, 2>> s;
+        /*先初始化栈，放入数组的头尾下标*/
+        s.push((array<int, 2>){0, arr.size() - 1});
+        /*如果栈不为空，就代表还有没排序好的数据*/
+        while (!s.empty())
+        {	
+            /*获取栈顶的数据区间*/
+            array<int, 2> a{s.top()};
+            /*下列会对该区间排序，所以就把其弹出*/
+            s.pop();
+            /*左边界小于右边界*/
+            if (a[0] < a[1]){
+                /*基本的快排*/
+                int temp = arr[a[0]], i = a[0] - 1, j = a[1] + 1;
+                while (i < j)
+                {
+                    do i ++ ; while (arr[i] < temp);
+                    do j -- ; while (arr[j] > temp);
+                    if (i < j) swap(arr[i], arr[j]);
+                }
+                /*将区间再分为两个区间，然后再排序*/
+                s.push({a[0], j});
+                s.push({j + 1, a[1]});
+            }
+        }
+    }
+    ```
+
+- 分析是否为稳定排序、时间复杂度的推导、时间和空间复杂度
+  - 不是稳定排序（可以参考每次选出的哨兵temp，一开始都是在左边，交换后都到了右边）
+  - 时间复杂度：最好和平均都是O（nlogn），最坏的时候要到O（n^2）
+  - 空间复杂度：递归版和非递归版都是O（1）
 - 快速排序的优化
 
   - 在选择哨兵的时候使用三数取中法，即取序列第一个元素、中间元素以及最后一个元素，在取这三个元素的中位数作为哨兵，可以避免取到边缘值而导致每次分割不均匀的情况
@@ -16,7 +99,31 @@
 # BubbleSort
 
 - 冒泡排序的实现
+
+  - ```cpp
+    
+    void bubble_sort(int arr[], int length)
+    {
+    	bool check = false;
+    	for (int i = length - 1; i > 0; i --)
+    	{
+    		for (int j = 0; j < i; j ++)
+    		{
+    			if (arr[j] > arr[j + 1])
+    			{
+    				swap(arr[j], arr[j + 1]);
+    				check = true;
+    			}
+    		}
+    		if (!check) break;
+    	}
+    }
+    ```
+
+  - 
+
 - 分析是否为稳定排序、时间复杂度的推导、时间和空间复杂度（平均、最好和最坏情况下的）
+
 - 冒泡排序的优化
   - 每一次二级循环都放置一个哨兵，如果flag不变，则说明有序，就不要继续排序了
 
