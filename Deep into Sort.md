@@ -1,12 +1,12 @@
 # QuickSort
 
-- 快速排序的实现：
+- 快速排序的实现
 
-  - 递归版本实现
+  - 递归版本
 
   - ```cpp
     /*arr为需要排序的数组，left为左边界，right为右边界*/
-    void quick_sort(int arr[], int left, int right)
+    void quick_sort(vector<int> &arr, int left, int right)
     {	
         /*当前只有一个数（或边界left>right）的时候，就不用排序了*/
     	if (left >= right) return;
@@ -46,7 +46,7 @@
     **/
     ```
 
-  - 非递归版本实现
+  - 非递归版本
 
   - ```cpp
     /*arr为需要排序的数组*/
@@ -84,7 +84,7 @@
 - 分析是否为稳定排序、时间复杂度的推导、时间和空间复杂度
   - 不是稳定排序（可以参考每次选出的哨兵temp，一开始都是在左边，交换后都到了右边）
   - 时间复杂度：最好和平均都是O（nlogn），最坏的时候要到O（n^2）
-  - 空间复杂度：递归版和非递归版都是O（1）
+  - 空间复杂度：O（1）
 - 快速排序的优化
 
   - 在选择哨兵的时候使用三数取中法，即取序列第一个元素、中间元素以及最后一个元素，在取这三个元素的中位数作为哨兵，可以避免取到边缘值而导致每次分割不均匀的情况
@@ -101,12 +101,15 @@
 - 冒泡排序的实现
 
   - ```cpp
-    
-    void bubble_sort(int arr[], int length)
+    /*arr为需要排序的数组*/
+    void bubble_sort(vector<int> &arr)
     {
+        /*check为哨兵，如果没有出现数据交换，证明数据都是有序的，退出循环*/
     	bool check = false;
-    	for (int i = length - 1; i > 0; i --)
+        /*寻找第一大，第二大，第三大..的数据*/
+    	for (int i = arr.size() - 1; i > 0; i --)
     	{
+            /*挨个挨个的比较数据*/
     		for (int j = 0; j < i; j ++)
     		{
     			if (arr[j] > arr[j + 1])
@@ -115,15 +118,16 @@
     				check = true;
     			}
     		}
+            /*没有发生数据交换，退出循环*/
     		if (!check) break;
     	}
     }
     ```
 
-  - 
-
-- 分析是否为稳定排序、时间复杂度的推导、时间和空间复杂度（平均、最好和最坏情况下的）
-
+- 分析是否为稳定排序、时间复杂度的推导、时间和空间复杂度
+  - 是稳定排序（如果是`arr[j] >= arr[j + 1]`就不是稳定排序了）
+  - 时间复杂度：最好是O（n）（没有哨兵的优化就是O（n ^ 2）），最坏是O（n ^ 2），平均是O（n ^ 2）
+  - 空间复杂度：O（1）
 - 冒泡排序的优化
   - 每一次二级循环都放置一个哨兵，如果flag不变，则说明有序，就不要继续排序了
 
@@ -134,7 +138,47 @@
 # MergeSort
 
 - 归并排序的实现
-- 分析是否为稳定排序、时间复杂度的推导、时间和空间复杂度（平均、最好和最坏情况下的）
+
+  - ```cpp
+    void merge_sort(vector<int>& arr, int left, int right)
+    {
+        /*如果右边边界小于等于左边边界，退出排序*/
+    	if (left >= right) return;
+    
+    	int mid = (left + right) >> 1;
+        /*对左边数据排序*/
+    	merge_sort(arr, left, mid);
+        /*对右边数据排序*/
+    	merge_sort(arr, mid + 1, right);
+    	
+        /*这里假设数据左右数据都排好序了，进行归并操作*/
+    	int k = 0, i = left, j = mid + 1;
+        /*
+        	temp用来存储中途的数据，这里原代码是作为一个全局变量
+        	i从左边开始，j从中间开始
+        	分别将数据按大小放入temp中
+        */
+    	while (i <= mid && j <= right){
+            /*哪一边的比较小，就放入哪一边的数*/
+    		if (arr[i] <= arr[j]) tmp[k ++ ] = arr[i ++ ];
+    		else tmp[k ++ ] = arr[j ++ ];
+    	}
+        /*
+        	可能左边或右边的数没有全部放完，于是用while把数据全部放进去
+        	ps：左边和右边只可能有一边的数据没有完全放完
+        */
+    	while (i <= mid) tmp[k ++ ] = arr[i ++ ];
+    	while (j <= right) tmp[k ++ ] = arr[j ++ ];
+    	
+        /*把排好序的数据放回arr中*/
+    	for (i = left, j = 0; i <= right; i ++, j ++) arr[i] = tmp[j];
+    }
+    ```
+
+- 分析是否为稳定排序、时间复杂度的推导、时间和空间复杂度
+
+  - 可能是稳定排序，也可能不是，这和数据有关
+  - 时间复杂度
 
 
 
