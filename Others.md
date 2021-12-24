@@ -145,6 +145,23 @@
 
 
 
+### 杂题数道（12.24）
+
+- 实现tire树
+  - 建立结点tirenode，包含一个指向该结点的数组和一个bool值，布尔值是用来判断是否存在以该节点为末的单词
+  - 然后依次实现插入，查询单词，查询前缀的操作
+  - 这道题没啥好说的，注意细节就行了
+- 字符串解码
+  - 详情看代码吧，我用的是循环加递归的方法，代码讲得挺详细的
+- 丑数II（剑指offer 49）
+  - 三指针，动态规划，对于dp[i]，每次都选择最小的，然后后移指针
+  - 证明过程复杂，建议直接朗诵吧
+- 队列的最大值（剑指offer 59）
+  - 这道题和滑动窗口的最大值是一模一样的
+  - 题目意思：维护一个队列，但同时要能够找到当前队列的最大值
+  - 就是用一个双向队列去维护队列的最大值，该双向队列比我大，我就把元素踢出；比我小，就把元素放入
+  - 踢出元素的时候，注意一下是不是当前元素即可，是的话就一并踢出
+
 
 
 # 总结
@@ -153,3 +170,18 @@
 - [刷题交流｜有没有一样的盆友 力扣上的题做的挺多了 做大厂笔试题还是觉得好难 - 力扣（LeetCode） (leetcode-cn.com)](https://leetcode-cn.com/circle/discuss/qJXzLU/)
 - 还有，有些题目（求两数组的中位数）其实在自己训练的时候，是要自己动脑筋去想去理解的，但是对于面试来说，其实只需要朗诵即可....（虽然听起来很功利，但是对于我这种能力不太行的人来说，是这样的...）
 
+
+
+
+
+# 有关leetcode做题中发现的问题
+
+- 有关类型的api，建议都用cppreference去查
+
+- ```cpp
+  Line 29: Char 21: runtime error: member access within misaligned address 0xbebebebebebebebe for type ‘struct TreeNode’, which requires 8 byte alignment (solution.cpp)
+  0xbebebebebebebebe: note: pointer points here
+      //这个报错，一般是用了空指针，或者，是写成了TreeNode* node = new TreeNode;（少了个括号....）
+  ```
+
+- 
