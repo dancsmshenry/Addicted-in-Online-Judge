@@ -21,11 +21,11 @@ public:
         sort(nums.begin(), nums.end());
 
         for (int i = 0 ;i < n; i ++ ){
-            if (i > 0 && nums[i] == nums[i - 1]){
+            if (i > 0 && nums[i] == nums[i - 1]){//去重
                 continue;
             }
             
-            if (nums[i] > 0){
+            if (nums[i] > 0){//因为数组已经排好序了，所以，如果当前的数已经大于0了，后面的数加起来也不会等于0的
                 break;
             }
 
