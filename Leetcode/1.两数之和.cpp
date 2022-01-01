@@ -9,16 +9,14 @@ public:
             如果找到了，就返回当前数字的下标和target-nums[i]的下标
         **/
 
-        unordered_map<int, int> hashtable;
+        unordered_map<int, int> hashmap;
 
-        for (int i = 0; i < nums.size(); ++i){
-            auto it = hashtable.find(target - nums[i]);
-
-            if (it != hashtable.end()){
-                return {it->second, i};
+        for (int i = 0; i < nums.size(); i ++ ){
+            if (hashmap.count(target - nums[i]) != 0){
+                return {hashmap[target - nums[i]], i};
             }
             
-            hashtable[nums[i]] = i;
+            hashmap[nums[i]] = i;
         }
 
         return {};
