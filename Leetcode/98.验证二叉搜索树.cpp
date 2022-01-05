@@ -1,3 +1,4 @@
+/*第一种方法非常的丑陋，有点看不下去了....*/
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -9,7 +10,7 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class Solution {
+class Solution { 
 public:
     bool isValidBST(TreeNode* root) {
         /**
@@ -41,5 +42,40 @@ public:
         }
 
         return solve(root -> left, number, flag) && solve(root -> right, number, flag);
+    }
+};
+
+/*第二种做法，思路非常的清晰易懂（当然，用中序遍历的话，也可以把整个二叉树都先放到一个vector里面，然后再逐个比较）*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+class Solution {
+public:
+    /*这种做法思路上特别的清晰，就中序遍历，左根右
+    然后用一个pre来记录前面一个结点，如果当前结点小于小于等于前面结点，直接false
+    而且，中序遍历保证了pre是每个结点的前一个结点（第一个结点的前面是nullptr）*/
+    TreeNode* pre = nullptr; // 用来记录前一个节点
+    bool isValidBST(TreeNode* root){
+        if (!root){
+            return true;
+        }
+        bool left = isValidBST(root -> left);
+
+        if (pre != nullptr && pre -> val >= root -> val){
+            return false;
+        }
+        pre = root; // 左子树走完了，那么当前的结点就是右子树前面的一个结点了，所以用root来更新pre
+
+        bool right = isValidBST(root -> right);
+        return left && right;
     }
 };

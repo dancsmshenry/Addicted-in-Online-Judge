@@ -1,3 +1,4 @@
+/*DFS版本实现*/
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -33,7 +34,7 @@ public:
     }
 };
 
-/*另一种做法，模板题，高效的做法*/
+/*BFS版本实现*/
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -49,28 +50,28 @@ class Solution {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
         queue<TreeNode*> q;
+        vector<vector<int>> res;
         if (root){
             q.push(root);
         }
-        vector<vector<int>> result;
 
-        while(q.size() != 0){
+        while (!q.empty()){
+            vector<int> mid;
             int size = q.size();
-            vector<int> res;
-            for (int i = 0; i < size; i ++ ){
+            for (int i = 0; i < size; ++ i){
                 TreeNode* node = q.front();
-                q.pop();
-                res.push_back(node -> val);
+                mid.push_back(node -> val);
                 if (node -> left){
                     q.push(node -> left);
                 }
                 if (node -> right){
                     q.push(node -> right);
                 }
+                q.pop();
             }
-            result.push_back(res);
+            res.push_back(mid);
         }
 
-        return result;
+        return res;
     }
 };
