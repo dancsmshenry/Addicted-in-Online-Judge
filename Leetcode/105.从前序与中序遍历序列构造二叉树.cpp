@@ -12,6 +12,7 @@
 class Solution {
 public:
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        //始终牢记，右边界的值是取不到的...
         /*原来只要跟着之前的边界来改就行了，费太多时间了......*/
         return solve(preorder, inorder, 0, preorder.size(), 0, inorder.size());
     }
