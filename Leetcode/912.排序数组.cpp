@@ -6,22 +6,18 @@ public:
     }
 
     void quicksort(vector<int>& nums, int left, int right){
-        if (left >= right){
-            return ;
-        }
+        if (left >= right) return ;
 
-        int i = rand() % (right - left + 1) + left;/*随机取数才不会被卡时间.....*/
-        int mid = nums[i], l = left - 1, r = right + 1;
-        swap(nums[i], nums[left]);
-        while(r > l){
-            do l ++ ; while(nums[l] < mid);
-            do r -- ; while(nums[r] > mid);
-            if (r > l){
-                swap(nums[l], nums[r]);
-            }
-        }
+        int i = left - 1, j = right + 1;
+        // int temp = nums[left];
+        int temp = nums[rand() % (right - left + 1) + left];//生成指定范围的随机数
+        do{
+            do i ++ ; while (nums[i] < temp);
+            do j -- ; while (nums[j] > temp);
+            if (i < j) swap(nums[i], nums[j]);
+        }while (i < j);
 
-        quicksort(nums, left, r);
-        quicksort(nums, r + 1, right);
+        quicksort(nums, left, j);
+        quicksort(nums, j + 1, right);
     }
 };
