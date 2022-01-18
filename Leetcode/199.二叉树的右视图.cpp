@@ -38,3 +38,44 @@ public:
         solve(root -> left, res, floor + 1);
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        queue<TreeNode*> s1;
+        vector<int> result;
+        if (root){
+            s1.push(root);
+        }
+
+        while (!s1.empty()){
+            int size = s1.size();
+            for (int i = 0; i < size; i ++ ){
+                TreeNode* mid = s1.front();
+                s1.pop();
+                if (i == size - 1){
+                    result.push_back(mid -> val);
+                }
+                if (mid -> left){
+                    s1.push(mid -> left);
+                }
+                if (mid -> right){
+                    s1.push(mid -> right);
+                }
+            }
+        }
+
+        return result;
+    }
+};
