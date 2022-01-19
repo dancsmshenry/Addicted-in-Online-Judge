@@ -1,3 +1,4 @@
+//比较笨的做法，先获取链表的长度，然后翻转前半段，再快慢指针比较
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -57,10 +58,7 @@ public:
     }
 };
 
-
-
-
-
+//正宗的快慢指针做法
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -99,6 +97,51 @@ public:
             }
             pre = pre -> next;
             slow = slow -> next;
+        }
+        return true;
+    }
+};
+
+//递归版本
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* node = nullptr;
+    bool isPalindrome(ListNode* head) {
+        //递归版本的写法，非常的巧妙，特别是用的这个node全局变量来维护
+        node = head;
+        return solve(node);
+    }
+
+    bool solve(ListNode* head){
+        /*
+            一开始，node是head，然后head就因为!solve(head -> next)一直递归到最后一个点
+            又因为最后一个点的next是nullptr，所以此时的solve(head -> next)就是true
+            就跳到下面去判断此时node和head的值，不相等就false
+            相等，就把node推到next（因为递归返回的过程就像是出栈，此时head就会回到倒数第二个结点）
+            继续这样循环
+
+            总结：这种做法非常巧妙地一点在于，用node维护了栈底
+            因为递归的本质就是不断地把要算的东西积压到栈底，而回文链表是要两端比较地
+            维护地全局变量刚好就弥补了这个缺点
+        */
+        if (head){
+            if (!solve(head -> next)){
+                return false;
+            }
+            if (head -> val != node -> val){
+                return false;
+            }
+            node = node -> next;
         }
         return true;
     }
