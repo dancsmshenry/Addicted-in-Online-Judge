@@ -1,29 +1,25 @@
-int rob(int* nums, int numsSize)
-{
-    int dp1[10000], dp2[10000];
-    int i, max1, max2;
-    if (numsSize == 0) return 0;
-    else if (numsSize == 1) return nums[0];
-    
-    dp2[0] = nums[0];
-    dp2[1] = nums[1] > nums[0] ? nums[1] : nums[0];
-    if (numsSize == 2) return dp2[1];
-    for (i = 2; i < numsSize - 1; i++)
-    {
-        dp2[i] = nums[i] + dp2[i - 2] > dp2[i - 1] ? nums[i] + dp2[i - 2] : dp2[i - 1];
-        if (i > 2) dp2[i] = dp2[i] > dp2[i - 3] + nums[i] ? dp2[i] : dp2[i - 3] + nums[i];
-    }
-    max2 = dp2[numsSize - 2];
+class Solution {
+public:
+    int rob(vector<int>& nums){
+        int n = nums.size();
+        if (n == 1){
+            return nums[0];
+        }else if (n == 2){
+            return max(nums[0], nums[1]);
+        }
 
-    dp1[0] = 0;
-    dp1[1] = nums[1];
-    dp1[2] = nums[1] > nums[2] ? nums[1] : nums[2];
-    for (i = 3; i < numsSize; i++)
-    {
-        dp1[i] = nums[i] + dp1[i - 2] > dp1[i - 1] ? nums[i] + dp1[i - 2] : dp1[i - 1];
-        dp1[i] = dp1[i] > dp1[i - 3] + nums[i] ? dp1[i] : dp1[i - 3] + nums[i];
+        return max(solve(nums, 0, n - 1), solve(nums, 1, n));
     }
-    max1 = dp1[numsSize - 1];
-    
-    return max1 > max2 ? max1 : max2;
-}
+
+    int solve(vector<int>& nums, int begin, int end){
+        //复盘一下使用二进制滚动数组时的一个错误(这里其实最好不要用二进制，因为，我们不知道begin是奇数还是偶数，这会导致我们后面遍历i%2的时候不好处理，比如说begin如果是奇数，那begin一开始就要放到1的位置；如果begin是偶数的话，那begin一开始就要放到0的位置，处理上就会有点麻烦)
+        int first = nums[begin], second = max(nums[begin], nums[begin + 1]);
+        for (int i = begin + 2; i < end; i ++ ){
+            int temp = second;
+            second = max(first + nums[i], second);
+            first = temp;
+        }
+
+        return second;
+    }
+};

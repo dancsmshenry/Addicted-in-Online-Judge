@@ -20,12 +20,12 @@ public:
     }
 
     int solve(vector<vector<int>>& count, int i, int j, int m, int n, int k){
-        if (i < 0 || j < 0 || i >= m || j >= n || calculate(i, j) > k || count[i][j]){
+        if (i >= m || j >= n || calculate(i, j) > k || count[i][j]){
             return 0;
         }
         
         count[i][j] = 1;
 
-        return 1 + solve(count, i + 1, j, m, n, k) + solve(count, i - 1, j, m, n, k) + solve(count, i, j + 1, m, n, k) + solve(count, i, j - 1, m, n, k);
+        return 1 + solve(count, i + 1, j, m, n, k) + solve(count, i, j + 1, m, n, k);//这里优化了一下，只往右或下走
     }
 };

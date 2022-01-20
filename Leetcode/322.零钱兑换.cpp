@@ -1,20 +1,19 @@
-#include <limits.h>
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount){
+        //init
+        vector<int> dp(amount + 1, INT_MAX);
+        dp[0] = 0;
 
-int coinChange(int* coins, int coinsSize, int amount)
-{
-    int i, j;
-    int dp[100000];
-    
-    dp[0] = 0;
-    for (i = 1; i <= amount; i++)
-    {
-        dp[i] = INT_MAX;
-        for (j = 0; j < coinsSize; j++)
-        {
-            if (i - coins[j] >= 0) dp[i] = dp[i] < dp[i - coins[j]] + 1 ? dp[i] : dp[i - coins[j]] + 1;
+        //dp
+        for (int i = 1; i <= amount; i ++ ){
+            for (int j = 0; j < coins.size(); j ++ ){
+                if (i >= coins[j] && dp[i - coins[j]] != INT_MAX){
+                    dp[i] = min(dp[i], dp[i - coins[j]] + 1);
+                }
+            }
         }
-    }
 
-    if (dp[amount] == INT_MAX) return -1;
-    else return dp[amount];
-}
+        return dp[amount] == INT_MAX ? -1 : dp[amount];
+    }
+};
