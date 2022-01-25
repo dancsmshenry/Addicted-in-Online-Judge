@@ -1,10 +1,8 @@
-int shunxu(const void*a, const void*b)
-{
+int shunxu(const void*a, const void*b){
     return *(int*)a - *(int*)b;
 }
 
-int distributeCandies(int* candies, int candiesSize)
-{
+int distributeCandies(int* candies, int candiesSize){
     int i, p1 = 0;
     qsort(candies, candiesSize, sizeof(int), shunxu);
 
