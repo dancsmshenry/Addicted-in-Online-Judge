@@ -7,9 +7,9 @@ This is a repository which records some solutions and ideas about the problems i
 
 第一阶段
 
-- 刷完codetop企业题库的前5页的所有高频题（718，468，179）
+- 刷完codetop企业题库的前5页的所有高频题（468）
 - 刷完剑指offer全部和leetcode hot题目（301，399）
-- 争取在27号的时候把题目数刷到500题（489/501）
+- 争取在27号的时候把题目数刷到500题（493/500）
 
 
 
