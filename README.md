@@ -9,7 +9,7 @@ This is a repository which records some solutions and ideas about the problems i
 
 - 刷完codetop企业题库的前5页的所有高频题（468）
 - 刷完剑指offer全部和leetcode hot题目（301，399）
-- 争取在27号的时候把题目数刷到500题（493/500）
+- 争取在29号的时候把题目数刷到500题（497/504）
 
 
 
@@ -20,3 +20,8 @@ This is a repository which records some solutions and ideas about the problems i
   - LinkedList（链表）
   - DynamicProgming（动态规划）
 
+
+
+第三阶段
+
+- 参加一些leetcode的周赛和笔试模拟
