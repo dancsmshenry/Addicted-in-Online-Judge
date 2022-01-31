@@ -1,14 +1,17 @@
-int numberOfSteps (int num)
-{
-    int n, sum = 0;
-    n = num;
+class Solution {
+public:
+    int numberOfSteps(int num) {//注意0
+        int res = 0;
 
-    while (n != 0)
-    {
-        if (n % 2 == 0) n = n /2;
-        else n = n - 1;
-        sum = sum + 1;
+        do {
+            if ((num & 1) == 0) {//注意&和==的优先级
+                res ++ ;
+            } else {
+                res += 2;
+            }
+            num = num >> 1;
+        } while (num != 0);
+
+        return res - 1;
     }
-
-    return sum;
-}
+};
