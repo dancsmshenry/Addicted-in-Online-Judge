@@ -16,26 +16,19 @@ public:
         不过还是老问题，要注意判空，还有边界的处理
         **/
 
-        int matrix_size = matrix.size();
-        //预先判空
-        if (!matrix_size){
-            return false;
-        }
-        
-        int line = 0, row = matrix[0].size() - 1;//居然是这里没有-1，真是糊涂了
+        int i = matrix.size() - 1, j = 0;//其实这里选择右上方或右下方都是可以的，都可以用二分来解决
 
-        while(line < matrix_size && row >= 0){//注意，这里的row是可以等于0的
-            int number = matrix[line][row];
-            if (number == target){
+        while (i >= 0 && j < matrix[0].size()) {
+            if (matrix[i][j] == target) {
                 return true;
-            }
-            if (number > target){
-                row -- ;
-            }else{
-                line ++ ;
+            } else if (matrix[i][j] < target) {
+                j ++ ;
+            } else {
+                i -- ;
             }
         }
 
         return false;
+    }
     }
 };

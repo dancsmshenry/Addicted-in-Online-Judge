@@ -1,51 +1,35 @@
+/* hashmap */
 class Solution {
 public:
     int findRepeatNumber(vector<int>& nums) {
-        /*变相实现set*/
-        int a[100001];
-        memset(a, 0, sizeof(a));
-        int res = 0;
+        unordered_map<int, int> hashmap;
 
-        for (int i = 0; i < nums.size(); i ++ ){
-            a[nums[i]] ++ ;
-            if (a[nums[i]] > 1){
-                res = nums[i];
-                break;
+        for (auto& num: nums) {
+            if (hashmap.count(num)) {
+                return num;
             }
+            hashmap[num] ++ ;
         }
 
-        return res;
+        return 0;
     }
 };
 
+/* 原地哈希 */
 class Solution {
 public:
     int findRepeatNumber(vector<int>& nums) {
-        /*哈希表*/
-        int res = 0;
-        unordered_map<int, bool> map;
+        int i = 0, n = nums.size();
 
-        for(int num: nums) {
-            if(map[num]){
-                res = num;
-                break;
+        while (i < n) {
+            if (nums[i] == i) {//如果当前的数字是在自己的位置上，就i++
+                i ++ ;
+                continue;
             }
-            map[num] = true;
-        }
-        return res;
-    }
-};
-
-class Solution {
-public:
-    int findRepeatNumber(vector<int>& nums) {
-        /*sort*/
-        sort(nums.begin(), nums.end());
-
-        for (int i = 1; i < nums.size(); i ++ ){
-            if (nums[i] == nums[i - 1]){
+            if (nums[nums[i]] == nums[i]) {//如果当前的数字和对于位置的数字相同，就代表这个数字重复了，return
                 return nums[i];
             }
+            swap(nums[nums[i]], nums[i]);//表示当前数字不再对应下标的位置，交换
         }
 
         return 0;

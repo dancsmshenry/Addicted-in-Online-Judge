@@ -1,4 +1,4 @@
-//方法一，先顺序，再倒序
+/* 先顺序，再倒序 */
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -24,7 +24,7 @@ public:
     }
 };
 
-//方法二，栈
+/* 栈 */
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -39,12 +39,12 @@ public:
         vector<int> res;
         stack<int> s1;
 
-        while (head){
+        while (head) {
             s1.push(head -> val);
             head = head -> next;
         }
 
-        while (!s1.empty()){
+        while (!s1.empty()) {
             res.push_back(s1.top());
             s1.pop();
         }
