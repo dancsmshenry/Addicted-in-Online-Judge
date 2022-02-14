@@ -1,6 +1,8 @@
 class Solution {
 public:
     int minArray(vector<int>& numbers) {
+        int left = 0, right = numbers.size() - 1;
+        //不能用numbers[left]来判断，因为数组如果没有反转的话，就会有问题
         /*
         本题的思路：
         看到数组类型的题目，想到的就是双指针和二分查找
@@ -26,19 +28,17 @@ public:
 
         就相当于二分的魔改了
         */
-        int left = 0, right = numbers.size() - 1;
-
-        while (left < right){
-            int mid = (left + right) >> 1;
-            if (numbers[mid] > numbers[right]){
+        while (left < right) {
+            int mid = left + (right - left) / 2;//防溢出
+            if (numbers[mid] > numbers[right]) {
                 left = mid + 1;
-            }else if (numbers[mid] == numbers[right]){
-                right -- ;
-            }else{
+            } else if (numbers[mid] < numbers[right]) {
                 right = mid;
+            } else {
+                right -- ;
             }
         }
 
-        return numbers[left];
+        return numbers[right];
     }
 };
