@@ -1,11 +1,12 @@
-int singleNumber(int* nums, int numsSize)
-{
-    int i, one = 0;
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int result = 0;
 
-    for(i = 0; i < numsSize; i++)
-    {
-        one = one ^ nums[i];
+        for (auto& num: nums) {
+            result ^= num;
+        }
+
+        return result;
     }
-
-    return one;
-}
+};

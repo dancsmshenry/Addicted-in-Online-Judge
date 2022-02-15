@@ -1,27 +1,17 @@
-int shunxu(const void*a, const void*b)
-{
-    return *(int*)a - *(int*)b;
-}
+class Solution {
+public:
+    bool uniqueOccurrences(vector<int>& arr) {
+        unordered_map<int, int> hashmap;
+        unordered_set<int> hashset;
 
-bool uniqueOccurrences(int* arr, int arrSize)
-{
-    int i, ans = 1;
-    int f[10000];
-    memset(f, 0, 10000);
-    qsort(arr, arrSize, sizeof(int), shunxu);
-
-    for (i = 1; i < arrSize; i ++ )
-    {
-        if (arr[i] == arr[i - 1]) ans ++ ;
-        else
-        {
-            f[ans] ++ ;
-            if (i == arrSize - 1) f[1] ++ ;
-            if (f[ans]  > 1 || f[1] > 1) return false;
-            ans = 1;
+        for (auto& num: arr) {
+            hashmap[num] ++ ;
         }
-    }
-    if (ans != 1 && f[ans] + 1 > 1) return false;
 
-    return true;
-}
+        for (auto& h: hashmap) {
+            hashset.insert(h.second);
+        }
+
+        return hashset.size() == hashmap.size();
+    }
+};

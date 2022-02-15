@@ -1,16 +1,22 @@
 class Solution {
 public:
-    vector<int> singleNumber(vector<int>& nums) {
+    vector<int> singleNumbers(vector<int>& nums) {
         int ret = 0;
 
-        for (int n : nums) ret ^= n;
-        int div = ret & (-ret);
+        for (auto& num: nums) {
+            ret ^= num;
+        }
 
+        int div = ret & (-ret);
         int a = 0, b = 0;
-        for (int n : nums)
-            if (div & n) a ^= n;
-            else b ^= n;
-        
+        for (auto& num: nums) {
+            if (div & num) {
+                a ^= num;
+            } else {
+                b ^= num;
+            }
+        }
+
         return vector<int>{a, b};
     }
 };

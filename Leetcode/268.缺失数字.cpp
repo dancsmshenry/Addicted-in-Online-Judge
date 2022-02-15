@@ -1,7 +1,12 @@
-int missingNumber(int* nums, int numsSize)
-{
-    int i, sum = 0;
-    for(i = 0; i < numsSize; i++)
-    sum = nums[i] + sum; 
-    return numsSize * (numsSize + 1) / 2 - sum;
-}
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int total = 0;
+        int n = nums.size();
+        for (auto& num: nums) {
+            total += num;
+        }
+
+        return n * (n + 1) / 2 - total;
+    }
+};

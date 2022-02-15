@@ -1,25 +1,22 @@
 class Solution {
 public:
     vector<int> singleNumbers(vector<int>& nums) {
-        int mid_01 = 0, mid_02 = 1;
+        int ret = 0;
+
+        for (auto& num: nums) {
+            ret ^= num;
+        }
+
+        int div = ret & (-ret);
         int a = 0, b = 0;
-
-        for (int i = 0; i < nums.size(); i ++ ){
-            mid_01 ^= nums[i];
-        }
-
-        while ((mid_02 & mid_01) == 0){
-            mid_02 <<= 1;
-        }
-        
-        for (int i = 0; i < nums.size(); i ++ ){
-            if (nums[i] & mid_02){
-                a ^= nums[i];
-            }else{
-                b ^= nums[i];
+        for (auto& num: nums) {
+            if (div & num) {
+                a ^= num;
+            } else {
+                b ^= num;
             }
         }
 
-        return vector{a, b};
+        return vector<int>{a, b};
     }
 };
