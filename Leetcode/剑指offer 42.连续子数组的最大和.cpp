@@ -1,12 +1,17 @@
-int maxSubArray(int* nums, int numsSize)
-{
-     int max, sum, i;
-     max = sum = nums[0];
-     for (i = 1; i < numsSize; i++)
-	{
-		if (sum >= 0) sum += nums[i];
-		else sum = nums[i];
-		max = max > sum ? max : sum;
-	}
-    return max;
-}
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int dp = nums[0], res = dp;
+
+        for (int i = 1; i < nums.size(); i ++ ) {
+            if (dp < 0) {
+                dp = nums[i];
+            } else {
+                dp += nums[i];
+            }
+            res = max(res, dp);
+        }
+
+        return res;
+    }
+};
