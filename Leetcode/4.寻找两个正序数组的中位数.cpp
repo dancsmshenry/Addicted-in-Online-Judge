@@ -1,44 +1,38 @@
 class Solution {
 public:
-    int getKthElement(const vector<int>& nums1, const vector<int>& nums2, int k) {
-        //这道题我是真的不会了，看解析也看不明白，留着以后慢慢领会吧（原因：之前花了一下午去看题解，但是仍然看不懂题目；也自己做了一遍，更是做不出来）
-        int m = nums1.size(), n = nums2.size();
-        int index1 = 0, index2 = 0;
-
-        while (true) {
-            // 边界情况
-            if (index1 == m) {
-                return nums2[index2 + k - 1];
-            }
-            if (index2 == n) {
-                return nums1[index1 + k - 1];
-            }
-            if (k == 1) {
-                return min(nums1[index1], nums2[index2]);
-            }
-
-            // 正常情况
-            int newIndex1 = min(index1 + k / 2 - 1, m - 1);
-            int newIndex2 = min(index2 + k / 2 - 1, n - 1);
-            int pivot1 = nums1[newIndex1];
-            int pivot2 = nums2[newIndex2];
-            if (pivot1 <= pivot2){
-                k -= newIndex1 - index1 + 1;
-                index1 = newIndex1 + 1;
-            }else{
-                k -= newIndex2 - index2 + 1;
-                index2 = newIndex2 + 1;
-            }
-        }
+    double findMedianSortedArrays(vector<int> &nums1, vector<int> &nums2) {
+        int m = nums1.size();
+        int n = nums2.size();
+        //中位数 = （left + right）/2
+        int left = (m + n + 1) / 2;
+        int right = (m + n + 2) / 2;
+        return (findKth(nums1, 0, nums2, 0, left) + findKth(nums1, 0, nums2, 0, right)) / 2.0;
     }
+    //在两个有序数组中找到第k个元素（例如找第一个元素，k=1，即nums[0]）
+    // i: nums1的起始位置 j: nums2的起始位置（i，j都是从0开始）
+    int findKth(vector<int> &nums1, int i, vector<int> &nums2, int j, int k) {
+        //若nums1为空（或是说其中数字全被淘汰了），在nums2中找第k个元素，此时nums2起始位置是j，所以是j+k-1
+        if (i >= nums1.size()) {
+            return nums2[j + k - 1];
+        }
+        // nums2同理
+        if (j >= nums2.size()) {
+            return nums1[i + k - 1];
+        }
 
-    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        int totalLength = nums1.size() + nums2.size();
-        if (totalLength % 2 == 1) {
-            return getKthElement(nums1, nums2, (totalLength + 1) / 2);
+        //递归出口（当k等于1的时候，就直接返回两边的最小值）
+        if (k == 1) {
+            return min(nums1[i], nums2[j]);
         }
-        else {
-            return (getKthElement(nums1, nums2, totalLength / 2) + getKthElement(nums1, nums2, totalLength / 2 + 1)) / 2.0;
+
+        //这两个数组的第K/2小的数字，若不足k/2个数字则赋值整型最大值，以便淘汰另一数组的前k/2个数字
+        int midVal1 = (i + k / 2 - 1 < nums1.size()) ? nums1[i + k / 2 - 1] : INT_MAX;
+        int midVal2 = (j + k / 2 - 1 < nums2.size()) ? nums2[j + k / 2 - 1] : INT_MAX;
+
+        //二分法核心部分
+        if (midVal1 < midVal2) {
+            return findKth(nums1, i + k / 2, nums2, j, k - k / 2);
         }
+        return findKth(nums1, i, nums2, j + k / 2, k - k / 2);
     }
 };
