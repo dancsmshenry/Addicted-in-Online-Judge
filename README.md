@@ -11,7 +11,7 @@ This is a repository which records some solutions and ideas about the problems i
 
 - 刷完codetop企业题库的前5页的所有高频题
 - 刷完剑指offer全部和leetcode hot题目（301，399）
-- 争取在29号的时候把题目数刷到500题（500/504）
+- 争取在29号的时候把题目数刷到500题（504/500）
 
 
 
@@ -21,13 +21,11 @@ This is a repository which records some solutions and ideas about the problems i
   - BinaryTree（二叉树）
   - LinkedList（链表）
   - DynamicProgming（动态规划）
+  - BinarySearch（二分搜索）
+  - Sort（排序）
 
-
-
-第三阶段
-
-- 参加一些leetcode的周赛和笔试模拟
-- 每天练习一些
+- 参加周赛
+- 每天review一些题目或者做一些新的题目
 
 
 
