@@ -10,7 +10,8 @@
         "unordered_map": "cpp",
         "random": "cpp",
         "limits": "cpp",
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "functional": "cpp"
     },
     "git.ignoreLimitWarning": true
 }
