@@ -30,6 +30,7 @@ public:
         int midVal2 = (j + k / 2 - 1 < nums2.size()) ? nums2[j + k / 2 - 1] : INT_MAX;
 
         //二分法核心部分
+        //注意这里都是k-k/2，因为15/2=7，但是我们前面加上k/2的时候，筛掉的是7，后面应该再找第8个，而不是第7个
         if (midVal1 < midVal2) {
             return findKth(nums1, i + k / 2, nums2, j, k - k / 2);
         }

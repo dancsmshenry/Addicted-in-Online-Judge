@@ -57,19 +57,19 @@ public:
         将所有考虑到的情况加入到递归里面
         优化语言
         */
-        if (!root || p -> val == root -> val || q -> val == root -> val){
+        if (!root) {
+            return nullptr;
+        }
+        if (root -> val == p -> val || root -> val == q -> val) {
             return root;
         }
-
+        
         TreeNode* left = lowestCommonAncestor(root -> left, p, q);
-        TreeNode* right = lowestCommonAncestor(root -> right, p, q);
-
-        if (left == nullptr){
-            return right;
-        }else if (right == nullptr){
-            return left;
+        TreeNode* right = lowestCommonAncestor(root -> right, p ,q);
+        if (left && right) {
+            return root;
         }
         
-        return root;
+        return left ? left : right;
     }
 };

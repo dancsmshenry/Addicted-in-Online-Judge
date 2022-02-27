@@ -27,3 +27,30 @@ public:
         return -1;
     }
 };
+
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        return find(nums, 0, nums.size() - 1, k);
+    }
+
+    int find(vector<int>& nums, int left, int right, int k) {
+        if (left >= right) {
+            return nums[left];
+        }
+        int i = left - 1, j = right + 1, mid = nums[left];
+
+        while (i < j) {
+            do i ++ ; while (nums[i] < mid);
+            do j -- ; while (nums[j] > mid);
+            if (i < j) swap(nums[i], nums[j]);
+        }
+
+        int temp = right - j;//从0-j的全部都是小于mid的，temp计算右边还有多少数字
+        if (temp >= k) {
+            return find(nums, j + 1, right, k);
+        }
+
+        return find(nums, left, j, k - temp);
+    }
+};

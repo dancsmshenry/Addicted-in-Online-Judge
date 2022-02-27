@@ -11,7 +11,11 @@
         "random": "cpp",
         "limits": "cpp",
         "ranges": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "array": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp"
     },
     "git.ignoreLimitWarning": true
 }

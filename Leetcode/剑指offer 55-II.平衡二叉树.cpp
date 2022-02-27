@@ -10,21 +10,20 @@
 class Solution {
 public:
     bool isBalanced(TreeNode* root) {
-        if (!root){
-            return true;
-        }
-
-        if (abs(deepth(root -> left, 0) - deepth(root -> right, 0)) >= 2){
-            return false;
-        }
-
-        return isBalanced(root -> left) && isBalanced(root -> right);
+        return dfs(root) == -1 ? false: true;
     }
 
-    int deepth(TreeNode* root, int count){
-        if (!root){
-            return count;
+    int dfs(TreeNode* root) {
+        if (!root) {
+            return 0;
         }
-        return max(deepth(root -> left, count + 1), deepth(root -> right, count + 1));
+
+        int left = dfs(root -> left);
+        int right = dfs(root -> right);
+        if (left == -1 || right == -1 || abs(left - right) > 1) {
+            return -1;
+        }
+
+        return max(left, right) + 1;
     }
 };
