@@ -1,28 +1,29 @@
 class Solution {
 public:
-    vector<vector<int>> res;
-    vector<int> ans;
+    vector<vector<int>> result;
 
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         sort(candidates.begin(), candidates.end());
-        solve(0, candidates, res, ans, target);
-        //问题来了，怎样保证不重复？？
-        //解决办法：给一个限定，在当前位置之前的数字都不能选了，这样就有效避免重复了
-        return res;
+
+        vector<int> res;
+        dfs(candidates, target, res, 0);
+
+        return result;
     }
 
-    void solve(int begin, vector<int>& candidates, vector<vector<int>>& res, vector<int>& ans, int target){
-        if (target == 0){
-            res.push_back(ans);
+    void dfs(vector<int>& candidates, int target, vector<int>& res, int begin) {
+        if (target == 0) {
+            result.push_back(res);
             return ;
         }
-        for (int i = begin; i < candidates.size(); i ++ ){
-            if (target < candidates[i]){
+
+        for (int i = begin; i < candidates.size(); ++  i) {
+            if (candidates[i] <= target) {
+                res.push_back(candidates[i]);
+                dfs(candidates, target - candidates[i], res, i);
+                res.pop_back();
+            } else {
                 return ;
-            }else{
-                ans.push_back(candidates[i]);
-                solve(i, candidates, res, ans, target - candidates[i]);
-                ans.pop_back();
             }
         }
     }
