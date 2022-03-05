@@ -1,5 +1,3 @@
-#include <cstdlib>
-
 class Solution {
 public:
     vector<string> letterCombinations(string digits) {
@@ -37,5 +35,33 @@ public:
         }
 
         return result;
+    }
+};
+
+class Solution {
+public:
+    vector<string> result;
+    vector<string> letterCombinations(string digits) {
+        unordered_map<char, vector<char>> hashmap = {{'2', {'a','b','c'}}, {'3', {'d','e','f'}}, {'4', {'g','h','i'}}, 
+                                                    {'5', {'j','k','l'}}, {'6', {'m','n','o'}}, {'7', {'p','q','r','s'}}, 
+                                                    {'8', {'t','u','v'}}, {'9', {'w','x','y','z'}}};
+        if (digits.size() == 0) {
+            return {};
+        }
+        string s = "";
+        solve(0, hashmap, s, digits);
+        return result;
+    }
+
+    void solve(int begin, unordered_map<char, vector<char>>& hashmap, string& res, string& digits) {
+        if (begin == digits.size()) {
+            result.push_back(res);
+        }
+        
+        for (auto& c: hashmap[digits[begin]]) {
+            res += c;
+            solve(begin + 1, hashmap, res, digits);
+            res.pop_back();
+        }
     }
 };

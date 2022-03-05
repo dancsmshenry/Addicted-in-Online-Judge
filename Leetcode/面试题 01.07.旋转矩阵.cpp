@@ -1,15 +1,13 @@
 class Solution {
 public:
     void rotate(vector<vector<int>>& matrix) {
-        int n = matrix[0].size();
+        int n = matrix.size();
 
-        for (int min = 0, max = n - 1; min < max; min ++ , max -- )
-        {
-            for (int j = 0; j < max - min; j ++ )
-            {
-                swap(matrix[min][min + j], matrix[max - j][min]);
-                swap(matrix[max - j][min], matrix[max][max - j]);
-                swap(matrix[max][max - j], matrix[min + j][max]);
+        for (int i = 0; i < n / 2; ++ i) {
+            for (int j = i; j < n - i - 1; ++ j) {
+                swap(matrix[i][j], matrix[j][n - i - 1]);
+                swap(matrix[i][j], matrix[n - i - 1][n - j - 1]);
+                swap(matrix[i][j], matrix[n - j - 1][i]);
             }
         }
     }

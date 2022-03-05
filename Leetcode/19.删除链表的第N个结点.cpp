@@ -17,22 +17,20 @@ public:
         或者说，如果当前只有一个结点的话，p2又应该指向谁？
         所以，就可以在链表前面再接上一个结点，最后返回这个结点的next即可
         **/
-        ListNode* dummy = new ListNode(0, head);
-        ListNode* p1 = dummy;
-        ListNode* p2 = dummy;
+        ListNode *res = new ListNode(0, head);
+        ListNode *fast = res, *slow = res;
 
-        while (n > 0){
-            p1 = p1 -> next;
-            -- n;
+        for (int i = 0; i < n; ++ i ) {
+            fast = fast -> next;
         }
 
-        while(p1 -> next){
-            p1 = p1 -> next;
-            p2 = p2 -> next;
+        while (fast -> next) {
+            slow = slow -> next;
+            fast = fast -> next;
         }
 
-        p2 -> next = p2 -> next -> next;
-
-        return dummy -> next;
+        slow -> next = slow -> next -> next;
+        
+        return res -> next;
     }
 };

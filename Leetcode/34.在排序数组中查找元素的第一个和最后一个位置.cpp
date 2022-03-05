@@ -1,34 +1,38 @@
 class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
-        /*
-        这道题的思路：
-        先用二分查找找到目标数，如果没有，就返回-1-1
-        然后，这里二分查找的巧妙之处在于，每次都能返回这个数字第一次出现的地方（可以模拟一遍）
-        然后就是常规操作了
-        */
+        //两次二分
+        int n = nums.size();
+        if (n == 0) {
+            return {-1, -1};
+        }
+        int one, two;
+        int left = 0, right = n - 1;
 
-        int left = 0, right = nums.size() - 1;
-        vector<int> f(2, -1);
-        if (right < 0) return f;
-
-        while (left < right){
-            // int mid = right + (left - right) / 2;//这样就会超时？
-            int mid = (right + left) / 2;
-            if (nums[mid] < target){
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) {
                 left = mid + 1;
-            }else{
+            } else {
                 right = mid;
             }
         }
-        if (nums[left] != target) return f;
-
-        f[0] = left;
-        while (left < nums.size() && nums[left] == target){
-            left ++ ;
+        if (nums[right] != target) {
+            return {-1 ,-1};
         }
-        f[1] = -- left;
+        one = right;
+        left = 0;
+        right = n - 1;
+        while (left < right) {
+            int mid = left + (right - left + 1) / 2;
+            if (nums[mid] <= target) {
+                left = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        two = right;
 
-        return f;
+        return {one, two};
     }
 };

@@ -32,3 +32,44 @@ public:
         solve(root -> right, floor + 1);
     }
 };
+
+//层序遍历的做法
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        queue<TreeNode*> q1;
+        vector<vector<int>> res;
+        if (!root) {
+            return res;
+        }
+        q1.push(root);
+
+        while (!q1.empty()) {
+            int n = q1.size();
+            vector<int> mid;
+            for (int i = 0; i < n; i ++ ) {
+                TreeNode* root1 = q1.front();
+                q1.pop();
+                mid.push_back(root1 -> val);
+                if (root1 -> left) {
+                    q1.push(root1 -> left);
+                }
+                if (root1 -> right) {
+                    q1.push(root1 -> right);
+                }
+            }
+            res.push_back(mid);
+        }
+
+        return res;
+    }
+};

@@ -1,15 +1,21 @@
 class Solution {
 public:
-    vector<string> res;
-
-    void check(int n, int left, int right, string str){
-        if (right == n) res.push_back(str);
-        if (left < n) check(n, left + 1, right, str + "(");
-        if (right < left) check(n, left, right + 1, str + ")");
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        dfs(res, "", 0, 0, n);
+        return res;
     }
 
-    vector<string> generateParenthesis(int n) {
-        check(n, 0, 0, "");
-        return res;
+    void dfs(vector<string>& res, string&& mid, int left, int right, int n) {
+        if (right == n) {
+            res.push_back(mid);
+            return ;
+        }
+        if (left < n) {
+            dfs(res, mid + '(', left + 1, right, n);
+        }
+        if (left > right) {
+            dfs(res, mid + ')', left, right + 1, n);
+        }
     }
 };

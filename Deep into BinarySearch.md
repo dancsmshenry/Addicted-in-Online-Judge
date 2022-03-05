@@ -10,6 +10,69 @@
 
 
 
+### 二分模板
+
+- ```cpp
+  //要求，找当前target在nums中的位置，如果在，就返回下标；否则，返回它应该插入的位置
+  int left = 0, right = nums.size() - 1;
+  
+  //二分模板1.0（缺点，如果存在数字大于当前最大的数字的话，返回的只能是数组的长度，而不是该元素应该插入的位置；但如果是小于最大的数，但是又不在里面的话，就可以返回该元素应该插入的位置）
+  while (left < right) {
+      int mid = left + (right - left) / 2;
+      if (nums[mid] < target) {
+          left = mid + 1;
+      } else {
+          right = mid;
+      }
+  }
+  return right;
+  
+  //二分模板1.1，和1.0一样，不过需要调整的是mid这里要加一，因为如果left=right-1，那么left=mid的时候，就会无限循环，走不出去了（和1.0一样的缺点）
+  while (left < right) {
+      int mid = left + (right - left + 1) / 2;
+      if (nums[mid] <= target) {
+          left = mid;
+      } else {
+          right = mid - 1;
+      }
+  }
+  return right;
+  
+  /**
+   * 对于1.0的版本，可以找到该元素在数组里面出现的第一个位置(因为如果nums[mid]==target的时候，我们查询的是左边的区间，这样不断地找，就可以找到第一次出现的位置)
+   * 1.1的版本，可以找到出现的最后一个位置(因为如果nums[mid]==target的时候，我们选择的是查询右边的区间，这样不断地找，就可以找到它出现地最后一次地位置)
+   * **/
+  
+  //二分模板2.0（克服了1.0的缺点）
+  while (left <= right) {
+      int mid = left + (right - left) / 2;
+      if (nums[mid] >= target) {
+          right = mid - 1;
+      } else {
+          left = mid + 1;
+      }
+  }
+  return left;
+  
+  //二分模板3.0，最简单易懂的模板，也是克服了1.0的缺点，但是比2.0更加容易理解
+  while (left <= right) {
+      int mid = left + (right - left) / 2;
+      if (nums[mid] == target) {
+          return mid;
+      } else if (nums[mid] > target) {
+          right = mid - 1;
+      } else {
+          left = mid + 1;
+      }
+  }
+  return right + 1;
+  
+  //参考：https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/solution/tu-jie-er-fen-zui-qing-xi-yi-dong-de-jia-ddvc/
+  //https://zhuanlan.zhihu.com/p/79553968
+  ```
+
+
+
 
 
 ### 旋转数组
@@ -46,6 +109,11 @@
 - 注意：因为是搜索元素，所以不一定会存在的，while那里要判断left和right相等的情况
 
 
+
+### 基本二叉搜索
+
+- 35、搜索插入位置（直接二分即可）
+- 34.在排序数组中查找元素的第一个和最后一个位置（两次二分，用模板）
 
 
 
@@ -97,4 +165,4 @@
     **/
     ```
 
-  - 
+  

@@ -9,35 +9,26 @@
  */
 class Solution {
 public:
-    vector<int> result;
     vector<int> levelOrder(TreeNode* root) {
-        vector<TreeNode*> v1{root};
-        solve(v1);
-        return result;
-    }
+        if (!root) {
+            return {};
+        }
+        queue<TreeNode*> q1;
+        vector<int> res;
+        q1.push(root);
 
-    /*利用结点的不断裂变，把裂变的放入数组当中*/
-    void solve(vector<TreeNode*>& mid){
-        /*如果所有的结点都是空的，就设为false，就后续直接返回*/
-        bool flag = false;
-        for (TreeNode* i:mid){
-            if (i){
-                result.push_back(i -> val);
-                flag = true;
+        while (!q1.empty()) {
+            TreeNode* mid = q1.front();
+            q1.pop();
+            res.push_back(mid -> val);
+            if (mid -> left) {
+                q1.push(mid -> left);
+            }
+            if (mid -> right) {
+                q1.push(mid -> right);
             }
         }
-        if (!flag){
-            return ;
-        }
-        vector<TreeNode*> res;
-        for (TreeNode* i:mid){
-            if (i -> left){
-                res.push_back(i -> left);
-            }
-            if (i -> right){
-                res.push_back(i -> right);
-            }
-        }
-        solve(res);
+
+        return res;
     }
 };

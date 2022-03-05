@@ -1,18 +1,19 @@
 class Solution {
 public:
     int subarraySum(vector<int>& nums, int k) {
-        unordered_map<int, int> mp;
-        mp[0] = 1;
-        int total = 0;
+        int count = 0;
+        int res = 0;
+        unordered_map<int, int> hashmap;
+        hashmap[0] ++ ;
 
-        for (int i = 0, pre = 0; i < nums.size(); i ++ ) {
-            pre += nums[i];
-            if (mp.find(pre - k) != mp.end()) {
-                total += mp[pre - k];
+        for (auto& num: nums) {
+            count += num;
+            if (hashmap.count(count - k)) {
+                res += hashmap[count - k];
             }
-            mp[pre]++;
+            hashmap[count] ++ ;
         }
 
-        return total;
+        return res;
     }
 };
