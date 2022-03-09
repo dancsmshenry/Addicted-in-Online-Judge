@@ -11,41 +11,40 @@
 class Solution {
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
-        if (k == 1){
+        if (k == 1) {
             return head;
         }
+
         /*先求链表的长度*/
         int n = 0;
-        for (ListNode* node = head; node; node = node -> next){
+        for (ListNode *temp = head; temp; temp = temp -> next) {
             n ++ ;
         }
-        n -= (n % k);
 
-        ListNode* result = new ListNode(0, head);
+        ListNode *dummy = new ListNode(0, head);
         /*p1是每一组链表的结点的前一个结点，p2是该组链表的头结点，pre是尾节点，p3是尾结点的后一个结点（其中p3和pre都是用来向前推进的）*/
-        ListNode *p1 = result, *p2 = head, *p3 = head -> next, *pre = head;
-        /*count=1是因为，对于十个结点，只需要反转9次*/
-        for (int count = 1; n > 0; n -- ){
-            if (count == k){
+        ListNode *p1 = dummy, *p2 = head, *p3 = head -> next, *pre = head;
+
+        for (n = n - 1 - (n % k);n >= 0; -- n){
+            if (n % k != 0) {
+                /*反转两个结点的方向*/
+                ListNode *temp = p3 -> next;
+                p3 -> next = pre;
+                pre = p3;
+                p3 = temp;
+            } else {
                 /*前面一组链表的每一项都反转好了，就把整个链表反转到前面*/
                 p1 -> next = pre;
                 p2 -> next = p3;
-                /*处理结点的位置*/
+                /*调整结点的位置*/
                 p1 = p2;
                 pre = p2 = p3;
-                p3 = p3 ? p3 -> next : p3;/*如果是最后一组的话，就不用继续next了，因为此时的p3就是null了*/
-                count = 1;
-            }else{
-                count ++ ;
-                /*反转两个结点的方向*/
-                ListNode* mid = p3 -> next;
-                p3 -> next = pre;
-                pre = p3;
-                p3 = mid;
+                /*如果是最后一组的话，就不用继续next了，因为此时的p3就是null了*/
+                p3 = p3 ? p3 -> next : p3;
             }
         }
 
-        return result -> next;
+        return dummy -> next;
     }
 };
 

@@ -29,20 +29,44 @@ public:
 
         后续的关键就是，要捋清思路，设好方便的变量
         **/
-        ListNode* point = new ListNode(0);
-        point -> next = head;
-        ListNode* point1 = point;
+        ListNode *dummy = new ListNode(0, head);
+        ListNode *p3 = dummy, *p1 = head;
 
-        while(point1 -> next && point1 -> next -> next){
-            ListNode* point2 = point1 -> next;
-            ListNode* point3 = point1 -> next -> next;
-
-            point1 -> next = point3;
-            point2 -> next = point3 -> next;
-            point3 -> next = point2;
-            point1 = point2;
+        while (p1 && p1 -> next) {
+            ListNode *p2 = p1 -> next;
+            ListNode *temp = p2 -> next;
+            p3 -> next = p2;
+            p2 -> next = p1;
+            p1 -> next = temp;
+            p3 = p1;
+            p1 = temp;
         }
 
-        return point -> next;
+        return dummy -> next;
+    }
+};
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if (!head || !head -> next) {
+            return head;
+        }
+
+        ListNode *temp = head -> next;
+        head -> next = swapPairs(temp -> next);
+        temp -> next = head;
+
+        return temp;
     }
 };
