@@ -79,3 +79,76 @@ public:
         return left && right;
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        stack<TreeNode*> s1;
+        long long minn = (long long)INT_MIN - 1;
+
+        while (!s1.empty() || root) {
+            while (root) {
+                s1.push(root);
+                root = root -> left;
+            }
+            root = s1.top();
+            s1.pop();
+            if (root -> val <= minn) {
+                return false;
+            }
+            minn = root -> val;
+            root = root -> right;
+        }
+
+        return true;
+    }
+};
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+private:
+    vector<int> res;
+public:
+    bool isValidBST(TreeNode* root) {
+        dfs(root);
+        
+        int n = res.size();
+        for (int i = 1; i < n; ++ i) {
+            if (res[i] <= res[i - 1]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    void dfs(TreeNode *root) {
+        if (!root) {
+            return ;
+        }
+        dfs(root -> left);
+        res.push_back(root -> val);
+        dfs(root -> right);
+    }
+};

@@ -10,15 +10,16 @@ public:
         **/
 
         unordered_map<int, int> hashmap;
+        int n = nums.size();
 
-        for (int i = 0; i < nums.size(); i ++ ){
-            if (hashmap.count(target - nums[i]) != 0){
+        for (int i = 0; i < n; ++ i) {
+            if (hashmap.count(target - nums[i])) {
                 return {hashmap[target - nums[i]], i};
+            } else {
+                hashmap[nums[i]] = i;
             }
-            
-            hashmap[nums[i]] = i;
         }
 
-        return {};
+        return {-1, -1};
     }
 };
