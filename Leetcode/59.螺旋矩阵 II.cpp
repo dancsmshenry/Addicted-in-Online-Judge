@@ -1,39 +1,31 @@
 class Solution {
 public:
     vector<vector<int>> generateMatrix(int n) {
-        vector<vector<int>> res(n, vector<int>(n, 1));//vector二维数组初始化大小
-        int row_max = n - 1, row_min = 0, column_max = n - 1, column_min = 0;
-        int number = 1;
+        vector<vector<int>> res(n, vector<int> (n, 0));
+        int top = 0, left = 0;
+        int down = n - 1, right = n - 1;
+        int count = 1;
 
-        //如何处理循环变量的边缘问题(只在最后才对边缘进行处理)
-        while (number <= n * n){
-            //对奇数进行处理
-            if (number == n * n){
-                res[row_max][column_max] = number;
-                number ++;
+        while (count <= n * n) {
+            for (int i = left; i <= right; ++ i, ++ count) {
+                res[top][i] = count;
             }
+            top ++ ;
+            
+            for (int i = top; i <= down; ++ i, ++ count) {
+                res[i][right] = count;
+            }
+            right -- ;
 
-            for(int i = column_min; i < column_max; i ++ ,number ++ ){
-                res[row_min][i] = number;
-            }//向右走
+            for (int i = right; i >= left; -- i, ++ count) {
+                res[down][i] = count;
+            }
+            down -- ;
 
-            for(int i = row_min; i < row_max; i ++ ,number ++ ){
-                res[i][column_max] = number;
-            }//向下走
-
-            for(int j = column_max; j > column_min; j -- ,number ++ ){
-                res[row_max][j] = number;
-            }//向左走
-
-            for(int j = row_max; j > row_min; j -- ,number ++ ){
-                res[j][column_min] = number;
-            }//向上走
-
-            //对边缘进行处理
-            row_min ++ ;
-            row_max -- ;
-            column_min ++ ;
-            column_max -- ;
+            for (int i = down; i >= top; -- i, ++ count) {
+                res[i][left] = count;
+            }
+            left ++ ;
         }
 
         return res;

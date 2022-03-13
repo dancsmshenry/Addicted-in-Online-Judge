@@ -1,37 +1,34 @@
 class Solution {
 public:
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
-        int row_min = 0, line_min = 0;
-        int row_max = matrix.size() - 1, line_max = matrix[0].size() - 1;
-        int total = matrix.size() * matrix[0].size();
-        vector<int> res;
+      int m = matrix.size(), n = matrix[0].size();
+      int top = 0, left = 0;
+      int down = m - 1, right = n - 1;
+      int count = m * n;
+      vector<int> result;
 
-        while(total >= 1){
-            for(int i = line_min; i <= line_max && total >= 1; i ++ ){
-                res.push_back(matrix[row_min][i]);
-                total -- ;
-            }
-            row_min ++ ;//行最小，向右走
-            
-            for(int i = row_min; i <= row_max && total >= 1; i ++ ){
-                res.push_back(matrix[i][line_max]);
-                total -- ;
-            }
-            line_max -- ;//列最大，向下走
-                
-            for(int i = line_max; i >= line_min && total >= 1; i -- ){
-                res.push_back(matrix[row_max][i]);
-                total -- ;
-            }
-            row_max -- ;//行最大，向左走
+      while (count > 0) {
+          for (int i = left; i <= right && count > 0; ++ i, -- count) {
+              result.push_back(matrix[top][i]);
+          }
+          top ++ ;
 
-            for(int i = row_max; i >= row_min && total >= 1; i -- ){
-                res.push_back(matrix[i][line_min]);
-                total -- ;
-            }
-            line_min ++ ;//列最小，向上走
-        }
+          for (int i = top; i <= down && count > 0; ++ i, -- count) {
+              result.push_back(matrix[i][right]);
+          }
+          right -- ;
 
-        return res;//bug，for循环里面要用&&不能用，
+          for (int i = right; i >= left && count > 0; -- i, -- count) {
+              result.push_back(matrix[down][i]);
+          }
+          down -- ;
+
+          for (int i = down; i >= top && count > 0; -- i, -- count) {
+              result.push_back(matrix[i][left]);
+          }
+          left ++ ;
+      }
+
+      return result;
     }
 };

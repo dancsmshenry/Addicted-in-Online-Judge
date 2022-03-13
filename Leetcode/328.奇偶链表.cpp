@@ -11,8 +11,7 @@
 class Solution {
 public:
     ListNode* oddEvenList(ListNode* head) {
-        ListNode* node1 = new ListNode();
-        node1 -> next = head;
+        ListNode* node1 = new ListNode(0, head);
         int length = 0;
         while (node1 -> next){//两个目的：首先是求出总共有多少个要处理的点；找到最后一个点的位置
             length ++;
@@ -21,7 +20,7 @@ public:
 
         ListNode* node2 = head;
         int count = 1;
-        while(length > count && node2 -> next){//总共要处理的就是length个点；确保node2不是最后一个点
+        while(length > count){//总共要处理的就是length个点；确保node2不是最后一个点
             node1 -> next = node2 -> next;//node1是当前链表的最后一个点，确定了node2->next是偶数点，就把它接到最后一个
             node1 = node1 -> next;//既然加了一个点，那么最后一个点就是加的那一个点了
 
@@ -38,8 +37,6 @@ public:
 };
 
 /**
- * 阴差阳错版：
- * /**
  * Definition for singly-linked list.
  * struct ListNode {
  *     int val;
@@ -48,36 +45,26 @@ public:
  *     ListNode(int x) : val(x), next(nullptr) {}
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
- *
+ */
 class Solution {
 public:
     ListNode* oddEvenList(ListNode* head) {
-        if (!head) return head;
-        ListNode* node1 = new ListNode();
-        node1 -> next = head;
-        int length = 0;
-        while (node1 -> next){
-            length ++;
-            node1 = node1 -> next;
+        if (!head) {
+            return nullptr;
         }
 
-        ListNode* node2 = new ListNode();
-        node2 = head;
-        int count = 1;
-        while(length > count){
-            if (count % 2 == 1 && node2 -> next -> next){
-                ListNode* node = node2 -> next;
-                node2 ->next = node2 -> next -> next;
-                node1 -> next = node;
-                node1 = node1 -> next;
-                node1 -> next = nullptr;
-            }else{
-                node2 = node2 -> next;
-            }
-            count ++ ;
+        ListNode *node1 = head -> next;
+        ListNode *node2 = head;
+        ListNode *node3 = node1;
+
+        while (node3 && node3 -> next) {//前者是防奇数，后者防止偶数
+            node2 -> next = node3 -> next;
+            node2 = node2 -> next;
+            node3 -> next = node2 -> next;
+            node3 = node3 -> next;
         }
+        node2 -> next = node1;
 
         return head;
     }
 };
- **/ 

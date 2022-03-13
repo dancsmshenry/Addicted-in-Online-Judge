@@ -141,7 +141,7 @@
 
 ### MergeSort
 
-- 归并排序的实现
+- 归并排序的实现(后面要补上自顶向下和自底向上的两种写法https://www.cnblogs.com/nullzx/p/5968170.html)
 
   - ```cpp
     void merge_sort(vector<int>& arr, int left, int right)

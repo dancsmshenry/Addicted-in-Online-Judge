@@ -54,3 +54,43 @@ public:
         return find(nums, left, j, k - temp);
     }
 };
+//还有可以优化的空间https://leetcode-cn.com/problems/kth-largest-element-in-an-array/solution/er-fen-fa-xuan-qu-zui-da-de-di-kzhi-by-d-uvc7/
+
+
+class Solution 
+{
+public:
+    int findKthLargest(vector<int>& nums, int k) 
+    {
+        int n = nums.size();
+        int l = 0;
+        int r = n - 1;
+        while (true)
+        {
+            int idx = partition(nums, l, r);
+            if (idx == k - 1)
+                return nums[idx];
+            else if (idx < k - 1)
+                l = idx + 1;
+            else    
+                r = idx - 1;
+        }
+    }
+
+    //----单向遍历
+    int partition(vector<int> & nums, int l, int r)
+    {
+        int pivot = nums[l];
+        int idx = l;
+        for (int i = l + 1; i < r + 1; i ++)
+        {
+            if (nums[i] >= pivot)
+            {
+                idx ++;
+                swap(nums[idx], nums[i]);
+            }
+        }
+        swap(nums[l], nums[idx]);
+        return idx;
+    }
+};
