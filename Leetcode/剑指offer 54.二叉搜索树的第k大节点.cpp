@@ -60,3 +60,36 @@ public:
         dfs(root -> left, k);
     }
 };
+
+//非递归的写法
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int kthLargest(TreeNode* root, int k) {
+        stack<TreeNode*> s;
+
+        while (root || !s.empty()) {
+            while (root) {
+                s.push(root);
+                root = root -> right;
+            }
+            TreeNode *node = s.top();
+            s.pop();
+            k -- ;
+            if (k == 0) {
+                return node -> val;
+            }
+            root = node -> left;
+        }
+
+        return -1;
+    }
+};

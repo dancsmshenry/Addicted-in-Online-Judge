@@ -33,7 +33,7 @@ public:
                     tmp = tmp -> left;
                 }
                 tmp -> left = root -> left;
-                root = root -> right;
+                return root -> right;
             }
         }
 

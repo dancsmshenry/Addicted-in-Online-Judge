@@ -59,24 +59,23 @@ public:
 class Solution {
 public:
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        return solve(preorder, inorder, 0, preorder.size(), 0, inorder.size());
+        return rebuild(preorder, 0, preorder.size() - 1, inorder, 0, inorder.size() - 1);
     }
 
-    TreeNode* solve(vector<int>& preorder, vector<int>& inorder, int preorder_begin, int preorder_end, int inorder_begin, int inorder_end) {
-        if (preorder_begin == preorder_end) {
+    TreeNode *rebuild(vector<int>& preorder, int preorder_left, int preorder_right, vector<int>& inorder, int inorder_left, int inorder_right) {
+        if (preorder_left > preorder_right) {
             return nullptr;
         }
-        TreeNode* root = new TreeNode(preorder[preorder_begin]);
-        
+
+        TreeNode *root = new TreeNode(preorder[preorder_left]);
         int i = 0;
-        while (inorder[inorder_begin + i] != root -> val) {
+        while (inorder[inorder_left + i] != root -> val) {//这里使用auto的find会更加复杂，建议不要使用
             i ++ ;
         }
-        
-        root -> left = solve(preorder, inorder, preorder_begin + 1, preorder_begin + i + 1, inorder_begin, inorder_begin + i);
-        root -> right = solve(preorder, inorder, preorder_begin + i + 1, preorder_end, inorder_begin + i + 1, inorder_end);
+
+        root -> left = rebuild(preorder, preorder_left + 1, preorder_left + i, inorder, inorder_left, inorder_left + i - 1);
+        root -> right = rebuild(preorder, preorder_left + i + 1, preorder_right, inorder, inorder_left + i + 1, inorder_right);
 
         return root;
     }
-
 };

@@ -11,24 +11,19 @@
  */
 class Solution {
 public:
-    int res = 0;
     int sumNumbers(TreeNode* root) {
-        solve(root, 0);
-        return res;
+        return dfs(root, 0);
     }
 
-    void solve(TreeNode* root, int sum){
-        if (!root){
-            return ;
+    int dfs(TreeNode* root, int fatherval) {
+        if (!root) {
+            return 0;
         }
 
-        sum = sum * 10 + root -> val;
-        if (!root -> left && !root -> right){
-            res += sum;
-            return;
+        if (!root -> left && !root -> right) {
+            return fatherval * 10 + root -> val;
         }
 
-        solve(root -> left, sum);
-        solve(root -> right, sum);
+        return dfs(root -> left, fatherval * 10 + root -> val) + dfs(root -> right, fatherval * 10 + root -> val);
     }
 };

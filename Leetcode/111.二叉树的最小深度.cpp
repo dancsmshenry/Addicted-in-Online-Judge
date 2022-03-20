@@ -12,30 +12,30 @@
 class Solution {
 public:
     int minDepth(TreeNode* root) {
-        return solve(root, 1);
-    }
-
-    int solve(TreeNode* node, int deepth){
-        if (!node){//当前的结点时空结点
-            return deepth - 1;
+        queue<TreeNode*> q1;
+        int floor = 0;
+        if (root) {
+            q1.push(root);
         }
 
-        if (!node -> left && !node -> right){//当前的结点时叶子结点
-            return deepth;
+        while (!q1.empty()) {
+            int size = q1.size();
+            for (int i = 0; i < size; ++ i) {
+                TreeNode *mid = q1.front();
+                q1.pop();
+                if (!mid -> left && !mid -> right) {
+                    return floor + 1;
+                }
+                if (mid -> left) {
+                    q1.push(mid -> left);
+                }
+                if (mid -> right) {
+                    q1.push(mid -> right);
+                }
+            }
+            ++ floor;
         }
 
-        if (node -> left && node -> right){//当前的结点不是叶子结点，但是其左边和右边都可以走
-            return min(solve(node -> left, deepth + 1), solve(node -> right, deepth + 1));
-        }
-
-        if (!node -> left && node -> right){//只能走右边
-            return solve(node -> right, deepth + 1);
-        }
-
-        if (node -> left && !node -> right){//只能走左边
-            return solve(node -> left, deepth + 1);
-        }
-
-        return deepth;
+        return floor;
     }
 };

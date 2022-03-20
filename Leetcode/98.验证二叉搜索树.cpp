@@ -1,4 +1,4 @@
-/*第一种方法非常的丑陋，有点看不下去了....*/
+//暴力搜索
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -45,7 +45,7 @@ public:
     }
 };
 
-/*第二种做法，思路非常的清晰易懂（当然，用中序遍历的话，也可以把整个二叉树都先放到一个vector里面，然后再逐个比较）*/
+//第一种中序遍历
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -80,6 +80,7 @@ public:
     }
 };
 
+//第二种中序遍历
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -115,6 +116,7 @@ public:
     }
 };
 
+//第三种中序遍历
 /**
  * Definition for a binary tree node.
  * struct TreeNode {

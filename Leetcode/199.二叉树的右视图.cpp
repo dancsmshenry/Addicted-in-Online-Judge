@@ -26,11 +26,11 @@ public:
         return res;
     }
 
-    void solve(TreeNode* root, vector<int>& res, int floor){
-        if (!root){
+    void solve(TreeNode* root, vector<int>& res, int floor) {
+        if (!root) {
             return ;
         }
-        if (floor > res.size()){
+        if (floor > res.size()) {
             res.push_back(root -> val);
         }
 
@@ -53,29 +53,30 @@ public:
 class Solution {
 public:
     vector<int> rightSideView(TreeNode* root) {
-        queue<TreeNode*> s1;
-        vector<int> result;
-        if (root){
-            s1.push(root);
+        vector<int> res;
+        if (!root) {
+            return res;
         }
+        queue<TreeNode*> q1;
+        q1.push(root);
 
-        while (!s1.empty()){
-            int size = s1.size();
-            for (int i = 0; i < size; i ++ ){
-                TreeNode* mid = s1.front();
-                s1.pop();
-                if (i == size - 1){
-                    result.push_back(mid -> val);
+        while (!q1.empty()) {
+            int n = q1.size();
+            for (int i = 0; i < n; i ++ ) {
+                TreeNode *mid = q1.front();
+                q1.pop();
+                if (mid -> left) {
+                    q1.push(mid -> left);
                 }
-                if (mid -> left){
-                    s1.push(mid -> left);
+                if (mid -> right) {
+                    q1.push(mid -> right);
                 }
-                if (mid -> right){
-                    s1.push(mid -> right);
+                if (i == n - 1) {
+                    res.push_back(mid -> val);
                 }
             }
         }
 
-        return result;
+        return res;
     }
 };

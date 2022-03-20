@@ -10,23 +10,18 @@
 class Solution {
 public:
     bool isSubStructure(TreeNode* A, TreeNode* B) {
-        if (!B) {
-            return false;
-        }
-        if (!A) {
+        if (!A || !B) {
             return false;
         }
 
-        bool flag1 = solve(A, B);
-        bool flag2 = (isSubStructure(A -> left, B) || isSubStructure(A -> right, B));
-
-        return flag1 || flag2;
+        return check(A, B) || isSubStructure(A -> left, B) || isSubStructure(A -> right, B);
     }
 
-    bool solve(TreeNode* A, TreeNode* B) {
+    bool check(TreeNode *A, TreeNode *B) {//子结构和子树是不一样的
         if (!B) {
             return true;
         }
+
         if (!A) {
             return false;
         }
@@ -35,6 +30,6 @@ public:
             return false;
         }
 
-        return solve(A -> left, B -> left) && solve(A -> right, B -> right);
+        return check(A -> left, B -> left) && check(A -> right, B -> right);
     }
 };

@@ -53,10 +53,9 @@ public:
     vector<vector<int>> levelOrder(TreeNode* root) {
         queue<TreeNode*> q1;
         vector<vector<int>> res;
-        if (!root) {
-            return res;
+        if (root) {
+            q1.push(root);
         }
-        q1.push(root);
         int i = 0;
 
         while (!q1.empty()) {

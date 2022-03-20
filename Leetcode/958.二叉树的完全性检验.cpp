@@ -13,21 +13,23 @@ class Solution {
 public:
     bool isCompleteTree(TreeNode* root) {
         queue<TreeNode*> q1;
-        bool flag = true;
         q1.push(root);
+        bool flag = true;
 
-        while (!q1.empty()){
+        while (!q1.empty()) {
             int size = q1.size();
-            for (int i = 0; i < size; i ++ ){
-                TreeNode* mid = q1.front();
+            for (int i = 0; i < size; ++ i) {
+                TreeNode *mid = q1.front();
                 q1.pop();
-                if (mid == nullptr){
-                    flag = false;
-                    continue;
+                if (!flag && mid) {
+                    return false;
                 }
-                if (flag == false) return false;
-                q1.push(mid -> left);
-                q1.push(mid -> right);
+                if (!mid) {
+                    flag = false;
+                } else {
+                    q1.push(mid -> left);
+                    q1.push(mid -> right);
+                }
             }
         }
 
