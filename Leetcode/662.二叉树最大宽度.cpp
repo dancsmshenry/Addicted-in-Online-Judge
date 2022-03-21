@@ -13,32 +13,33 @@
 class Solution {
 public:
     int widthOfBinaryTree(TreeNode* root) {
-        queue<TreeNode*> q;
-        root -> val = 1;
-        if (root) {
-            q.push(root);
+        queue<TreeNode*> cur;
+	    queue<unsigned long long> pos;
+	    if (root) {
+            cur.push(root);
+	        pos.push(0);
         }
-        int ans = 0;
+	    unsigned long long ans = 1;
+	    int j = 1;
 
-        while(!q.empty()) {
-            ans = max(q.back()->val - q.front()->val + 1, ans);
-            int tmp = q.front()->val - 1;
+	    while (!cur.empty()) {
+		    ans = max(ans, pos.back()-pos.front()+1);
+            for (int i = cur.size(); i > 0; -- i) {
+			    TreeNode* node = cur.front();
+			    cur.pop();
+			    unsigned long long position = pos.front();
+			    pos.pop();
+			    if (node -> left) {
+				    cur.push(node -> left);
+				    pos.push(position * 2);
+			    }
+			    if (node -> right) {
+				    cur.push(node -> right);
+				    pos.push(position * 2 + 1);
+			    }
+		    }
+	    }
 
-            for(int i = q.size(); i > 0; -- i) {
-                auto p = q.front(); 
-                q.pop();
-                p->val -= tmp;
-                if(p->left) {
-                    p -> left -> val = 2 * p -> val;
-                    q.push(p -> left); 
-                }
-                if(p->right) {
-                    p -> right -> val = 2 * p -> val + 1;
-                    q.push(p -> right);
-                }
-            }
-        }
-
-        return ans;
+	    return ans;
     }
 };

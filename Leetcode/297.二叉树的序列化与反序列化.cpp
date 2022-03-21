@@ -9,60 +9,60 @@
  */
 class Codec {
 public:
-    void rserialize(TreeNode* root, string& str) {
-        //先序遍历
-        if (root == nullptr) {
-            str += "None,";
-        } else {
-            str += to_string(root->val) + ",";
-            rserialize(root->left, str);
-            rserialize(root->right, str);
-        }
-    }
-
+    // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
-        //对二叉树进行先序遍历的处理
-        string ret;
-        rserialize(root, ret);
-        return ret;
-    }
-
-    //完全不明白它是如何通过先序遍历推出原来的二叉树的...
-    TreeNode* rdeserialize(list<string>& dataArray) {
-        if (dataArray.front() == "None") {
-            dataArray.erase(dataArray.begin());
-            return nullptr;
-        }
-
-        TreeNode* root = new TreeNode(stoi(dataArray.front()));
-        dataArray.erase(dataArray.begin());
-        root->left = rdeserialize(dataArray);
-        root->right = rdeserialize(dataArray);
-        
-        return root;
-    }
-
-    TreeNode* deserialize(string data) {
-        //list为双向链表
-        list<string> dataArray;
-        string str;
-
-        //把所有的结点的值都放入list（去掉其中的逗号）
-        for (auto& ch : data) {
-            if (ch == ',') {
-                dataArray.push_back(str);
-                str.clear();
+        string res;
+        queue<TreeNode*> q;
+        q.push(root);
+        while (!q.empty()) {
+            TreeNode *node = q.front();
+            q.pop();
+            if (!node) {
+                res += "null,";
             } else {
-                str.push_back(ch);
+                res += to_string(node -> val) + ',';
+                q.push(node -> left);
+                q.push(node -> right);
             }
         }
-        //最后还会有数字字符留在str中，要把它加上去
-        if (!str.empty()) {
-            dataArray.push_back(str);
-            str.clear();
-        }
 
-        return rdeserialize(dataArray);
+        return res;
+    }
+
+     // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        if (data == "null,") {
+            return nullptr;
+        }
+        vector<string> v;
+        queue<TreeNode*> q;
+        int s = 0;
+        for(int i = 0; i < data.size(); ++ i) {
+            if(data[i] == ',') {
+                v.push_back(data.substr(s,i - s));
+                s = i + 1;
+            }
+        }
+        TreeNode* root = new TreeNode(stoi(v[0]));
+        q.push(root);
+        for(int i = 1; i < v.size(); ) {
+            TreeNode *t = q.front();
+            q.pop();
+            if (t) {
+                if(v[i] != "null") {
+                    t -> left = new TreeNode(stoi(v[i]));
+                }
+                i ++ ;
+                q.push(t -> left);
+
+                if(v[i] != "null") {
+                    t -> right = new TreeNode(stoi(v[i]));
+                }
+                i ++ ;
+                q.push(t -> right);
+            }
+        }
+        return root;
     }
 };
 
