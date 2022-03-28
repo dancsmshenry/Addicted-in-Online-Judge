@@ -64,6 +64,110 @@
 
 - 460.lfu缓存
 
+- lru
+
+- ```cpp
+  struct DLinkedNode {
+      int key, value;
+      DLinkedNode* prev;
+      DLinkedNode* next;
+      DLinkedNode(): key(0), value(0), prev(nullptr), next(nullptr) {}
+      DLinkedNode(int _key, int _value): key(_key), value(_value), prev(nullptr), next(nullptr) {}
+  };
+  
+  class LRUCache {
+  private:
+      unordered_map<int, DLinkedNode*> cache;
+      DLinkedNode* head;
+      DLinkedNode* tail;
+      int size;
+      int capacity;
+  
+  public:
+      /*init*/
+      LRUCache(int _capacity): capacity(_capacity), size(0) {
+          /*
+              使用伪头部和伪尾部节点，方便后续结点的添加和删除
+              因为还没有结点，所以先两个结点相连
+          */
+          head = new DLinkedNode();
+          tail = new DLinkedNode();
+          head -> next = tail;
+          tail -> prev = head;
+      }
+  
+      /*获取key*/
+      int get(int key) {
+          /*如果key不存在，就返回-1*/
+          if (!cache.count(key)) {
+              return -1;
+          }
+  
+          /*如果key存在，先通过哈希表定位，然后把结点移到头部*/
+          DLinkedNode* node = cache[key];
+          moveToHead(node);
+  
+          return node -> value;
+      }
+      
+      /*插入结点key和value*/
+      void put(int key, int value) {
+          if (!cache.count(key)) {
+              /*如果 key 不存在，创建一个新的节点*/
+              DLinkedNode* node = new DLinkedNode(key, value);
+              /*结点添加进哈希表*/
+              cache[key] = node;
+              /*结点添加至双向链表的头部*/
+              addToHead(node);
+              /*链表长度增加*/
+              size ++ ;
+              /*如果超出容量，删除双向链表的尾部节点，删除hash中对应的项*/
+              if (size > capacity) {
+                  DLinkedNode* removed = removeTail();
+                  cache.erase(removed -> key);
+                  /*防止内存泄漏*/
+                  delete removed;
+                  size -- ;
+              }
+          } else {
+              /*如果key存在，先通过哈希表定位，然后更新value的值，接着把结点移到头部*/
+              DLinkedNode* node = cache[key];
+              node -> value = value;
+              moveToHead(node);
+          }
+      }
+  
+      /*添加结点到头结点的位置*/
+      void addToHead(DLinkedNode* node) {
+          node -> prev = head;
+          node -> next = head -> next;
+          head -> next -> prev = node;
+          head -> next = node;
+      }
+      
+      /*删除结点*/
+      void removeNode(DLinkedNode* node) {
+          node -> prev -> next = node -> next;
+          node -> next -> prev = node -> prev;
+      }
+  
+      /*将该结点放置头结点的位置*/
+      void moveToHead(DLinkedNode* node) {
+          removeNode(node);
+          addToHead(node);
+      }
+  
+      /*删除最后一个结点*/
+      DLinkedNode* removeTail() {
+          DLinkedNode* node = tail -> prev;
+          removeNode(node);
+          return node;
+      }
+  };
+  ```
+
+- 
+
 
 
 ### 蓄水池抽样法
@@ -174,6 +278,26 @@
   - 题解：找min1,min2,max1,max2,max3，最大数要么就是max1 * max2 * max3，要么就是max3 * min1 * min2
 - ys面试遇到的字节面试题
   - 题干：把数字转换为中文：100001，转换为十万零一
+
+
+
+
+
+# 数据结构设计
+
+
+
+- 设计数据结构，使得随机返回数据、增加数据、删除数据，上述操作的时间复杂度都是O(1)
+- hashmap+array实现（array存放数字，hashmap存放每个数字对应的下标）
+  - 随机返回：随机返回数组下标即可
+  - 增加：在array后面添加一个数字，hashmap存放数字的下标
+  - 删除：根据被删除元素找到数字的下标，再回到原数组，将最后一个数字和被删除数字交换，最后一个数字设为0，容量减一
+
+
+
+- cpp实现hashmap
+
+
 
 
 
