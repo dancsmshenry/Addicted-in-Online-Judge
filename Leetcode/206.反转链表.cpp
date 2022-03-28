@@ -12,16 +12,20 @@
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        ListNode* prev = nullptr;
-
-        while (head){
-            ListNode* next = head -> next;
-            head -> next = prev;
-            prev = head;
-            head = next;
+        if (!head || !head -> next) {
+            return head;
         }
 
-        return prev;
+        ListNode* pre = nullptr;
+
+        while (head) {
+            ListNode* mid = head -> next;
+            head -> next = pre;
+            pre = head;
+            head = mid;
+        }
+
+        return pre;
     }
 };
 
@@ -45,7 +49,7 @@ public:
             return head;
         }
 
-        ListNode* newhead = reverseList(head -> next);
+        auto newhead = reverseList(head -> next);
         head -> next -> next = head;//让后面一个结点指向前面一个结点
         head -> next = nullptr;//其实这句话是针对最后一个结点的（因为如果最后一个结点指的还是第二个结点的话，就会形成环）
 

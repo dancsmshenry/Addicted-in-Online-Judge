@@ -11,32 +11,35 @@
 class Solution {
 public:
     void reorderList(ListNode* head) {
-        ListNode *slow = new ListNode(0, head), *quick = new ListNode(0, head);
-        while (quick && quick -> next){
-            slow = slow -> next;
-            quick = quick -> next -> next;
+        if (!head || !head -> next) {
+            return ;
         }
-        
-        /*反转后半段链表*/
-        ListNode *pre = nullptr, *slow1 = slow;
-        slow = slow1 -> next;
-        slow1 -> next = nullptr;
-        while (slow){
-            ListNode* mid = slow -> next;
-            slow -> next = pre;
-            pre = slow;
-            if (!mid) break;
+        //快慢指针找中点
+        ListNode *fast = head, *slow = head;
+        while (fast && fast -> next) {
+            slow = slow -> next;
+            fast = fast -> next -> next;
+        }
+        if (fast != nullptr) {//则当前是偶数
+            ListNode *mid = slow -> next;
+            slow -> next = nullptr;
             slow = mid;
         }
-        
-        /*合并两链表*/
-        while (slow){
-            ListNode* next1 = head -> next;
-            ListNode* next2 = slow -> next;
-            head -> next = slow;
-            slow -> next = next1;
-            slow = next2;
-            head = next1;
+        //翻转后半段链表
+        ListNode *pre = nullptr;
+        while (slow) {
+            ListNode *mid = slow -> next;
+            slow -> next = pre;
+            pre = slow;
+            slow = mid;
+        }
+        //合并两链表
+        while (head && pre && head -> next != pre) {
+            ListNode *mid = head -> next;
+            head -> next = pre;
+            pre = pre -> next;
+            head -> next -> next = mid;
+            head = mid;
         }
     }
 };

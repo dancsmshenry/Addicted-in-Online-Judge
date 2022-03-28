@@ -63,10 +63,10 @@ public:
             return head;
         }
 
-        ListNode *temp = head -> next;
-        head -> next = swapPairs(temp -> next);
-        temp -> next = head;
+        ListNode* res = head -> next;
+        head -> next = swapPairs(res -> next);
+        res -> next = head;
 
-        return temp;
+        return res;
     }
 };

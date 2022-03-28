@@ -26,7 +26,7 @@ public:
     }
 };
 
-//方法二，快慢指针
+//方法二，快慢指针(需要考虑的问题，快指针后续要落到哪个位置)
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -38,18 +38,22 @@ public:
 class Solution {
 public:
     ListNode* getKthFromEnd(ListNode* head, int k) {
-        ListNode* pre1 = head;
-        ListNode* pre2 = head;
-        
-        for (int i = 1; i < k; ++ i){//注意，这里被返回的结点和最后一个结点差了k-个单位，即倒数第一和倒数第三差了2
-            pre1 = pre1 -> next;
+        if (!head || !head -> next) {
+            return head;
         }
 
-        while (pre1 -> next){
-            pre1 = pre1 -> next;
-            pre2 = pre2 -> next;
+        ListNode *slow = head, *fast = head;
+
+        while (k > 0) {
+            fast = fast -> next;
+            k -- ;
         }
 
-        return pre2;
+        while (fast) {
+            slow = slow -> next;
+            fast = fast -> next;
+        }
+
+        return slow;
     }
 };
