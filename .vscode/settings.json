@@ -16,7 +16,8 @@
         "string_view": "cpp",
         "initializer_list": "cpp",
         "utility": "cpp",
-        "condition_variable": "cpp"
+        "condition_variable": "cpp",
+        "algorithm": "cpp"
     },
     "git.ignoreLimitWarning": true
 }
