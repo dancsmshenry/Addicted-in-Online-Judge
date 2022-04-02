@@ -1,6 +1,6 @@
 /**
- * 算法题： 一个数组[1,2,3,4,4,2,2]，先递增后递减， 求不重复元素的个数。空间复杂度要求O(1), 时间复杂度O(n)
- * 或者说求不重复的元素是哪些
+ * 一个数组[1,2,3,4,4,2,2]，先递增后递减， 求不重复元素的个数。
+ * 要求空间复杂度O(1), 时间复杂度O(n)
 */
 
 #include <iostream>
@@ -18,8 +18,12 @@ public:
         while (left < right) {
             if (arrs[left] == arrs[right]) {
                 int temp = arrs[left];
-                while (left < right && arrs[left] == temp) left ++ ;
-                while (left < right && arrs[right] == temp) right -- ;
+                while (left < right && arrs[left] == temp) {
+                    left ++ ;
+                }
+                while (left < right && arrs[right] == temp) {
+                    right -- ;
+                }
             } else if (arrs[left] > arrs[right]) {
                 res.push_back(arrs[right]);
                 right -- ;

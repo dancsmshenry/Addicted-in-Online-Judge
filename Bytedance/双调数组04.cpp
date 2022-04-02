@@ -1,6 +1,5 @@
 /**
- * 对一个先递增后递减的数组去重。 双指针O(n)
- * 
+ * 对一个先递增后递减的数组去重，要求时间复杂度O(n)
 */
 
 #include <iostream>
@@ -19,8 +18,12 @@ public:
             if (arrs[left] == arrs[right]) {
                 res.push_back(arrs[left]);
                 int temp = arrs[left];
-                while (left < right && arrs[left] == temp) left ++ ;
-                while (left < right && arrs[right] == temp) right -- ;
+                while (left < right && arrs[left] == temp) {
+                    left ++ ;
+                }
+                while (left < right && arrs[right] == temp) {
+                    right -- ;
+                }
             } else if (arrs[left] > arrs[right]) {
                 res.push_back(arrs[right]);
                 right -- ;
