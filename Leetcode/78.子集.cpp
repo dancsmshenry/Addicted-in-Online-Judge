@@ -1,24 +1,24 @@
 class Solution {
 public:
-    vector<int> t;
-    vector<vector<int>> ans;
+    vector<vector<int>> subsets(vector<int>& nums) {   
+        vector<int> mid;
+        vector<vector<int>> res;
+        int n = nums.size();
 
-    vector<vector<int>> subsets(vector<int>& nums) 
-    {      
-        for (int i = 0, ans = 1; i < nums.size(); i ++ ) ans *= 2;
-
-        for (int i = 0; i < (1 << nums.size()); i ++ )
-        {
+        for (int i = 0; i < (1 << n); ++ i) {
             int number = i;
-            t.clear();
-            for (int j = 0; j < nums.size(); j ++ )
-            {
-                if (number % 2 == 1) t.push_back(nums[j]);
+            mid.clear();
+            
+            for (int j = 0; j < n; ++ j) {
+                if (number % 2 == 1) {
+                    mid.push_back(nums[j]);
+                }
                 number /= 2;     
             }
-            ans.push_back(t);
+
+            res.push_back(mid);
         }
 
-        return ans;
+        return res;
     }
 };
