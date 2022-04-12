@@ -1,15 +1,29 @@
-int shunxu(const void*a, const void*b)
-{
-    return *(int*)a - *(int*)b;
-}
+class Solution {
+public:
+    bool canMakeArithmeticProgression(vector<int>& arr) {
+        unordered_set<int> hashmap;
+        int imin = INT_MAX, imax = INT_MIN;
+        int n = arr.size();
 
-bool canMakeArithmeticProgression(int* arr, int arrSize)
-{
-    qsort(arr, arrSize, sizeof(int), shunxu);
+        for (auto& num: arr) {
+            imin = min(imin, num);
+            imax = max(imax, num);
+            hashmap.insert(num);
+        }
 
-    int i, ans = arr[1] - arr[0];
-    for (i = 2; i < arrSize; i++)
-    if (arr[i] - arr[i - 1] != ans) return false;
+        
+        if ((imax - imin) % (n - 1) != 0) {
+            return false;
+        }
+        
+        int count = (imax - imin) / (n - 1);
+        while (imin != imax) {
+            imin += count;
+            if (!hashmap.count(imin)) {
+                return false;
+            }
+        }
 
-    return true;
-}
+        return true;
+    }
+};

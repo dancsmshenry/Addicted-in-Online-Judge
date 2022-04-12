@@ -1,43 +1,56 @@
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        /**
-            想到的一个方法，对所有区间的最小值进行排序
-            然后先以第一个区间作为标准
-            对后续的区间进行操作：
-            将第一个区间的最小值设为imin，最大值设为imax
-            如果当前的区间最小值小于imax，那就把imax设为当前区间的最大值
-            如果当前区间的最小值大于等于imax，则把当前的imin和imax组成一个数组，插入到res中
-
-            debug:
-            如果当前的区间最小值小于等于imax且当前的最大值大于imax，那就把imax设为当前区间的最大值
-            如果当前的区间最小值小于等于imax而当前的最大值也小于imax，则跳过
-            如果当前区间的最小值大于imax，则把当前的imin和imax组成一个数组，插入到res中
-        **/
-
-        if (intervals.size() == 0) {
-            return {};
+        int n = intervals.size();
+        if (n < 2) {
+            return intervals;
         }
 
         sort(intervals.begin(), intervals.end());
         vector<vector<int>> res;
 
-        int i = 0;
-        while (i < intervals.size()) {
+        for (int i = 0; i < n;) {
             int imin = intervals[i][0], imax = intervals[i][1];
             int j = i + 1;
-            while(j < intervals.size()){
-                if (intervals[j][0] <= imax && intervals[j][1] > imax){
-                    imax = intervals[j][1];//思考数据的多样性（[[1,4],[2,3]]）
-                }else if (intervals[j][0] > imax){
-                    res.push_back({imin, imax});
+            while (j < n) {
+                if (intervals[j][0] <= imax && intervals[j][1] >= imax) {
+                    imax = intervals[j][1];//只有这种情况才会合并[1,5]，[2,6](注意如果是[1,5]，[2,4]就直接忽略的)
+                } else if (imax < intervals[j][0]) {
+                    res.push_back({imin, imax});//否则就把当前的区间放入
                     break;
                 }
-                j ++ ;
+                ++ j;
             }
-            if (j >= intervals.size()){
+            if (j >= n) {
                 res.push_back({imin, imax});
             }
+            i = j;
+        }
+
+        return res;
+    }
+};
+
+
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        int n = intervals.size();
+        if (n < 2) {
+            return intervals;
+        }
+
+        sort(intervals.begin(), intervals.end());
+        vector<vector<int>> res;
+
+        for (int i = 0; i < n;) {
+            int imax = intervals[i][1];
+            int j = i + 1;
+            while (j < n && intervals[j][0] <= imax) {
+                imax = max(imax, intervals[j][1]);
+                ++ j;
+            }
+            res.push_back({intervals[i][0], imax});
             i = j;
         }
 

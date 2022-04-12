@@ -33,3 +33,49 @@ public:
         return result * fuhao;
     }
 };
+
+
+class Solution {
+public:
+    int myAtoi(string s) {
+        int flag = 1;
+        int i = 0;
+        int n = s.size();
+        //去掉空格
+        while (s[i] == ' ') {
+            ++ i;
+        }
+
+        // 前序空白符号后，紧跟着的只能是一个+或-，如果有多个+、-则判定非法，返回0
+        if (s[i] == '+') {
+            ++ i;
+        } else if (s[i] == '-') {
+            flag = -1;
+            ++ i;
+        }
+
+        int ans = 0;
+        // 符号之后的一定要是数字，如果为字符则非法。忽略数字最后的其他字符
+        while (i < n && s[i] <= '9' && s[i] >= '0' ) {
+            int digit = s[i] - '0';
+
+            if (ans > INT_MAX / 10) {//大小直接超过最大大小了
+                return flag > 0 ? INT_MAX : INT_MIN;
+            }
+
+            if (ans == INT_MAX / 10 && flag > 0 && digit >= INT_MAX % 10) {
+                return INT_MAX;
+            }
+
+            // MAX_MIN -2147483648  MAX_MAX 2147483647, 负数绝对值比正数大，此处应为>=, 否则边界情况，会溢出
+            if (ans == INT_MAX / 10 && flag < 0 && digit >= flag * (INT_MIN % 10)) {
+                return INT_MIN;
+            }
+
+            ans = 10 * ans + digit;
+            ++ i;
+        }
+
+        return ans * flag;
+    }
+};
