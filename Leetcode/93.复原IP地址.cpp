@@ -1,33 +1,41 @@
-#include <cstdlib>
-
 class Solution {
-public:
+private:
     vector<string> result;
-
+    int n;
+public:
     vector<string> restoreIpAddresses(string s) {
-        string res = "";
-        solve(s, 0, res, 0);
+        n = s.size();
+        if (n < 4) {
+            return result;
+        }
+
+        solve("", s, 0, 0);
+
         return result;
     }
 
-    void solve(string s, int begin, string res, int count){
-        if (count > 4) return ;
-        if (begin == s.size() && count == 4){//只有放入了四次数字的res才能被放入
+    void solve(string res, string s, int begin, int count) {
+        if (count > 4) {
+            return ;
+        }
+        if (begin == n && count == 4) {
             result.push_back(res);
             return ;
         }
 
-        string total = "";
-        for (int i = begin; i < s.size(); i ++ ){
-            total += s[i];
-            if (stoi(total) <= 255){
-                string res1 = res + total;
-                if (count < 3) res1 += ".";
-                solve(s, i + 1, res1, count + 1);
-            }else break;
-
-            char c1 = s[begin];//还是访问s[begin]的问题，不知道怎么写...
-            if (c1 == '0') return ;
+        string number = "";
+        for (int i = begin; i < n; ++ i) {
+            number += s[i];
+            if (stoi(number) < 256) {
+                string mid = res + number;
+                if (count < 3) mid += '.';
+                solve(mid, s, i + 1, count + 1);
+            } else {
+                return ;
+            }
+            if (s[begin] == '0') {//这里有点坑爹，就是如果当前的数字第一位是0，那就不能往后走了
+                return ;
+            }
         }
     }
 };

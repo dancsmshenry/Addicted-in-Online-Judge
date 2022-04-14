@@ -1,27 +1,31 @@
 class Solution {
 public:
     string reverseWords(string s) {
-        vector<string> res(1, "");
-        string result = "";
+        reverse(s.begin(), s.end());// 反转整个字符串
 
-        for (int i = 0, j = 0; i < s.size(); i ++ ){
-            char s2 = s[i];
-            if (s2 == ' '){
-                res.push_back("");
-                j ++ ;
-            }else{
-                char s1 = s[i];
-                res[j] += s1;
+        int n = s.size();
+        int idx = 0;
+        for (int start = 0; start < n; ++ start) {
+            if (s[start] != ' ') {
+                if (idx != 0) {// 填一个空白字符然后将idx移动到下一个单词的开头位置
+                    s[idx] = ' ';
+                    ++ idx;
+                }
+
+                int end = start, begin = idx;
+                while (end < n && s[end] != ' ') {// 循环遍历至单词的末尾
+                    s[idx] = s[end];
+                    ++ idx;
+                    ++ end;
+                }
+                
+                reverse(s.begin() + begin, s.begin() + idx);//反转整个单词，begin是单词开始的位置，此时的idx是单词的末尾
+                
+                start = end;// 更新start，去找下一个单词
             }
         }
+        s.erase(s.begin() + idx, s.end());
         
-        for (int i = res.size() - 1; i >= 0; i -- ){
-            if (res[i] != ""){
-                result += (res[i] + " ");
-            }
-        }
-        result = result.substr(0, result.length() - 1);
-
-        return result;
+        return s;
     }
 };

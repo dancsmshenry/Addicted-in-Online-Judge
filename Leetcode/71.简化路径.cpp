@@ -45,47 +45,42 @@ public:
     }
 };
 
-//官方的写法
-class Solution {
+//官方的写法class Solution {
 public:
-    string simplifyPath(string path){
-        auto split = [](const string& s, char delim) -> vector<string> {
-            vector<string> ans;
-            string cur;
-            for (char ch: s) {
-                if (ch == delim) {
-                    ans.push_back(cur);
-                    cur = "";
-                }
-                else {
-                    cur += ch;
+    string simplifyPath(string path) {
+        auto split = [](const string& strs) -> vector<string> {
+            vector<string> res;
+            string mid = "";
+            for (auto& str: strs) {
+                if (str == '/') {
+                    res.push_back(mid);
+                    mid = "";
+                } else {
+                    mid += str;
                 }
             }
-            ans.push_back(cur);
-            return ans;
+            res.push_back(mid);
+            return res;
         };
 
-        vector<string> names = split(path, '/');
-        vector<string> stack;
-        
-        for (auto& name: names) {
-            if (name == "..") {
-                if (!stack.empty()) {
-                    stack.pop_back();
+        vector<string> paths = split(path);
+        vector<string> s;
+
+        for (auto& p: paths) {
+            if (p == "..") {
+                if (!s.empty()) {
+                    s.pop_back();
                 }
-            }else if (name != "." && !name.empty()) {
-                stack.push_back(name);
+            } else if (p != "." && p != "") {
+                s.push_back(p);
             }
         }
 
         string res = "";
-        for (auto& s1: stack) {
-            res += ('/' + s1);
-        }
-        if (res.empty()) {
-            res = '/';
+        for (auto& s1: s) {
+            res += ("/" + s1);
         }
 
-        return res;
+        return (res.size() != 0) ? res : "/";
     }
 };
