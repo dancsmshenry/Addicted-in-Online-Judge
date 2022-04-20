@@ -24,3 +24,26 @@ public:
         return res;
     }
 };
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int n = s.size(), maxn = 0, point1 = 0, point2 = 1;
+        if (n < 2) {
+            return n;
+        } 
+
+        while (point2 < n) {
+            for (int i = point1; i < point2; ++ i) {
+                if (s[i] == s[point2]) {
+                    point1 = i + 1;
+                    break;
+                }
+            }
+            maxn = max(point2 - point1 + 1, maxn);
+            ++ point2;
+        }
+
+        return maxn;
+    }
+};
