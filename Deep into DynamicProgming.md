@@ -295,9 +295,130 @@
 
 ## House Robber
 
-- 打家劫舍I
-- 打家劫舍II
-- 打家劫舍III
+### 打家劫舍I
+
+- jd：相邻的房屋被偷会自动报警
+
+- ```cpp
+  class Solution {
+  public:
+      int rob(vector<int>& nums) {
+          int n = nums.size();
+          if (n == 1) {
+              return nums[0];
+          }
+          vector<int> dp(n, 0);
+          dp[0] = nums[0];
+          dp[1] = max(nums[0], nums[1]);
+  
+          for (int i = 2; i < n; ++ i) {
+              dp[i] = max(dp[i - 1], dp[i - 2] + nums[i]);
+          }
+  
+          return dp[n - 1];
+      }
+  };
+  
+  //滚动数组优化
+  class Solution {
+  public:
+      int rob(vector<int>& nums) {
+          int n = nums.size();
+          if (n == 1) {
+              return nums[0];
+          }
+  
+          vector<int> dp{nums[0], max(nums[0], nums[1])};
+  
+          for (int i = 2; i < n; ++ i) {
+              dp[i % 2] = max(dp[1 - i % 2], dp[i % 2] + nums[i]);
+          }
+  
+          return dp[1 - n % 2];
+      }
+  };
+  ```
+
+
+
+### 打家劫舍II
+
+- jd：房子是环绕一圈的，其他条件同I
+
+- 复盘一下使用二进制滚动数组时的一个错误(这里其实最好不要用二进制，因为，我们不知道begin是奇数还是偶数，这会导致我们后面遍历i%2的时候不好处理，比如说begin如果是奇数，那begin一开始就要放到1的位置；如果begin是偶数的话，那begin一开始就要放到0的位置，处理上就会有点麻烦)
+
+- ```cpp
+  class Solution {
+  public:
+      int rob(vector<int>& nums) {
+          int n = nums.size();
+          if (n == 1) {
+              return nums[0];
+          }else if (n == 2) {
+              return max(nums[0], nums[1]);
+          }
+  
+          return max(solve(nums, 0, n - 1), solve(nums, 1, n));
+      }
+  
+      int solve(vector<int>& nums, int begin, int end) {
+          int first = nums[begin], second = max(nums[begin], nums[begin + 1]);
+  
+          for (int i = begin + 2; i < end; ++ i) {
+              int temp = second;
+              second = max(first + nums[i], second);
+              first = temp;
+          }
+  
+          return second;
+      }
+  };
+  ```
+
+
+
+### 打家劫舍III
+
+- jd：
+
+- ```cpp
+  /**
+   * Definition for a binary tree node.
+   * struct TreeNode {
+   *     int val;
+   *     TreeNode *left;
+   *     TreeNode *right;
+   *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+   *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+   *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+   * };
+   */
+  class TreeStatus{
+      public:
+          int select;
+          int buselect;
+  };
+  
+  class Solution {
+  public:
+      int rob(TreeNode* root){
+          TreeStatus res = solve(root);
+          return max(res.select, res.buselect);
+      }
+      
+      TreeStatus solve(TreeNode* root){
+          if (!root){
+              return {0, 0};
+          }
+  
+          TreeStatus left = solve(root -> left);
+          TreeStatus right = solve(root -> right);
+          return {root -> val + left.buselect + right.buselect, max(left.select, left.buselect) + max(right.select, right.buselect)};
+      }
+  };
+  ```
+
+
 
 
 
