@@ -124,6 +124,67 @@
 
 
 
+### 最大正方形
+
+- jd：
+
+- 同上一样用滚动数组优化（注意滚动数组要重置状态）
+
+- ```cpp
+  class Solution {
+  public:
+      int maximalSquare(vector<vector<char>>& matrix) {
+          int n = matrix.size(), m = matrix[0].size();
+          vector<vector<int>> dp(n, vector<int>(m, 0));
+          int res = 0;
+  
+          for (int i = 0; i < n; ++ i ) {
+              for (int j = 0; j < m; ++ j) {
+                  if (matrix[i][j] == '1') {
+                      dp[i][j] = 1;
+                      if (i > 0 && j > 0) {
+                          dp[i][j] += min(dp[i][j - 1], min(dp[i - 1][j], dp[i - 1][j - 1]));
+                      }
+                      res = max(res, dp[i][j]);
+                  }
+              }
+          }
+  
+          return res * res;
+      }
+  };
+  
+  //滚动数组优化
+  class Solution {
+  public:
+      int maximalSquare(vector<vector<char>>& matrix) {
+          int n = matrix.size(), m = matrix[0].size();
+          vector<vector<int>> dp(2, vector<int>(m, 0));
+          int res = 0;
+  
+          for (int i = 0; i < n; ++ i ) {
+              int second = i % 2, first = 1 - second;
+              for (int j = 0; j < m; ++ j) {
+                  dp[second][j] = 0;
+                  if (matrix[i][j] == '1') {
+                      dp[second][j] = 1;
+                      if (i > 0 && j > 0) {
+                          dp[second][j] += min(dp[second][j - 1], min(dp[first][j], dp[first][j - 1]));
+                      }
+                      res = max(res, dp[second][j]);
+                  }
+              }
+          }
+  
+          return res * res;
+      }
+  };
+  ```
+
+- 
+
+
+
 
 
 ## Coins Problem
@@ -461,6 +522,32 @@
 
 
 
+### 乘积最大子数组
+
+- PS：我觉得这道题和股票问题很像，是因为这两类题的状态都是由前一个状态和另一个状态推导过来的
+
+- ```cpp
+  class Solution {
+  public:
+      int maxProduct(vector<int>& nums) {
+          int n = nums.size();
+          int res = nums[0];
+          vector<int> fmax(n + 1, nums[0]);
+          vector<int> fmin(n + 1, nums[0]);
+  
+          for (int i = 1; i < n; ++ i) {
+              fmax[i] = max(nums[i], max(nums[i] * fmax[i - 1], nums[i] * fmin[i - 1]));
+              fmin[i] = min(nums[i], min(nums[i] * fmax[i - 1], nums[i] * fmin[i - 1]));
+              res = max(fmax[i], res);
+          }
+  
+          return res;
+      }
+  };
+  ```
+
+
+
 
 
 
@@ -608,11 +695,169 @@
 
 ## 区间型dp
 
-- 戳气球
 - 单词拆分
-- 最长回文子串
-- 647、回文子串
-- 718、最长重复子数组
+
+
+
+### 最长重复子数组
+
+- jd：寻找最长重复的子数组
+
+- 和子序列有点像，但是不是一类题，因为数组和序列有本质的区别的..
+
+- ```cpp
+  class Solution {
+  public:
+      int findLength(vector<int>& nums1, vector<int>& nums2) {
+          int n = nums1.size(), m = nums2.size();
+          int res = 0;
+          vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+          
+          for (int i = 1; i <= n; ++ i) {
+              for (int j = 1; j <= m; ++ j) {
+                  dp[i][j] = (nums1[i - 1] == nums2[j - 1]) ? 1 + dp[i - 1][j - 1] : 0;
+                  res = max(dp[i][j], res);
+              }
+          }
+  
+          return res;
+      }
+  };
+  ```
+
+
+
+### 回文子串
+
+- jd：查询回文串的数量
+
+- ```cpp
+  class Solution {
+  public:
+      int countSubstrings(string s) {
+          int n = s.size();
+          int res = 0;
+          vector<vector<int>> dp(n, vector<int>(n, 0));
+  
+          for (int i = 0; i < n; ++ i) {
+              for (int j = 0; j + i < n; j ++ ) {
+                  if (i == 1) {
+                      dp[j][j + i] = (s[j] == s[j + i]) ? 1: 0;
+                  }else if (i == 0) {
+                      dp[j][j + i] = 1;
+                  } else {
+                      if (dp[j + 1][j + i - 1] != 0 && s[j] == s[j + i]) {
+                          dp[j][j + i] = 1;
+                      }
+                  }
+                  res += dp[j][j + i];
+              }
+          }
+  
+          return res;
+      }
+  };
+  ```
+
+
+
+### 最长回文子串
+
+- jd：寻找字串中最长的回文子串
+
+- ```cpp
+  class Solution {
+  public:
+      string longestPalindrome(string s) {
+          int n = s.size();
+          string res = "";
+          vector<vector<int>> dp(n, vector<int> (n, 0));
+  
+          for (int i = 0; i < n; ++ i ) {
+              for (int j = 0; j < n - i; ++ j ) {
+                  if (i == 0) {
+                      dp[j][j] = 1;
+                  } else if (i == 1) {
+                      dp[j][j + i] = (s[j + i] == s[j]) ? 2 : 0;
+                  } else if (dp[j + 1][j + i - 1] != 0) {
+                      dp[j][j + i] = (s[j + i] == s[j]) ? dp[j + 1][j + i - 1] + 2 : 0;
+                  }
+  
+                  // res = (res.size() >= dp[j][j + i]) ? res : s.substr(j, i + 1);//用了这句话就会超时....
+                  if (res.size() < dp[j][j + i]) {
+                      res = s.substr(j, i + 1);
+                  }
+              }
+          }
+  
+          return res;
+      }
+  };
+  ```
+
+
+
+### 最长回文子序列
+
+- jd：返回最长回文子序列的长度
+
+- ```cpp
+  class Solution {
+  public:
+      int longestPalindromeSubseq(string s) {
+          int n = s.size();
+          vector<vector<int>> f(n, vector<int> (n, 1));
+          for (int i = 0; i < n - 1; ++ i) {
+              f[i][i + 1] = (s[i] == s[i + 1] ? 2 : 1);
+          }
+          
+          for (int j = 2; j < n; ++ j) {
+              for (int i = 0; i < n - j; ++ i) {
+                  f[i][i + j] = max(f[i][i + j - 1], max(f[i + 1][i + j], f[i + 1][i + j - 1]));
+                  if (s[i] == s[i + j]){
+                      f[i][i + j] = max(2 + f[i + 1][i + j - 1], f[i][i + j]);
+                  }
+              }
+          }
+          return f[0][n - 1];
+      }
+  };
+  ```
+
+
+
+### 戳气球
+
+- jd：
+
+- 经典的区间型dp
+
+- PS：dp数组的两个边界不参与计算的
+
+- ```cpp
+  class Solution {
+  public:
+      int maxCoins(vector<int>& nums) {
+          nums.push_back(1);
+          nums.insert(nums.begin(), 1);
+          int n = nums.size();
+          vector<vector<int>> f(n, vector<int>(n, 0));
+          for (int i = 0; i < n - 2; ++ i) {
+              f[i][i + 2] = nums[i] * nums[i + 1] * nums[i + 2];
+          }
+          
+          for (int i = 3; i < n; ++ i) {
+              for (int j = 0; j < n - i; ++ j) {
+                  for (int k = j + 1; k < j + i; ++ k) {
+                      f[j][j + i] = max(f[j][j + i], f[j][k] + nums[j] * nums[k] * nums[j + i] + f[k][j + i]);
+                  }
+              }
+          }
+  
+          return f[0].back();
+      }
+  };
+  ```
 
 
 
@@ -659,47 +904,98 @@
 
 ## Others
 
-- 最长子序列
-- 斐波那契数列
-
 - 接雨水
-
-- 乘积最大子数组
-
-  - ```cpp
-    class Solution {
-    public:
-        int maxProduct(vector<int>& nums) {
-            int n = nums.size();
-            int res = nums[0];
-            vector<int> fmax(n + 1, nums[0]);
-            vector<int> fmin(n + 1, nums[0]);
-    
-            for (int i = 1; i < n; ++ i) {
-                fmax[i] = max(nums[i], max(nums[i] * fmax[i - 1], nums[i] * fmin[i - 1]));
-                fmin[i] = min(nums[i], min(nums[i] * fmax[i - 1], nums[i] * fmin[i - 1]));
-                res = max(fmax[i], res);
-            }
-    
-            return res;
-        }
-    };
-    ```
-
 - 俄罗斯套娃信封问题
-
 - 鸡蛋掉落
-
 - 剑指offer n个骰子的点数
+- 不同的二叉搜索树
 
-- 最长重复子数组（这么经典的dp我居然没看出来......）
 
-- 53、最大子序列和（剑指offer 42.连续子数组的最大和）
-  - 简单题，但是思路却很巧妙
-  - 先初始化dp为第一个元素
-  - 对于后面的每一个元素，如果我当前的dp是正的话，那我就加上当前的数；否则dp就变为当前的数（这一步非常的关键，可以认为是一种贪心的做法，因为dp为正的时候，它可以搏一搏更大的数，因为后面如果是正的，就更大了；如果负的，那么首先res已经记录了max值，其次，加上负的，有可能后面还会有更大的数。这无疑是一种贪心了）
-  - 然后将此时的dp和res进行比较，res去max
-  - 最后遍历完所有的元素后，return res
+
+### 整数拆分
+
+- jd：
+
+- ```cpp
+  class Solution {
+  public:
+      int integerBreak(int n) {
+          vector<int> dp(n + 1, 0);
+          dp[1] = 1;
+  
+          for (int i = 1; i <= n; ++ i) {
+              for (int j = 1; j < i; ++ j) {
+                  dp[i] = max(dp[i], max(j * (i - j), j * dp[i - j]));
+              }
+          }
+  
+          return dp[n];
+      }
+  };
+  
+  //数学方法优化
+  class Solution {
+  public:
+      int integerBreak(int n) {
+          if (n < 4) {
+              return n - 1;
+          }
+          
+          vector<int> dp(n + 1, 1);
+          for (int i = 3; i <= n; ++ i) {
+              dp[i] = max(2 * max(i - 2, dp[i - 2]), 3 * max(i - 3, dp[i - 3]));
+          }
+  
+          return dp[n];
+      }
+  };
+  ```
+
+
+
+### 最大子序列和
+
+- 同剑指offer 42.连续子数组的最大和
+
+- 简单题，但是思路却很巧妙
+- 先初始化dp为第一个元素
+- 对于后面的每一个元素，如果我当前的dp是正的话，那我就加上当前的数；否则dp就变为当前的数（这一步非常的关键，可以认为是一种贪心的做法，因为dp为正的时候，它可以搏一搏更大的数，因为后面如果是正的，就更大了；如果负的，那么首先res已经记录了max值，其次，加上负的，有可能后面还会有更大的数。这无疑是一种贪心了）
+- 然后将此时的dp和res进行比较，res去max
+- 最后遍历完所有的元素后，return res
+
+
+
+### 斐波那契数
+
+- ```cpp
+  //递归写法
+  class Solution {
+  public:
+      int fib(int n) {
+          if (n == 1 || n == 0){
+              return n;
+          }else{
+              return fib(n - 1) + fib(n - 2);
+          }
+      }
+  };
+  
+  //滚动数组
+  class Solution {
+  public:
+      int fib(int n) {
+          int first = 0, second = 1;
+  
+          for (int i = 2; i <= n; ++ i) {
+              int mid = second;
+              second += first;
+              first = mid;
+          }
+  
+          return n == 0 ? 0 : second;
+      }
+  };
+  ```
 
 
 
@@ -718,6 +1014,30 @@
           }
   
           return second;
+      }
+  };
+  ```
+
+
+
+### 完全平方数
+
+- jd：
+
+- ```cpp
+  class Solution {
+  public:
+      int numSquares(int n) {
+          vector<int> dp(n + 1, INT_MAX);
+          dp[0] = 0;
+  
+          for (int i = 1; i <= n; ++ i) {
+              for (int j = 1; j * j <= i; ++ j) {
+                  dp[i] = min(dp[i], dp[i - j * j] + 1);
+              }
+          }
+  
+          return dp[n];
       }
   };
   ```

@@ -1,19 +1,15 @@
-int integerBreak(int n)
-{
-    int i, j, num1, num2;
-    int dp[1000];
-    dp[1] = 1;
-    
-    for (i = 2; i <= n; i++)
-    {
-        dp[i] = 0;
-        for (j = 1; j < i; j++)
-        {
-            num1 = (dp[i - j] > (i - j) ? dp[i - j] : (i - j)) * j;
-            num2 = dp[j] * dp[i - j] > dp[i] ? dp[j] * dp[i - j] : dp[i];
-            dp[i] = num1 > num2 ? num1 : num2;
-        }
-    }
+class Solution {
+public:
+    int integerBreak(int n) {
+        vector<int> dp(n + 1, 0);
+        dp[1] = 1;
 
-    return dp[n];
-}
+        for (int i = 1; i <= n; ++ i) {
+            for (int j = 1; j < i; ++ j) {
+                dp[i] = max(dp[i], max(j * (i - j), j * dp[i - j]));
+            }
+        }
+
+        return dp[n];
+    }
+};
