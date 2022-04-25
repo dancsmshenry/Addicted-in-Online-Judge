@@ -1,5 +1,189 @@
 # 目录
 
+## Path Problem
+
+### 不同路径
+
+- jd：
+
+- 二维数组记录状态，通过滚动数组优化可以变为一维数组
+
+- ```cpp
+  class Solution {
+  public:
+      int uniquePaths(int m, int n) {
+          vector<int> dp(n, 1);
+  
+          for (int i = 1; i < m; ++ i) {
+              for (int j = 1; j < n; ++ j) {
+                  dp[j] += dp[j - 1];
+              }
+          }
+  
+          return dp.back();
+      }
+  };
+  ```
+
+
+
+### 不同路径II
+
+- jd：路上有障碍物，需要避开障碍物统计路线数量
+
+- 同上
+
+- ```cpp
+  class Solution {
+  public:
+      int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+          int n = obstacleGrid.size(), m = obstacleGrid[0].size();
+          vector<int> dp(m, 0);
+          dp[0] = 1;
+          if (obstacleGrid[0][0] == 1) {
+              return 0;
+          }
+  
+          for (int i = 0; i < n; ++ i) {
+              for (int j = 0; j < m; ++ j) {
+                  if (obstacleGrid[i][j] == 1) {
+                      dp[j] = 0;
+                  } else if (j > 0 && obstacleGrid[i][j] == 0) {
+                      dp[j] += dp[j - 1];
+                  }
+              }
+          }
+  
+          return dp.back();
+      }
+  };
+  ```
+
+
+
+### 最小路径和
+
+- jd：统计到达目标点的最小路径和
+
+- 也是二维数组，滚动优化后变为一维数组
+
+- ```cpp
+  class Solution {
+  public:
+      int minPathSum(vector<vector<int>>& grid) {
+          int n = grid.size(), m = grid[0].size();
+          vector<int> dp(m, grid[0][0]);
+  
+          for (int i = 1; i < m; ++ i) {
+              dp[i] = dp[i - 1] + grid[0][i];
+          }
+  
+          for (int i = 1; i < n; ++ i) {
+              dp[0] += grid[i][0];
+              for (int j = 1; j < m; ++ j) {
+                  dp[j] = min(dp[j - 1], dp[j]) + grid[i][j];
+              }
+          }
+  
+          return dp.back();
+      }
+  };
+  ```
+
+
+
+### 最小三角路径和
+
+- jd：杨辉三角
+
+- 也是滚动数组优化
+
+- ```cpp
+  class Solution {
+  public:
+      int minimumTotal(vector<vector<int>>& triangle) {
+          int n = triangle.size();
+          vector<int> dp(n, 0);
+  
+          for (int i = 0; i < n; ++ i) {
+              for (int j = i; j >= 0; -- j) {
+                  if (j == 0) {
+                      dp[j] += triangle[i][j];
+                  } else if (j == i) {
+                      dp[j] = dp[j - 1] + triangle[i][j];
+                  } else {
+                      dp[j] = min(dp[j], dp[j - 1]) + triangle[i][j];
+                  }
+              }
+          }
+  
+          return *min_element(dp.begin(), dp.end());
+      }
+  };
+  ```
+
+
+
+
+
+## Coins Problem
+
+### 零钱兑换
+
+- jd：最少需要多少硬币凑出amount
+
+- 这里很关键的一步就是dp数组的初始化流程，将每个属性都设为INT_MAX
+
+- ```cpp
+  class Solution {
+  public:
+      int coinChange(vector<int>& coins, int amount) {
+          vector<int> dp(amount + 1, INT_MAX);
+          dp[0] = 0;
+  
+          for (int i = 1; i <= amount; ++ i) {
+              for (auto& coin: coins) {
+                  if (i >= coin && dp[i - coin] != INT_MAX) {
+                      dp[i] = min(dp[i], dp[i - coin] + 1);
+                  }
+              }
+          }
+  
+          return dp[amount] == INT_MAX ? -1: dp[amount];
+      }
+  };
+  ```
+
+
+
+### 零钱兑换II
+
+- jd：凑出amount有多少种方法
+
+- 这里的坑点：循环的顺序和I是反过来的，需要注意（假设这里的数量5是由1112凑成的，就会只有这一种方法，但是如果改变循环顺序，即变为对于每个i，遍历所有的硬币，这样就会造成重复了）
+
+- ```cpp
+  class Solution {
+  public:
+      int change(int amount, vector<int>& coins) {
+          vector<int> dp(amount + 1, 0);
+          dp[0] = 1;
+  
+          for (auto& coin: coins) {
+              for (int i = 1; i <= amount; ++ i) {
+                  if (coin <= i && dp[i - coin] > 0) {
+                      dp[i] += dp[i - coin];
+                  }
+              }
+          }
+  
+          return dp[amount];
+      }
+  };
+  ```
+
+
+
 
 
 ## Stock Problem
@@ -432,39 +616,113 @@
 
 
 
+
+
 ## 序列型dp
 
 - 正则表达式
 - 编辑距离
-- 97、交错字符串
+- 交错字符串
 
 
 
-## 传统dp
+### 最长公共子序列
 
-- 最长子序列
-- 零钱兑换
-- 爬楼梯
-- 斐波那契数列
-- 不同路径
-- 最小路径和
-- 最小三角路径和
+- jd：
+
+- 经典的序列dp，注意一下数组的初始化
+
+- ```cpp
+  class Solution {
+  public:
+      int longestCommonSubsequence(string text1, string text2) {
+          int n = text1.size(), m = text2.size();
+          vector<vector<int>> dp(n + 1, vector<int> (m + 1, 0));
+  
+          for (int i = 1; i <= n; ++ i) {
+              for (int j = 1; j <= m; ++ j) {
+                  dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                  if (text1[i - 1] == text2[j - 1]) {
+                      dp[i][j] = max(dp[i][j], dp[i - 1][j - 1] + 1);
+                  }
+              }
+          }
+  
+          return dp.back().back();
+      }
+  };
+  ```
+
+
 
 
 
 ## Others
 
+- 最长子序列
+- 斐波那契数列
+
 - 接雨水
+
+- 乘积最大子数组
+
+  - ```cpp
+    class Solution {
+    public:
+        int maxProduct(vector<int>& nums) {
+            int n = nums.size();
+            int res = nums[0];
+            vector<int> fmax(n + 1, nums[0]);
+            vector<int> fmin(n + 1, nums[0]);
+    
+            for (int i = 1; i < n; ++ i) {
+                fmax[i] = max(nums[i], max(nums[i] * fmax[i - 1], nums[i] * fmin[i - 1]));
+                fmin[i] = min(nums[i], min(nums[i] * fmax[i - 1], nums[i] * fmin[i - 1]));
+                res = max(fmax[i], res);
+            }
+    
+            return res;
+        }
+    };
+    ```
+
 - 俄罗斯套娃信封问题
+
 - 鸡蛋掉落
+
 - 剑指offer n个骰子的点数
+
 - 最长重复子数组（这么经典的dp我居然没看出来......）
+
 - 53、最大子序列和（剑指offer 42.连续子数组的最大和）
   - 简单题，但是思路却很巧妙
   - 先初始化dp为第一个元素
   - 对于后面的每一个元素，如果我当前的dp是正的话，那我就加上当前的数；否则dp就变为当前的数（这一步非常的关键，可以认为是一种贪心的做法，因为dp为正的时候，它可以搏一搏更大的数，因为后面如果是正的，就更大了；如果负的，那么首先res已经记录了max值，其次，加上负的，有可能后面还会有更大的数。这无疑是一种贪心了）
   - 然后将此时的dp和res进行比较，res去max
   - 最后遍历完所有的元素后，return res
+
+
+
+### 爬楼梯
+
+- ```cpp
+  class Solution {
+  public:
+      int climbStairs(int n) {
+          int first = 1, second = 1;
+  
+          for (int i = 2; i <= n; ++ i) {
+              int temp = second;
+              second = second + first;
+              first = temp;
+          }
+  
+          return second;
+      }
+  };
+  ```
+
+
 
 
 
@@ -482,11 +740,18 @@
   - 首先，要找到正确的状态去转移，题目往往会给很多无用的信息
   - 如果状态的维数太高，考虑是不是要降维换成数组来表示（如三维数组变为sold和hold两个数组）
 
+- dp的几个关键点
+  - 将问题转换为子问题，由此实现状态的步步转移（比如说最后一步的结果，是由前面的那几步推导过来的）
+  - 写出状态转移方程
+  - 初始化数组（这一步很重要，这会直接导致后续的bug）
+  - 得到结果，然后查看是否能够使用滚动数组进行优化，即降维处理
+
 
 
 ## 滚动数组优化
 
 - 思路：可以用first和second，或者temp来实现，或者使用二进制来实现
+- PS：其实能用数组就用数组，因为这样会减少cache miss，提高效率
 - 例题：
   - 62、不同路径
   - 63、不同路径II
@@ -494,3 +759,9 @@
   - 120、最小三角路径和
   - 198、打家劫舍
   - 213、打家劫舍II（这里只能用第一种方法来实现滚动数组，小心坑）
+
+
+
+
+
+## dp数组初始化
