@@ -912,6 +912,58 @@
 
 
 
+### 解码问题
+
+- jd：
+
+- ```cpp
+  class Solution {
+  public:
+      int numDecodings(string s) {
+          int n = s.size();
+          vector<int> dp(n + 1, 0);
+          dp[0] = 1;
+  
+          for (int i = 1; i <= n; ++ i) {
+              if (s[i - 1] != '0') {
+                  dp[i] += dp[i - 1];
+              }
+              if (i > 1 && s[i - 2] != '0' && ((s[i - 2] - '0') * 10 + (s[i - 1] - '0') <= 26)) {
+                  dp[i] += dp[i - 2];
+              }
+          }
+  
+          return dp[n];
+      }
+  };
+  
+  //滚动数组优化
+  class Solution {
+  public:
+      int numDecodings(string s) {
+          int n = s.size();
+          int dp1 = 0, dp2 = 1, dp3 = 0;
+  
+          for (int i = 0; i < n; ++ i) {
+              dp3 = 0;
+              if (s[i] != '0') {
+                  dp3 += dp2;
+              }
+              if (i > 0 && s[i - 1] != '0' && ((s[i - 1] - '0') * 10 + (s[i] - '0')) < 27) {
+                  dp3 += dp1;
+              }
+              dp1 = dp2;
+              dp2 = dp3;
+              // tie(dp1, dp2) = {dp2, dp3};
+          }
+  
+          return dp3;
+      }
+  };
+  ```
+
+
+
 ### 整数拆分
 
 - jd：
@@ -1044,6 +1096,35 @@
 
 
 
+### 不同二叉搜索树
+
+- jd：
+
+- ```cpp
+  class Solution {
+  public:
+      int numTrees(int n) {
+          if (n < 3) {
+              return n;
+          }
+          vector<int> dp(n + 1, 0);
+          dp[0] = 1;
+  
+          for (int i = 1; i <= n; ++ i) {
+              for (int j = 0; j < i; ++ j) {
+                  dp[i] += (dp[i - j - 1] * dp[j]);
+              }
+          }
+  
+          return dp[n];
+      }
+  };
+  ```
+
+- 
+
+
+
 
 
 # 总结
@@ -1079,6 +1160,9 @@
   - 120、最小三角路径和
   - 198、打家劫舍
   - 213、打家劫舍II（这里只能用第一种方法来实现滚动数组，小心坑）
+- 滚动数组优化的一个要点：每次计算之后，都要重置一遍前面的几个滚动变量
+  - 比如解码问题中的滚动变量，计算完后，第一个变量应该是下一个变量的前两个变量，第二个变量和第三个变量都是下一个变量的前一个变量
+
 
 
 
