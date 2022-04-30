@@ -38,7 +38,7 @@
   public:
       int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
           int n = obstacleGrid.size(), m = obstacleGrid[0].size();
-          vector<int> dp(m, 0);
+          vector<int> dp(m + 1, 0);
           dp[0] = 1;
           if (obstacleGrid[0][0] == 1) {
               return 0;
@@ -135,16 +135,13 @@
   public:
       int maximalSquare(vector<vector<char>>& matrix) {
           int n = matrix.size(), m = matrix[0].size();
-          vector<vector<int>> dp(n, vector<int>(m, 0));
+          vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
           int res = 0;
   
-          for (int i = 0; i < n; ++ i ) {
-              for (int j = 0; j < m; ++ j) {
-                  if (matrix[i][j] == '1') {
-                      dp[i][j] = 1;
-                      if (i > 0 && j > 0) {
-                          dp[i][j] += min(dp[i][j - 1], min(dp[i - 1][j], dp[i - 1][j - 1]));
-                      }
+          for (int i = 1; i <= n; ++ i ) {
+              for (int j = 1; j <= m; ++ j) {
+                  if (matrix[i - 1][j - 1] == '1') {
+                      dp[i][j] = min(dp[i][j - 1], min(dp[i - 1][j], dp[i - 1][j - 1])) + 1;
                       res = max(res, dp[i][j]);
                   }
               }
@@ -159,18 +156,15 @@
   public:
       int maximalSquare(vector<vector<char>>& matrix) {
           int n = matrix.size(), m = matrix[0].size();
-          vector<vector<int>> dp(2, vector<int>(m, 0));
+          vector<vector<int>> dp(2, vector<int>(m + 1, 0));
           int res = 0;
   
-          for (int i = 0; i < n; ++ i ) {
+          for (int i = 1; i <= n; ++ i ) {
               int second = i % 2, first = 1 - second;
-              for (int j = 0; j < m; ++ j) {
+              for (int j = 1; j <= m; ++ j) {
                   dp[second][j] = 0;
-                  if (matrix[i][j] == '1') {
-                      dp[second][j] = 1;
-                      if (i > 0 && j > 0) {
-                          dp[second][j] += min(dp[second][j - 1], min(dp[first][j], dp[first][j - 1]));
-                      }
+                  if (matrix[i - 1][j - 1] == '1') {
+                      dp[second][j] = min(dp[second][j - 1], min(dp[first][j], dp[first][j - 1])) + 1;
                       res = max(res, dp[second][j]);
                   }
               }
@@ -180,8 +174,6 @@
       }
   };
   ```
-
-- 
 
 
 
@@ -223,6 +215,15 @@
 
 - 这里的坑点：循环的顺序和I是反过来的，需要注意（假设这里的数量5是由1112凑成的，就会只有这一种方法，但是如果改变循环顺序，即变为对于每个i，遍历所有的硬币，这样就会造成重复了）
 
+- PS：
+
+  - 对于零钱兑换I来说，问的是硬币数量，要取得amount总值的硬币，就要假设枚举最后一次拿的是哪一种硬币，然后从中选出数量最少的
+  - 对于零钱兑换II来说，问的是有多少种方法，如果继续沿用上面的方法，就会出现问题
+  - 比如说硬币4和硬币5组成了amount值9，那么要得到9，枚举这两枚硬币的话，就会出现两种方法，而实际上都是同一种的
+  - 所以要改变循环思路，即改变最后子问题的问法（即此时的子问题不是当前解）
+  - 正确的子问题应该是在已经组成amount的方法中，出现了新的一种类型的硬币的时候，再用这种新的硬币组成amount，会有多少种方法
+  - 所以要逐枚逐枚的将硬币放入组成amount的方法中
+
 - ```cpp
   class Solution {
   public:
@@ -231,10 +232,8 @@
           dp[0] = 1;
   
           for (auto& coin: coins) {
-              for (int i = 1; i <= amount; ++ i) {
-                  if (coin <= i && dp[i - coin] > 0) {
-                      dp[i] += dp[i - coin];
-                  }
+              for (int i = coin; i <= amount; ++ i) {
+                  dp[i] += dp[i - coin];
               }
           }
   
@@ -419,8 +418,18 @@
 ### 最佳买卖股票时机含冷冻期
 
 - jd：能无限买卖股票，但是卖出股票的第二天是不能买入股票的（即冷冻期为1天）
+
 - 参考股票模型，然后魔改一下，注意init即可
+
 - 拓展：如果冷冻期是2天，3天，那也是一样的
+
+- PS：
+
+  - 股票问题最难优化的部分其实是，要找到方程到底是依赖于那几个变量，其次是如何调整更新各个变量的顺序
+  - 比如说本题，每次更新都只需要当前位置的前两个位置的sell，当前位置的前一个hold
+  - 所以就可以确认只需要sell1，sell2和hold三个变量，接着就是要确认更新顺序了
+  - 发现当前的hold需要的是前一个hold和sell1；当前的sell2需要的是前一个hold和前一个sell2；当前的sell1需要的是前一个sell2
+  - 即可知，需要一个中间变量来存放前一个sell2，然后再更新sell2（不能先更新hold，因为这里需要前一个hold），再就是更新hold，最后用中间变量更新sell1
 
 - ```cpp
   class Solution {
@@ -434,7 +443,7 @@
           /*init数组*/
           vector<int> sell(n, 0);
           vector<int> hold(n, 0);
-          /*最开始持有的话，就是第一天股票的价格*/
+          /*最开始持有的话，就是第一天股票的价格，不过这里可以不用初始化，因为后面的遍历时不看这个的.....*/
           hold[0] = -prices[0];
           /*第二天买的话就看谁的价格更低一点*/
           hold[1] = max(-prices[1], -prices[0]);
@@ -451,23 +460,26 @@
       }
   };
   
-  //使用滚动数组优化
+  //滚动数组优化
   class Solution {
   public:
-      int maxProfit(vector<int>& prices, int fee) {
+      int maxProfit(vector<int>& prices) {
           int n = prices.size();
           if (n < 2) {
               return 0;
           }
-          int sell = 0;
-          int hold = -prices[0];
+          int sell1 = 0;
+          int sell2 = max(0, prices[1] - prices[0]);
+          int hold = max(-prices[1], -prices[0]);
   
-          for(int i = 1; i < n; ++ i) {
-              sell = max(sell, hold + prices[i] - fee);
-              hold = max(hold, sell - prices[i]);
+          for (int i = 2; i < n; ++ i) {
+              int mid = sell2;
+              sell2 = max(sell2, hold + prices[i]);
+              hold = max(hold, sell1 - prices[i]);
+              sell1 = mid;
           }
   
-          return sell;
+          return sell2;
       }
   };
   ```
@@ -550,19 +562,108 @@
 
 
 
-
 ## Knapsack Problem
 
-- 01背包问题
-- 完全背包问题
-- 多重背包问题
-- 混合背包问题
-- 二维费用背包问题
-- 分组背包问题
-- 背包问题求方法数
-- 单词拆分
+### 01背包问题
 
- 
+- jd：
+
+  - 有`N`件物品和一个容量是`V`的背包。每件物品只能使用一次，第`i`件物品的体积是`vi`，价值是`wi`
+  - 求解将哪些物品装入背包，可使这些物品的总体积不超过背包容量，且总价值最大
+  - 输出最大价值
+
+- ```cpp
+  class Solution {
+  public:
+      int zero_one_back_problem(vector<int>& weight, vector<int>& value, int capacity) {
+  		int n = weight.size();
+          vector<vector<int>> dp(n + 1, vector<int> (capacity + 1, 0));
+          
+          for (int i = 1; i <= n; ++ i) {
+              for (int j = 1; j <= capacity; ++ j) {
+                  if (j < a[i]) {
+                      dp[i][j] = dp[i - 1][j];
+                  } else {
+                      dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i]);
+                  }
+              }
+          }
+          
+          return dp[n][capacity];
+      }
+  };
+  
+  //滚动数组优化
+  class Solution {
+  public:
+      int zero_one_back_problem(vector<int>& weight, vector<int>& value, int capacity) {
+  		int n = weight.size();
+          vector<vector<int>> dp(capacity + 1, 0);
+          
+          for (int i = 1; i <= n; ++ i) {
+              for (int j = capacity; j >= weight[i]; -- j) {
+                  dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);
+              }
+          }
+          
+          return dp[capacity];
+      }
+  };
+  ```
+
+
+
+### 完全背包问题
+
+- jd：
+
+  - 有`N`种物品和一个容量是`V`的背包，每种物品都有无限件可用，第`i`种物品的体积是`vi`，价值是 wi
+  - 求解将哪些物品装入背包，可使这些物品的总体积不超过背包容量，且总价值最大
+  - 输出最大价值
+
+- ```cpp
+  class Solution {
+  public:
+      int intirely_back_problem(vector<int>& weight, vector<int>& value, int capacity) {
+          int n = weight.size();
+          vector<vector<int>> dp(n + 1, vector<int>(capacity + 1, 0));
+          
+          for (int i = 1; i <= n; ++ i) {
+              for (int j = 1; j <= m; ++ j) {
+                  dp[i][j] = dp[i - 1][j];
+                  if (j >= a[i]) {
+                      dp[i][j] = max(dp[i][j - weight[i]] + value[i], dp[i][j]);
+                  }
+              }
+          }
+          
+          return dp[n][capacity];
+      }
+  };
+  
+  //滚动数组优化
+  class Solution {
+  public:
+      int intirely_back_problem(vector<int>& weight, vector<int>& value, int capacity) {
+          int n = weight.size();
+          vector<int> dp(capacity + 1, 0);
+          
+          for (int i = 1; i <= n; ++ i) {
+              for (int j = 1; j <= m; ++ j) {
+                  if (j >= a[i]) {
+                      dp[j] = max(dp[j], dp[j - weight[i]] + b[i]);
+                  }
+              }
+          }
+          
+          return dp[capacity];
+      }
+  };
+  ```
+
+
+
+
 
 ## House Robber
 
@@ -1169,3 +1270,18 @@
 
 
 ## dp数组初始化
+
+- 数组的下标从1开始能够解决很多边界问题
+- 求最大或者最小的时候，数组初始化最好反方向设置，比如说求最小的xx时，就init为INT_MAX
+
+
+
+
+
+## 思路
+
+- 将问题分解为子问题，比如说要达到最后一个目标，需要得到哪几个目标
+- 由子问题写出状态转移方程
+- 用循环遍历出方程
+- 初始化dp数组
+- 想办法优化，比如说滚动数组

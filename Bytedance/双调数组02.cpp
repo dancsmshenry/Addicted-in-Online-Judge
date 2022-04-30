@@ -1,7 +1,10 @@
 /**
- * 一个数组[1,2,3,4,4,2,2]，先递增后递减， 求不重复元素的个数。
- * 要求空间复杂度O(1), 时间复杂度O(n)
-*/
+ * 先递增后递减的数组中总共有多少个不同数字
+ * 
+ * 其实有点像合并两个有序链表：
+ * 如果左右相等，就从两侧去把相同的都删除掉
+ * 否则就只删除一侧的节点
+ */
 
 #include <iostream>
 #include <vector>
@@ -10,35 +13,41 @@ using namespace std;
 
 class Solution {
 public:
-    int find(vector<int>& arrs) {
-        int n = arrs.size();
+    int find(vector<int> &arr) {
+        int n = arr.size();
+        if (n < 2) {
+            return n;
+        }
         int left = 0, right = n - 1;
-        vector<int> res;
+        int sum = 0;
 
-        while (left < right) {
-            if (arrs[left] == arrs[right]) {
-                int temp = arrs[left];
-                while (left < right && arrs[left] == temp) {
-                    left ++ ;
-                }
-                while (left < right && arrs[right] == temp) {
+        while (left <= right) {
+            sum ++ ;
+            if (arr[left] == arr[right]) {
+                int temp = arr[left];
+                while (left <= right && arr[right] == temp) {
                     right -- ;
                 }
-            } else if (arrs[left] > arrs[right]) {
-                res.push_back(arrs[right]);
-                right -- ;
+                while (left <= right && arr[left] == temp) {
+                    left ++ ;
+                } 
+            } else if (arr[left] < arr[right]) {
+                int temp = arr[left];
+                while (left <= right && arr[left] == temp) {
+                    left ++ ;
+                }
             } else {
-                res.push_back(arrs[left]);
-                left ++ ;
+                int temp = arr[right];
+                while (left <= right && arr[right] == temp) {
+                    right -- ;
+                }
             }
         }
 
-        return res.size();
+        return sum;
     }
 };
 
 int main() {
-    vector<int> arrs = {1,2,3,4,4,5,6,7,8,9,8,8,7,6,5,4,4,4,3,3,2,2};
-    Solution s1;
-    cout << s1.find(arrs) << endl;
+    
 }
