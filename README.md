@@ -46,3 +46,11 @@ This is a repository which records some solutions and ideas about the problems i
 
 - 任何答案后续的优化都是出于反复的思考，总结出来的经验
 - 所以，做题的时候，首要任务是把问题解决，然后再利用平时的经验来对问题进行优化
+
+
+
+- 太久没刷leetcode了，说说自己现在的感受
+  - 要注意命名的细节
+  - 不一定要是最佳办法，但是不能出现bug，办法不行后续也可以优化的
+  - 控制一下时间
+  - 大部分题背模板

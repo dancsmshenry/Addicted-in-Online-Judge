@@ -177,6 +177,76 @@
 
 
 
+### 分割等和子集
+
+- jd：给你一个 只包含正整数 的 非空 数组 nums 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等
+
+- 这套题和最小三角路径和几乎是一模一样的dp思路，但是难就难在，很难将问题转换为路径问题...（而且由此也推出了滚动数组优化的两种情况）
+
+- ```cpp
+  class Solution {
+  public:
+      bool canPartition(vector<int>& nums) {
+          int sum = accumulate(nums.begin(), nums.end(), 0), n = nums.size();
+          if (sum % 2 == 1){
+              return false;
+          }
+          sum = sum / 2;
+      
+          vector<vector<int>> f(n + 1, vector<int> (sum + 1, false));
+          for (int i = 1; i <= n; ++ i) {
+              if (nums[i - 1] > sum) {
+                  return false;
+              }
+              f[i][nums[i - 1]] = true;  
+              for (int j = 1; j <= sum; ++ j) {
+                  f[i][j] |= f[i - 1][j];
+                  if (j + nums[i - 1] <= sum) {
+                      f[i][j + nums[i - 1]] |= f[i - 1][j];
+                  }
+              }
+              if (f[i][sum]) {
+                  return true;
+              }
+          }
+  
+          return false;
+      }
+  };
+  
+  // 滚动数组优化
+  class Solution {
+  public:
+      bool canPartition(vector<int>& nums) {
+          int sum = accumulate(nums.begin(), nums.end(), 0), n = nums.size();
+          if (sum % 2 == 1){
+              return false;
+          }
+          sum = sum / 2;
+      
+          vector<int> f(sum + 1, false);
+          f[0] = true;
+          for (int i = 1; i <= n; ++ i) {
+              if (nums[i - 1] > sum) {
+                  return false;
+              }
+              for (int j = sum; j >= 0; -- j) {
+                  if (j + nums[i - 1] <= sum) {
+                      f[j + nums[i - 1]] |= f[j];
+                  }
+              }
+              if (f[sum]) {
+                  return true;
+              }
+          }
+  
+          return false;
+      }
+  };
+  ```
+
+
+
 
 
 ## Coins Problem
@@ -1158,15 +1228,15 @@
   class Solution {
   public:
       int climbStairs(int n) {
-          int first = 1, second = 1;
+          int dp[2] = {1, 1}; // 使用数组能够提高cpu cache的s
   
           for (int i = 2; i <= n; ++ i) {
-              int temp = second;
-              second = second + first;
-              first = temp;
+              int temp = dp[1];
+              dp[1] += dp[0];
+              dp[0] = temp;
           }
   
-          return second;
+          return dp[1];
       }
   };
   ```
@@ -1263,6 +1333,10 @@
   - 213、打家劫舍II（这里只能用第一种方法来实现滚动数组，小心坑）
 - 滚动数组优化的一个要点：每次计算之后，都要重置一遍前面的几个滚动变量
   - 比如解码问题中的滚动变量，计算完后，第一个变量应该是下一个变量的前两个变量，第二个变量和第三个变量都是下一个变量的前一个变量
+- 什么时候滚动数组是一维数组，什么时候是二维数组
+  - 如果当前变量需要依赖同一行的前一个变量的话，就只能优化到二维数组
+  - 如果当前变量不需要依赖同一行的前一个变量（比如只依赖上一行的当前位置的和前一个位置的），就可以从右往左循环，然后换位一维数组
+
 
 
 

@@ -1,27 +1,22 @@
 class Solution {
 public:
     int triangleNumber(vector<int>& nums) {
-        sort(nums.begin(), nums.end());
-        int count = 0;
         int n = nums.size();
+        if (n < 3) {
+            return 0;
+        }
+        sort(nums.begin(), nums.end());
 
-        for (int i = 0; i < n - 1; ++ i) {
-            // for (int j = n - 1; j > i + 1; -- j) {
-            //     int k = i + 1;
-            //     while (k < j && nums[k] + nums[i] <= nums[j]) {
-            //         ++ k;
-            //     }
-            //     count += max(j - k, 0);
-            // }
-            int k = i + 1;
-            for (int j = i + 2; j < n; ++ j) {
-                while (k < j && nums[k] + nums[i] <= nums[j]) {
-                    ++ k;
+        int res = 0;
+        for (int i = 0; i < n; ++ i) {
+            for (int j = i + 1, k = i + 2; k < n; ++ k) {
+                while (j < k && nums[i] + nums[j] <= nums[k]) {
+                    ++ j;
                 }
-                count += max(j - k, 0);
+                res += max(0, k - j);
             }
         }
 
-        return count;
+        return res;
     }
 };

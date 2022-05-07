@@ -1,18 +1,14 @@
-void moveZeroes(int* nums, int numsSize)
-{
-    int i, number = 0, ans = 0;
-    
-    for (i = 0; i < numsSize; i++)
-    if (nums[i] != 0) number = number + 1;
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int n = nums.size(), left = 0, right = 0;
 
-    for (i = 0; i < numsSize; i++)
-    {
-        if (nums[i] != 0) 
-        {
-            nums[ans] = nums[i];
-            ans  = ans + 1;
+        while (right < n) {
+            if (nums[right] != 0) {
+                swap(nums[right], nums[left]);
+                ++ left;
+            }
+            ++ right;
         }
     }
-
-    for (i = number; i < numsSize; i++) nums[i] = 0;
-}
+};
