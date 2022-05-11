@@ -12,23 +12,20 @@
 class Solution {
 public:
     void flatten(TreeNode* root) {
-        //这道题思路一下子就有了，但是代码功夫不行，导致耽搁了好久.....
-        if (!root){
+        if (!root) {
             return ;
         }
-        flatten(root -> left);//把左子树变为链表
-        flatten(root -> right);//把右子树变为链表
 
-        TreeNode* noderight = root -> right;//记录下右子树的数据和左子树的数据
-        TreeNode* nodeleft = root -> left;
-        root -> left = nullptr;//令左子树为nullptr
-        root -> right = nodeleft;//令右子树先变为左子树
+        flatten(root -> left);
+        flatten(root -> right);
 
-        //想办法让原来的左子树变为右子树
-        TreeNode* node = root;
-        while (node -> right){
-            node = node -> right;
+        TreeNode *mid = root -> right;
+        root -> right = root -> left;
+        root -> left = nullptr;
+
+        while (root -> right) {
+            root = root -> right;
         }
-        node -> right = noderight;
+        root -> right = mid;
     }
 };

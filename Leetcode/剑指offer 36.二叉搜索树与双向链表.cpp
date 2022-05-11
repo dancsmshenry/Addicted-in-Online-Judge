@@ -24,25 +24,21 @@ public:
 class Solution {
 public:
     Node* treeToDoublyList(Node* root) {
-        //如果当前节点是空的，那么直接返回nullptr
         if(root == nullptr){
             return nullptr;
         }
 
-        //dfs
         dfs(root);
 
         //dfs后，head为头结点，pre为尾结点，这里是让头为节点互连
         head->left = pre;
         pre->right = head;
 
-        //返回结果
         return head;
     }
 private:
     Node *pre, *head;
     void dfs(Node* cur) {
-        //如果当前结点时空的，就直接返回nullptr
         if(cur == nullptr){
             return ;
         }
@@ -73,5 +69,39 @@ private:
 
         //右走
         dfs(cur->right);
+    }
+};
+
+// 非递归版
+class Solution {
+public:
+    Node* treeToDoublyList(Node* root) {
+        if (!root) {
+            return nullptr;
+        }
+        stack<Node*> s1;
+        Node *res = nullptr, *result = nullptr;
+
+        while (!s1.empty() || root) {
+            while (root) {
+                s1.push(root);
+                root = root -> left;
+            }
+            root = s1.top();
+            s1.pop();
+            if (res) {
+                res -> right = root;
+                root -> left = res;
+                res = root;
+            } else {
+                result = root;
+                res = root;
+            }
+            root = root -> right;
+        }
+        
+        res -> right = result;
+        result -> left = res;
+        return result;
     }
 };

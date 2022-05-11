@@ -1,20 +1,20 @@
 class Solution {
 public:
-    int findMin(vector<int>& nums) {
-        /*思路同剑指offer11旋转数组的最小数字*/
-        int left = 0, right = nums.size() - 1;
+    int minArray(vector<int>& numbers) {
+        int n = numbers.size();
+        int left = 0, right = n - 1;
 
         while (left < right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] > nums[right]) {
+            int mid = (right - left) / 2 + left;
+            if (numbers[mid] > numbers[right]) {
                 left = mid + 1;
-            } else if (nums[mid] < nums[right]) {
+            } else if (numbers[mid] < numbers[right]){
                 right = mid;
             } else {
-                right -- ;
+                -- right;
             }
         }
 
-        return nums[left];
+        return numbers[left];
     }
 };

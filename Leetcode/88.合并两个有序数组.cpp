@@ -1,9 +1,28 @@
 class Solution {
 public:
     void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-        for (int i = 0; i != n; ++ i) {
-            nums1[m + i] = nums2[i];
+        int len1 = m - 1, len2 = n - 1, len = m + n - 1;
+        
+        while (len1 >= 0 && len2 >= 0) {
+            if (nums1[len1] >= nums2[len2]) {
+                nums1[len] = nums1[len1];
+                -- len1;
+            } else {
+                nums1[len] = nums2[len2];
+                -- len2;
+            }
+            -- len;
         }
-        sort(nums1.begin(), nums1.end());
+
+        while (len1 >= 0) {
+            nums1[len] = nums1[len1];
+            -- len1;
+            -- len;
+        }
+        while (len2 >= 0) {
+            nums1[len] = nums2[len2];
+            -- len2;
+            -- len;
+        }
     }
 };

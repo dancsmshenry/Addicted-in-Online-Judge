@@ -2,25 +2,23 @@ class Solution {
 public:
     string validIPAddress(string queryIP) {
         vector<string> f;
-        div(f, queryIP, 0);
+        split(f, queryIP, 0);
 
         if (f.size() == 4) {
             for (auto& s: f) {
                 if (s.size() == 0 || s.size() > 3) return "Neither";
-                int total = 0;
+                int number = 0;
                 for (auto& s1: s) {
                     if (!isdigit(s1)) return "Neither";
-                    total = total * 10 + s1 - '0';
+                    number = number * 10 + s1 - '0';
                 }
-                if (total > 255 || (s[0] == '0' && s.size() > 1)) return "Neither";//没想到还有00的情况...
-
+                if (number > 255 || (s[0] == '0' && s.size() > 1)) return "Neither";
             }
             return "IPv4";
         } else if (f.size() == 8) {
             for (auto& s: f) {
                 if (s.size() == 0 || s.size() > 4) return "Neither";
                 for (auto& s1: s) {
-                    if (isdigit(s1)) continue;
                     if ((s1 > 'F' && s1 <= 'Z') || (s1 >'f' && s1 <= 'z')) return "Neither";
                 }
             }
@@ -30,16 +28,17 @@ public:
         return "Neither"; 
     }
 
-    void div(vector<string>& f, string& queryIP, int begin) {
+    void split(vector<string>& f, string& queryIP, int begin) {
         string res = "";
-        while (begin < queryIP.size() && queryIP[begin] != '.' && queryIP[begin] != ':') {
+        int n = queryIP.size();
+        while (begin < n && queryIP[begin] != '.' && queryIP[begin] != ':') {
             res += queryIP[begin];
-            begin ++ ;
+            ++ begin;
         }
         f.push_back(res);
-        if (queryIP.size() <= begin) {
+        if (n <= begin) {
             return ;
         }
-        div(f, queryIP, begin + 1);
+        split(f, queryIP, begin + 1);
     }
 };
