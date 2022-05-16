@@ -1,7 +1,6 @@
 class Solution {
 public:
     bool verifyPostorder(vector<int>& postorder) {
-        /*左右根*/
         return solve(postorder, 0, postorder.size() - 1);
     }
 
@@ -22,9 +21,11 @@ public:
         }
         return solve(postorder, left, flag) && solve(postorder, flag + 1, right - 1);
         // return solve(postorder, left, flag - 1) && solve(postorder, flag, right - 1);
-        /*第一次debug：边界设立出现问题，有一种情况，此时的right左边的数字全部都比postorder大，那么flag就会到-1
-        那么flag,right - 1这边就会报错，因为后面i是从left开始的
-        就需要改为left,flag和flag + 1,right - 1*/
+        // 上述语句错误的原因：
+        // 第一、实际上flag应该是左子树的根节点，不应该划分到右边的...
+        // 第二、边界设立出现问题，有一种情况，此时的right左边的数字全部都比postorder大，那么flag就会到-1
+            // 那么flag,right - 1这边就会报错，因为后面i是从left开始的
+            // 就需要改为left,flag和flag + 1,right - 1
     }
 };
 
