@@ -26,3 +26,28 @@ public:
         return res;
     }
 };
+
+
+// 和82题一样的模板，只是改了一下
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode *dummy = new ListNode(0, head);
+        ListNode *current = dummy;
+
+        while (current -> next && current -> next -> next) {
+            if (current -> next -> val == current -> next -> next -> val) {
+                int number = current -> next -> val;
+                ListNode *temp = current -> next -> next;
+                while (temp && temp -> val == number) {
+                    temp = temp -> next;
+                }
+                current -> next -> next = temp;
+            } else {
+                current = current -> next;
+            }
+        }
+
+        return dummy -> next;
+    }
+};
