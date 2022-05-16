@@ -5,7 +5,7 @@ public:
         stack<int> s1, s2;
         vector<int> left(n, 0), right(n, 0);
 
-        for (int i = 0; i < n; ++ i) {
+        for (int i = 0; i < n; ++ i) { 
             while (!s1.empty() && heights[s1.top()] >= heights[i]) {
                 s1.pop();
             }
