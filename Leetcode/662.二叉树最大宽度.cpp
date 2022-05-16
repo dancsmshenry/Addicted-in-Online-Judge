@@ -23,7 +23,7 @@ public:
 	    int j = 1;
 
 	    while (!cur.empty()) {
-		    ans = max(ans, pos.back()-pos.front()+1);
+		    ans = max(ans, pos.back()-pos.front() + 1);
             for (int i = cur.size(); i > 0; -- i) {
 			    TreeNode* node = cur.front();
 			    cur.pop();

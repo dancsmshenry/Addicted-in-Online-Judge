@@ -17,7 +17,7 @@ public:
         return check(A, B) || isSubStructure(A -> left, B) || isSubStructure(A -> right, B);
     }
 
-    bool check(TreeNode *A, TreeNode *B) {//子结构和子树是不一样的
+    bool check(TreeNode *A, TreeNode *B) {
         if (!B) {
             return true;
         }

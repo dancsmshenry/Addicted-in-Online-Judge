@@ -27,3 +27,27 @@ public:
         就需要改为left,flag和flag + 1,right - 1*/
     }
 };
+
+
+class Solution {
+public:
+    bool verifyPostorder(vector<int>& postorder) {
+        stack<int> s1{};
+        int root = INT_MAX;
+        int n = postorder.size();
+
+        for (int i = n - 1; i >= 0; -- i) {
+            if (postorder[i] > root) {
+                return false;
+            }
+            while(!s1.empty() && s1.top() > postorder[i]) {
+                root = s1.top();
+                s1.pop();
+            }
+            	
+            s1.push(postorder[i]);
+        }
+
+        return true;
+    }
+};
