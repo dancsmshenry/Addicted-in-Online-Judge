@@ -1,32 +1,28 @@
-#include <stdio.h>
-int main() 
-{
-    int i, n, zero, one;
-    int a[10000];
-    scanf("%d", &n);
-    for (i = 0 ; i < n; i++) scanf("%d", &a[i]);
-    
-    for (i = 0; i < n; i++)
-    {
-        if (a[i] == 0) zero++;
-        else if (a[i] == 1) one++;
-    }
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int n = nums.size();
+        int p = 0;
+        for (int i = 0; i < n; ++ i) {
+            if (nums[i] == 0) {
+                swap(nums[i], nums[p]);
+                ++ p;
+            }
+        }
 
-    for (i = 0; i < n; i++)
-    {
-        if (zero != 0)
-        {
-            a[i] = 0;
-            zero--;
+        // for (int i = p; i < n; ++ i) {
+        //     if (nums[i] == 1) {
+        //         swap(nums[i], nums[p]);
+        //         ++ p;
+        //     }
+        // }
+        
+        int p2 = n - 1;
+        for (int i = n - 1; i >= p; -- i) {
+            if (nums[i] == 2) {
+                swap(nums[p2], nums[i]);
+                -- p2;
+            }
         }
-        else if (one != 0)
-        {
-            a[i] = 1;
-            one--;
-        }
-        else a[i] = 2;
     }
-    
-    for (i = 0 ; i < n; i++) printf("%d", a[i]);
-	return 0;
-}
+};
