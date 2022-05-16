@@ -1,15 +1,18 @@
-int mySqrt(int x)
-{
-    int mid, high, low = 0;
-    high = x;
-    if (x == 0 || x == 1) return x;
+class Solution {
+public:
+    int mySqrt(int x) {
+        int left = 0, right = x, res = 0;
 
-    while(high - low > 1)
-    {
-        mid = (high + low) / 2;
-        if (x / mid == mid) return mid;
-        else if (mid > x / mid) high = mid;
-        else low = mid;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if ((long long)mid * mid <= x) {
+                res = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return res;
     }
-    return low;
-}
+};
