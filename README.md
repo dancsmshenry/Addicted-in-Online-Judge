@@ -23,9 +23,14 @@ This is a repository which records some solutions and ideas about the problems i
   - DynamicProgming（动态规划）
   - BinarySearch（二分搜索）
   - Sort（排序）
-
 - 参加周赛
 - 每天review一些题目或者做一些新的题目
+
+
+
+第三阶段
+
+- 练习在nowcoder平台上对数据的输入和输出
 
 
 
@@ -54,3 +59,8 @@ This is a repository which records some solutions and ideas about the problems i
   - 不一定要是最佳办法，但是不能出现bug，办法不行后续也可以优化的
   - 控制一下时间
   - 大部分题背模板
+
+
+
+- 考虑边界情况
+  - 比如说lc33中，数据3 1的特殊情况
