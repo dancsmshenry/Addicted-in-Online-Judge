@@ -1,0 +1,1 @@
+select device_id from user_profile limit 2
