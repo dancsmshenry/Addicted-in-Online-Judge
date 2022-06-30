@@ -11,14 +11,14 @@
 class Solution {
 public:
     void reorderList(ListNode* head) {
-        // å¿«æ…¢æŒ‡é’ˆæ‰¾ä¸­ç‚¹ï¼ˆæ…¢æŒ‡é’ˆä¹Ÿæ˜¯éœ€è¦åˆ¤æ–­çš„ï¼Œå› ä¸ºheadå¯èƒ½ä¸ºç©ºï¼‰
+        // ¿ìÂýÖ¸ÕëÕÒÖÐµã£¨ÂýÖ¸ÕëÒ²ÊÇÐèÒªÅÐ¶ÏµÄ£¬ÒòÎªhead¿ÉÄÜÎª¿Õ£©
         ListNode *slow = head, *fast = head;
         while (slow && fast -> next && fast -> next -> next) {
             slow = slow -> next;
             fast = fast -> next -> next;
         }
 
-        // åè½¬åŽåŠéƒ¨åˆ†çš„é“¾è¡¨
+        // ·´×ªºó°ë²¿·ÖµÄÁ´±í
         ListNode *slow1 = slow -> next, *dummy = nullptr;
         slow -> next = nullptr;
         while (slow1) {
@@ -28,7 +28,7 @@ public:
             slow1 = temp;
         }
 
-        // åˆå¹¶ä¸¤éƒ¨åˆ†é“¾è¡¨
+        // ºÏ²¢Á½²¿·ÖÁ´±í
         while (head && dummy) {
             ListNode *l1 = head -> next, *l2 = dummy -> next;
             head -> next = dummy;

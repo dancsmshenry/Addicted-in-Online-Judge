@@ -42,3 +42,20 @@ public:
         return root -> val;/*左边不能走*/
     }
 };
+
+class Solution {
+private:
+    int pre{};
+public:
+    TreeNode* convertBST(TreeNode* root) {
+        if (!root) {
+            return nullptr;
+        }
+        convertBST(root -> right);
+        root -> val += pre;
+        pre = root -> val;
+        convertBST(root -> left);
+        
+        return root;
+    }
+};
