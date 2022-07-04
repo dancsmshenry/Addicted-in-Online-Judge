@@ -88,6 +88,25 @@
           return dp.back();
       }
   };
+  
+  //	另一种优化为一维数组的方法
+  class Solution {
+  public:
+      int minPathSum(vector<vector<int>>& grid) {
+          int n = grid.size(), m = grid[0].size();
+          vector<int> dp(m + 1, INT_MAX);
+          dp[0] = 0;
+  
+          for (int i = 1; i <= n; ++ i) {
+              for (int j = 1; j <= m; ++ j) {
+                  dp[j] = min(dp[j - 1], dp[j]) + grid[i - 1][j - 1];
+              }
+              dp[0] = INT_MAX;
+          }
+  
+          return dp[m];
+      }
+  };
   ```
 
 
@@ -787,7 +806,7 @@
 
 - jd：房子是环绕一圈的，其他条件同I
 
-- 复盘一下使用二进制滚动数组时的一个错误(这里其实最好不要用二进制，因为，我们不知道begin是奇数还是偶数，这会导致我们后面遍历i%2的时候不好处理，比如说begin如果是奇数，那begin一开始就要放到1的位置；如果begin是偶数的话，那begin一开始就要放到0的位置，处理上就会有点麻烦)
+- 复盘一下使用二进制滚动数组时的一个错误(这里其实最好不要用二进制，因为，我们不知道begin是奇数还是偶数，这会导致我们后面遍历i%2的时候不好处理，比如说begin如果是奇数，那begin一开始就要放到1的位置；如果begin是偶数的话，那begin一开始就要放到0的位置，这样在最后求解的时候就会很麻烦，因为不知道到底应该取dp[0]还是取dp[1])
 
 - ```cpp
   class Solution {
@@ -1073,7 +1092,54 @@
           return dp.back().back();
       }
   };
+  
+  //	优化为滚动数组
+  class Solution {
+  public:
+      int longestCommonSubsequence(string text1, string text2) {
+          int n = text1.length(), m = text2.length();
+          vector<vector<int>> dp(2, vector<int> (m + 1, 0));
+  
+          for (int i = 1, now = 0, old = 0; i <= n; ++ i) {
+              now = i % 2;
+              old = 1 - now;
+              for (int j = 1; j <= m; ++ j) {
+                  dp[now][j] = max(dp[old][j], dp[now][j - 1]);
+                  if (text1[i - 1] == text2[j - 1]) {
+                      dp[now][j] = max(dp[now][j], dp[old][j - 1] + 1);
+                  }
+              }
+          }
+  
+          return dp[n % 2][m];
+      }
+  };
+  
+  //  优化至一维数组
+  class Solution {
+  public:
+      int longestCommonSubsequence(string text1, string text2) {
+          int n = text1.size(), m = text2.size();
+          vector<int> dp(m + 1, 0);
+  
+          for (int i = 1; i <= n; ++ i) {
+              int pre = 0;
+              for (int j = 1; j <= m; ++ j) {
+                  int temp = dp[j];
+                  dp[j] = max(dp[j], dp[j - 1]);
+                  if (text1[i - 1] == text2[j - 1]) {
+                      dp[j] = max(pre + 1, dp[j]);
+                  }
+                  pre = temp;
+              }
+          }
+  
+          return dp[m];
+      }
+  };
   ```
+
+
 
 
 
@@ -1298,7 +1364,73 @@
   };
   ```
 
-- 
+
+
+
+
+### 目标和
+
+- jd：这道题经典之处在于它的数学上的推导，非常值得品味
+
+- ```cpp
+  // 二维dp
+  class Solution {
+  public:
+      int findTargetSumWays(vector<int>& nums, int target) {
+          int sum = accumulate(nums.begin(), nums.end(), 0), diff = sum - target;
+  
+          if (diff < 0 || diff % 2 != 0) {
+              return 0;
+          }
+  
+          int n = nums.size(), neg = diff / 2;
+          vector<vector<int>> dp(2, vector<int>(neg + 1));
+          dp[0][0] = 1;
+  
+          for (int i = 1, now = 0, old = 0; i <= n; ++ i ) {
+              now = i % 2;
+              old = 1 - now;
+              int num = nums[i - 1];
+              for (int j = 0; j <= neg; ++ j) {
+                  dp[now][j] = dp[old][j];
+                  if (j >= num) {
+                      dp[now][j] += dp[old][j - num];
+                  }
+              }
+          }
+  
+          return dp[n % 2][neg];
+      }
+  };
+  
+  // 压缩dp
+  class Solution {
+  public:
+      int findTargetSumWays(vector<int>& nums, int target) {
+          int sum = accumulate(nums.begin(), nums.end(), 0), diff = sum - target;
+  
+          if (diff < 0 || diff % 2 != 0) {
+              return 0;
+          }
+  
+          int n = nums.size(), neg = diff / 2;
+          vector<int> dp(neg + 1, 0);
+          dp[0] = 1;
+  
+          for (int i = 0; i < n; ++ i ) {
+              for (int j = neg; j >= 0; -- j) {
+                  if (j >= nums[i]) {
+                      dp[j] += dp[j - nums[i]];
+                  }
+              }
+          }
+  
+          return dp[neg];
+      }
+  };
+  ```
+
+
 
 
 
@@ -1329,7 +1461,7 @@
 ## 滚动数组优化
 
 - 思路：可以用first和second，或者temp来实现，或者使用二进制来实现
-- PS：其实能用数组就用数组，因为这样会减少cache miss，提高效率
+- PS：其实能用数组就用数组，因为这样会减少cache miss，提高效率（不过打家劫舍II就不能用二进制数组，坑很大）
 - 例题：
   - 62、不同路径
   - 63、不同路径II
@@ -1340,8 +1472,9 @@
 - 滚动数组优化的一个要点：每次计算之后，都要重置一遍前面的几个滚动变量
   - 比如解码问题中的滚动变量，计算完后，第一个变量应该是下一个变量的前两个变量，第二个变量和第三个变量都是下一个变量的前一个变量
 - 什么时候滚动数组是一维数组，什么时候是二维数组
-  - 如果当前变量需要依赖同一行的前一个变量的话，就只能优化到二维数组
-  - 如果当前变量不需要依赖同一行的前一个变量（比如只依赖上一行的当前位置的和前一个位置的），就可以从右往左循环，然后换位一维数组
+  - 一般来说，大多数的滚动数组到最后都可以优化到一维数组的情况（如果需要更新后同一行的数据和上一行当前位置的数据，就从左往右循环；否则需要只上一行的数据和当前行的数据，就从右往左循环）
+  - 那些不能优化到一维数组的要么就是优化后代码的可读性太差，要么就是状态方程需要上下两行数组来更新状态，导致不能用一维（比如说有一个二维数组，更新方式是从右往左循环的，新的dp[1] [j]既需要dp[0] [j-k]也需要dp[1] [j-k]，那么此时就不能优化到一维数组了，因为一维数组会把原来的dp[0] [j-k]给cover掉）
+  - 当然，大部分的dp要的只是上一行的数据，需要上两行的着实罕见喵
 
 
 

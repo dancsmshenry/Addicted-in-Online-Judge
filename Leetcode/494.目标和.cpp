@@ -1,29 +1,76 @@
+// 暴力递归
 class Solution {
+private:
+    int res{};
 public:
-    int number = 0;
     int findTargetSumWays(vector<int>& nums, int target) {
-        /*
-            本质上要计算的就是f[nums.size() - 1][target]有多少种方法
-            但是我写的过程中发现，其实第二个维度不仅无法确定大小（因为可能出现数字加起来大于target的情况）
-            而且还无法记录负数
-
-            于是，我打算用递归回溯来实现
-        */
-        solve(nums, 0, target);
-        return number;
+        dfs(nums, target, 0);
+        return res;
     }
 
-    void solve(vector<int>& nums, int begin, int target){
-        if (begin == nums.size() - 1){
-            if (target == nums[begin]){
-                number ++ ;   
-            }
-            if ((target + nums[begin]) == 0){
-                number ++ ;
-            }
+    void dfs(vector<int>& nums, int target, int index) {
+        if (index + 1 == nums.size()) {
+            res = res + ((nums[index] == target) ? 1: 0);
+            res = res + ((nums[index] + target == 0) ? 1: 0);
             return ;
         }
-        solve(nums, begin + 1, target + nums[begin]);
-        solve(nums, begin + 1, target - nums[begin]);
+        dfs(nums, target + nums[index], index + 1);
+        dfs(nums, target - nums[index], index + 1);
+    }
+};
+
+// 二维dp
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int sum = accumulate(nums.begin(), nums.end(), 0), diff = sum - target;
+
+        if (diff < 0 || diff % 2 != 0) {
+            return 0;
+        }
+
+        int n = nums.size(), neg = diff / 2;
+        vector<vector<int>> dp(2, vector<int>(neg + 1));
+        dp[0][0] = 1;
+
+        for (int i = 1, now = 0, old = 0; i <= n; ++ i ) {
+            now = i % 2;
+            old = 1 - now;
+            int num = nums[i - 1];
+            for (int j = 0; j <= neg; ++ j) {
+                dp[now][j] = dp[old][j];
+                if (j >= num) {
+                    dp[now][j] += dp[old][j - num];
+                }
+            }
+        }
+
+        return dp[n % 2][neg];
+    }
+};
+
+// 压缩dp
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int sum = accumulate(nums.begin(), nums.end(), 0), diff = sum - target;
+
+        if (diff < 0 || diff % 2 != 0) {
+            return 0;
+        }
+
+        int n = nums.size(), neg = diff / 2;
+        vector<int> dp(neg + 1, 0);
+        dp[0] = 1;
+
+        for (int i = 0; i < n; ++ i ) {
+            for (int j = neg; j >= 0; -- j) {
+                if (j >= nums[i]) {
+                    dp[j] += dp[j - nums[i]];
+                }
+            }
+        }
+
+        return dp[neg];
     }
 };

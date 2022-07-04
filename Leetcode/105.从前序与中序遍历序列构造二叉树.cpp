@@ -12,24 +12,24 @@
 class Solution {
 public:
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        //始终牢记，右边界的值是取不到的...
-        /*原来只要跟着之前的边界来改就行了，费太多时间了......*/
-        return solve(preorder, inorder, 0, preorder.size(), 0, inorder.size());
+        TreeNode* root = solve(preorder, 0, preorder.size(), inorder, 0, inorder.size());
+        return root;
     }
 
-    TreeNode* solve(vector<int>& preorder, vector<int>& inorder, int preorder_begin, int preorder_end, int inorder_begin, int inorder_end){
-        if (preorder_begin == preorder_end){
+    TreeNode* solve(vector<int>& pre, int pre_left, int pre_right, vector<int>& ino, int ino_left, int ino_right) {
+        if (pre_left == pre_right) {
             return nullptr;
         }
-        TreeNode* root = new TreeNode(preorder[preorder_begin]);
-        
+
+        TreeNode* root = new TreeNode(pre[pre_left]);
+
         int i = 0;
-        while (inorder[inorder_begin + i] != root -> val){
-            i ++ ;
+        while (root -> val != ino[ino_left + i]) {
+            ++ i;
         }
-        
-        root -> left = solve(preorder, inorder, preorder_begin + 1, preorder_begin + i + 1, inorder_begin, inorder_begin + i);
-        root -> right = solve(preorder, inorder, preorder_begin + i + 1, preorder_end, inorder_begin + i + 1, inorder_end);
+
+        root -> left = solve(pre, pre_left + 1, pre_left + 1 + i, ino, ino_left, ino_left + i);
+        root -> right = solve(pre, pre_left + 1 + i, pre_right, ino, ino_left + i + 1, ino_right);
 
         return root;
     }

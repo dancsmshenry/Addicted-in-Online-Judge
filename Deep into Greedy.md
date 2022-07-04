@@ -94,3 +94,41 @@
 - 如果总共的消耗大于补给，就返回-1
 
 - 如果当天的油量小于0，就从下一天开始骑行
+
+
+
+
+
+### 738、单调递增的数字
+
+- 直接贪心：
+
+  - 从左往右看，如果数字越来越大就跳过，发现变小则记录下来此时的位置
+  - 然后从变小的地方开始往前走，将当前位置的数字减一，然后往前走，直到当前的数字大于前面的数字
+  - 然后把当前位置再往后挪一点的位置，全部设为9
+
+- ```cpp
+  class Solution {
+  public:
+      int monotoneIncreasingDigits(int n) {
+          string arr = to_string(n);
+          int i = 0;
+          while (i + 1 < arr.size() && arr[i] <= arr[i + 1]) {
+              ++ i;
+          }
+  
+          if (i < arr.size() - 1) {
+              while (i >= 0 && arr[i] > arr[i + 1]) {
+                  arr[i] -= 1;
+                  -- i;
+              }
+  
+              for (i += 2; i < arr.size(); ++ i) {
+                  arr[i] = '9';
+              }
+          }
+  
+          return stoi(arr);
+      }
+  };
+  ```
