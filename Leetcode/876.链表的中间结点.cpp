@@ -11,21 +11,13 @@
 class Solution {
 public:
     ListNode* middleNode(ListNode* head) {
-        int count = 0, k = 0;
-        ListNode* node = head;
+        ListNode *slow = head, *fast = head;
 
-        while (node){//先统计链表的长度
-            count ++ ;
-            node = node -> next;
+        while (fast && fast -> next) {
+            slow = slow -> next;
+            fast = fast -> next -> next;
         }
 
-        node = head;
-
-        while (k < count / 2){//然后开始遍历链表，无论是奇数还是偶数，都遍历到下标为count/2的位置
-            k ++ ;
-            node = node -> next;
-        }
-
-        return node;
+        return slow;
     }
 };

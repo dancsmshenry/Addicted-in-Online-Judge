@@ -89,7 +89,7 @@
       }
   };
   
-  //	另一种优化为一维数组的方法
+  //	另一种优化为一维数组的方法（
   class Solution {
   public:
       int minPathSum(vector<vector<int>>& grid) {
@@ -1426,6 +1426,43 @@
           }
   
           return dp[neg];
+      }
+  };
+  ```
+
+
+
+### 丑数II
+
+- jd:
+
+- 其实也不能算是dp，但是当前每次位置数量的更新都是要依靠前面的数字的，就勉强算是dp吧
+
+- ```cpp
+  class Solution {
+  public:
+      int nthUglyNumber(int n) {
+          // 该方法的证明过程复杂，直接背题目就行了
+          vector<int> dp(n + 1, 1);
+          int p2 = 1, p3 = 1, p5 = 1;
+  
+          for (int i = 2; i <= n; ++ i) {
+              int num2 = dp[p2] * 2, num3 = dp[p3] * 3, num5 = dp[p5] * 5;
+              dp[i] = min(min(num2, num3), num5);
+              if (dp[i] == num2) {
+                  ++ p2;
+              }
+  
+              if (dp[i] == num3) {
+                  ++ p3;
+              }
+              
+              if (dp[i] == num5) {
+                  ++ p5;
+              }
+          }
+  
+          return dp[n];
       }
   };
   ```

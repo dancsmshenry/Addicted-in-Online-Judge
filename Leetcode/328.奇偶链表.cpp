@@ -11,28 +11,45 @@
 class Solution {
 public:
     ListNode* oddEvenList(ListNode* head) {
-        if (!head || !head -> next) {
-            return head;
+        ListNode *dummy = new ListNode(0, head) ,*tail = head;
+        ListNode *oushu = new ListNode(0), *oushu_pointer = oushu;
+
+        while (head && head -> next) {
+            ListNode *temp = head -> next;
+            head -> next = temp -> next;
+            tail = (head -> next == nullptr) ? head: head -> next;
+            head = head -> next;
+
+            oushu_pointer -> next = temp;
+            oushu_pointer = oushu_pointer -> next;
+            oushu_pointer -> next = nullptr;
         }
 
-        ListNode *dummy = new ListNode(0, nullptr), *even = dummy;//偶数节点
-        ListNode *pre = nullptr, *odd = head;//奇数节点
+        if (tail) {
+            tail -> next = oushu -> next;
+        }
+        return dummy -> next;
+    }
+};
 
-        while (odd && odd -> next) {
-            pre = odd;
-            ListNode *mid = odd -> next -> next;
-            even -> next = odd -> next;
-            odd -> next = mid;
-            odd = odd -> next;
-            even = even -> next;
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        if (!head) {
+            return nullptr;
         }
 
-        even -> next = nullptr;
-        if (!odd) {
-            pre -> next = dummy -> next;
-        } else {
-            odd -> next = dummy -> next;
+        ListNode *node1 = head -> next;
+        ListNode *node2 = head;
+        ListNode *node3 = node1;
+
+        while (node3 && node3 -> next) {//前者是防奇数，后者防止偶数
+            node2 -> next = node3 -> next;
+            node2 = node2 -> next;
+            node3 -> next = node2 -> next;
+            node3 = node3 -> next;
         }
+        node2 -> next = node1;
 
         return head;
     }

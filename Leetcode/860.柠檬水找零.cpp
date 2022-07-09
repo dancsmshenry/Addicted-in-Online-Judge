@@ -1,38 +1,27 @@
-bool lemonadeChange(int *bills, int billsSize)
-{
-    int five = 0;
-    int ten = 0;
-    int tewnty = 0;
-    int i;
-    for (i = 0; i < billsSize; i++)
-    {
-        if (bills[i] == 5)
-        {
-            five++;
-        }
-        else if (bills[i] == 10)
-        {
-            ten++;
-            five--;
-        }
-        else
-        {
-            tewnty++;
-            if (ten == 0)
-            {
-                five--;
-                five--;
+class Solution {
+public:
+    bool lemonadeChange(vector<int> &bills) {
+        int five{}, ten{};
+
+        for (auto& bill : bills) {
+            if (bill == 5) {
+                ++ five;
+            } else if (bill == 10) {
+                ++ ten;
+                -- five;
+            } else {
+                -- five;
+                if (ten == 0) {
+                    five -= 2;
+                } else {
+                    -- ten;
+                }
             }
-            else
-            {
-                ten--;
+            if (five < 0 || ten < 0) {
+                return false;
             }
-            five--;
         }
-        if (five < 0 || ten < 0)
-        {
-            return false;
-        }
+
+        return true;
     }
-    return true;
-}
+};

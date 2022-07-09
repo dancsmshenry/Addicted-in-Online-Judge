@@ -1,25 +1,20 @@
-int compare(const void *a, const void *b)
-{
-    return *(int *)a - *(int *)b;
-}
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        sort(g.begin(), g.end());
+        sort(s.begin(), s.end());
+        
+        int i = g.size() - 1, j = s.size() - 1;
+        int count = 0;
 
-int findContentChildren(int* g, int gSize, int* s, int sSize)
-{
-    int j = sSize - 1, i = gSize - 1, sum = 0;
-    if (gSize == 0 || sSize == 0) return 0;
-    qsort (g, gSize, sizeof(int), compare);
-    qsort (s, sSize, sizeof(int), compare);
-    
-    while (i >=0 && j >=0)
-    {
-        if (s[j] >= g[i])
-        {
-            i--;
-            j--;
-            sum++;
+        while (i >= 0 && j >= 0) {
+            if (s[j] >= g[i]) {
+                -- j;
+                ++ count;
+            }
+            -- i;
         }
-        else i--;
-    }
 
-    return sum;
-}
+        return count;
+    }
+};
