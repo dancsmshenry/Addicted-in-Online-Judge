@@ -1,35 +1,34 @@
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
-        int res = 0;
-
-        //原始方法
-        // for (int i: nums){
-        //     if (i == target){
-        //         res ++ ;
-        //     }else if (i > target){
-        //         break;
-        //     }
-        // }
-
-        //二分版本
+        if (nums.size() == 0) {
+            return 0;
+        }
         int left = 0, right = nums.size() - 1;
-
-        while (left < right){
-            int mid = (left + right) >> 1;
-            if (nums[mid] >= target){
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] >= target) {
                 right = mid;
-            }else{
+            } else {
                 left = mid + 1;
             }
         }
-        for (int i = right; i < nums.size(); i ++ ){
-            if (nums[i] != target){
-                break;
+
+        if (nums[left] != target) {
+            return 0;
+        }
+        int res = left;
+        left = 0;
+        right = nums.size() - 1;
+        while (left < right) {
+            int mid = right + (left - right) / 2;
+            if (nums[mid] > target) {
+                right = mid - 1;
+            } else {
+                left = mid;
             }
-            res ++ ;
         }
 
-        return res;
+        return left - res + 1;
     }
 };

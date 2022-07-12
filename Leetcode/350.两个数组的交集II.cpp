@@ -1,6 +1,7 @@
 class Solution {
 public:
     vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        // 这道题的意思应该是数字在两个数组中出现了几次，如果次数相同就打印一定的次数，如果不同就打印小一点的次数
         sort(nums1.begin(), nums1.end());
         sort(nums2.begin(), nums2.end());
 
