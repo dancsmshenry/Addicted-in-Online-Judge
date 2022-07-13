@@ -1,16 +1,21 @@
 class Solution {
 public:
-    vector<int> sortArrayByParityII(vector<int>& A) {
-        int p1 = 0, p2 = 1;
-
-        while (1)
-        {
-            while (p1 < A.size() && A[p1] % 2 == 0) p1 += 2;
-            while (p2 < A.size() && A[p2] % 2 == 1) p2 += 2;
-            if (p1 >= A.size() || p2 >= A.size()) return A;
-            swap(A[p1], A[p2]);
+    vector<int> sortArrayByParityII(vector<int>& nums) {
+        int slow = 0, fast = 1;
+        int n = nums.size();
+        
+        while (slow < n && fast < n) {
+            while (slow < n && nums[slow] % 2 == 0) {
+                slow += 2;
+            }
+            while (fast < n && nums[fast] % 2 == 1) {
+                fast += 2;
+            }
+            if (slow < n && fast < n) {
+                swap(nums[slow], nums[fast]);
+            }
         }
 
-        return A;
+        return nums;
     }
 };
