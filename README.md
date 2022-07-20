@@ -1,11 +1,11 @@
 # Addicted-in-Online-Judge
 This is a repository which records some solutions, notes and ideas about the problems in online judge.
 
+  
 
+  
 
-
-
-
+  
 
 # Target
 
@@ -60,7 +60,7 @@ This is a repository which records some solutions, notes and ideas about the pro
 
 - review每个专题
 
-
+  
 
 ### 第n个阶段
 
@@ -68,9 +68,9 @@ This is a repository which records some solutions, notes and ideas about the pro
 - 二叉树各大遍历的mirror遍历
 - 回文子串的马拉车算法
 
+  
 
-
-
+  
 
 
 # Thinking
@@ -86,9 +86,9 @@ This is a repository which records some solutions, notes and ideas about the pro
 - 学会看leetcode的报错
 - https://leetcode-cn.com/circle/discuss/qJXzLU/
 
+  
 
-
-
+  
 
 ### 刷lc的几个步骤
 
@@ -97,9 +97,9 @@ This is a repository which records some solutions, notes and ideas about the pro
 - 第三点，能够用熟悉的语言描述出自己的想法（这里很多时候用到的其实都是肌肉记忆，就和背书一样）
 - 第四点，自己写一些数据做测试样例，校验答案
 
+  
 
-
-
+  
 
 ### 临场反应
 
