@@ -1,7 +1,7 @@
 # Addicted-in-Online-Judge
-This is a repository which records some solutions, notes and ideas about the problems in online judge.
+This is a repository which records some solutions, notes and ideas about the problems in online judge.  
 
-  
+
 
   
 
@@ -58,19 +58,19 @@ This is a repository which records some solutions, notes and ideas about the pro
 
 - SQL康复训练
 
-- review每个专题
+- review每个专题  
 
-  
+
 
 ### 第n个阶段
 
 - 有一些算法有点难以理解，~~但是在各大卷王群里却又非常的常见~~，所以record一下，后续方便学习
 - 二叉树各大遍历的mirror遍历
-- 回文子串的马拉车算法
+- 回文子串的马拉车算法  
 
   
 
-  
+
 
 
 # Thinking
@@ -84,22 +84,22 @@ This is a repository which records some solutions, notes and ideas about the pro
 - 还有，有些题目（求两数组的中位数）其实在自己训练的时候，是要自己动脑筋去想去理解的，但是对于面试来说，其实只需要朗诵即可....（虽然听起来很功利，但是对于我这种能力不太行的人来说，是这样的...）
 - 多学有关cpp和stl的语法以及有关类型的api，建议都用cppreference去查
 - 学会看leetcode的报错
-- https://leetcode-cn.com/circle/discuss/qJXzLU/
+- https://leetcode-cn.com/circle/discuss/qJXzLU/  
 
   
 
-  
+
 
 ### 刷lc的几个步骤
 
 - 第一点，cpp的语法要基本过关，不能因为错误的语法导致无法free bug（这会给面试官很差的印象）
 - 第二点，读懂题目的要求，注意数据范围、时空间复杂度等限制，并且要能够辨认当前的题目是什么tag（什么tag就用什么套路和模板，适时要根据题目做出适当的变化，比如说一些边界情况）
 - 第三点，能够用熟悉的语言描述出自己的想法（这里很多时候用到的其实都是肌肉记忆，就和背书一样）
-- 第四点，自己写一些数据做测试样例，校验答案
+- 第四点，自己写一些数据做测试样例，校验答案  
 
   
 
-  
+
 
 ### 临场反应
 
