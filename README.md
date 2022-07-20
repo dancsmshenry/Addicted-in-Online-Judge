@@ -1,12 +1,10 @@
 # Addicted-in-Online-Judge
 This is a repository which records some solutions, notes and ideas about the problems in online judge.  
-
-
-
   
-
   
-
+  
+  
+  
 # Target
 
 ### 第三阶段
