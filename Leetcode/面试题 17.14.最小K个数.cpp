@@ -1,28 +1,29 @@
 class Solution {
 public:
     vector<int> smallestK(vector<int>& arr, int k) {
-        if (k == arr.size()) {
-            return arr;
-        }
-        quicksort_k(arr, 0, arr.size() - 1, k);
-        vector<int> res(arr.begin(), arr.begin() + k);
-        return res;
-    }
+        int n = arr.size();
+        int left = 0, right = n - 1;
 
-    void quicksort_k(vector<int>& arr, int l, int r, int k) {
-        if (l >= r) return;
-        int left = l - 1, right = r + 1, mid = arr[l];
+        while (true) {
+            if (left >= right) {
+                break;
+            }
+            int i = left - 1, j = right + 1, mid = arr[left];
+            while (i < j) {
+                do ++ i; while (arr[i] < mid);
+                do -- j; while (arr[j] > mid);
+                if (i < j) swap(arr[i], arr[j]);
+            }
 
-        while (left < right) {
-            do left ++ ; while (arr[left] < mid);
-            do right -- ; while (arr[right] > mid);
-            if (left < right) swap(arr[left], arr[right]);
+            if (j > k - 1) {
+                right = j;
+            } else if (j < k - 1) {
+                left = j + 1;
+            } else if (j == k - 1) {
+                break;
+            }
         }
 
-        if (right + 1 > k) {
-            quicksort_k(arr, l, right, k);
-        } else if (right + 1 < k){
-            quicksort_k(arr, right + 1, r, k);
-        }
+        return vector<int>(arr.begin(), arr.begin() + k);
     }
 };

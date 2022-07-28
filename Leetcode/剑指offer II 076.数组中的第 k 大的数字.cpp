@@ -2,30 +2,25 @@ class Solution {
 public:
     int findKthLargest(vector<int>& nums, int k) {
         int n = nums.size();
-        int left = 0, right = n - 1;
+        int left = 0, right = nums.size() - 1;
 
         while (true) {
-            int index = find(nums, left, right);
-            if (index == k - 1) {
-                return nums[k - 1];
-            } else if (index > k - 1) {
-                right = index - 1;
+            int mid = nums[left];
+            int idx = left;
+            for (int i = left + 1; i <= right; ++ i) {
+                if (nums[i] >= mid) {
+                    ++ idx;
+                    swap(nums[i], nums[idx]);
+                }
+            }
+            swap(nums[left], nums[idx]);
+            if (idx == k - 1) {
+                return nums[idx];
+            } else if (idx > k - 1) {
+                right = idx - 1;
             } else {
-                left = index + 1;
+                left = idx + 1;
             }
         }
-    }
-
-    int find(vector<int>& nums, int left, int right) {
-        int temp = nums[left];
-        int count = left;
-        for (int i = left + 1; i < right + 1; ++ i) {
-            if (nums[i] > temp) {
-                count ++ ;
-                swap(nums[i], nums[count]);
-            }
-        }
-        swap(nums[left], nums[count]);
-        return count;
     }
 };

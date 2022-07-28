@@ -1,16 +1,19 @@
-int maxProduct(int* nums, int numsSize)
-{
-    int i, one = INT_MIN, two = INT_MIN;
-    
-    for (i = 0; i < numsSize; i++)
-    {
-        if (nums[i] >= one)
-        {
-            two = one;
-            one = nums[i];
-        }
-        else if (nums[i] >= two) two = nums[i];
-    }
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int max1 = INT_MIN;
+        int max2 = INT_MIN;
+        int n = nums.size();
 
-    return (one - 1) * (two - 1);
-}
+        for(int i = 0; i < n; ++ i) {
+            if (nums[i] > max1) {
+                max2 = max1;
+                max1 = nums[i];
+            } else if (nums[i] > max2) {
+                max2 = nums[i];
+            }
+        }
+
+        return (max1 - 1) *(max2 - 1);
+    }
+};

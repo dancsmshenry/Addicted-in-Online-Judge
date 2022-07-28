@@ -1,10 +1,12 @@
 # Addicted-in-Online-Judge
-This is a repository which records some solutions, notes and ideas about the problems in online judge.  
-  
-  
-  
-  
-  
+This is a repository which records some solutions, notes and ideas about the problems in online judge.
+
+
+
+
+
+
+
 # Target
 
 ### 第三阶段
@@ -66,7 +68,10 @@ This is a repository which records some solutions, notes and ideas about the pro
 - 二叉树各大遍历的mirror遍历
 - 回文子串的马拉车算法  
 
-  
+
+
+
+
 
 
 
@@ -82,9 +87,13 @@ This is a repository which records some solutions, notes and ideas about the pro
 - 还有，有些题目（求两数组的中位数）其实在自己训练的时候，是要自己动脑筋去想去理解的，但是对于面试来说，其实只需要朗诵即可....（虽然听起来很功利，但是对于我这种能力不太行的人来说，是这样的...）
 - 多学有关cpp和stl的语法以及有关类型的api，建议都用cppreference去查
 - 学会看leetcode的报错
-- https://leetcode-cn.com/circle/discuss/qJXzLU/  
+- https://leetcode-cn.com/circle/discuss/qJXzLU/
+- https://www.nowcoder.com/discuss/996978
 
-  
+
+
+
+
 
 
 

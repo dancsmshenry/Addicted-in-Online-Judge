@@ -45,7 +45,7 @@ public:
 
     //单向遍历
     int partition(vector<int> & nums, int l, int r) {
-        //理解：把小于等于pivot的都放到左边，然后返回中间的那个值的坐标，检测是否是第k大的数，然后调整长度
+        //理解：把大于等于pivot的都放到左边，然后返回中间的那个值的坐标，检测是否是第k大的数，然后调整长度
         int pivot = nums[l];
         int idx = l;
         for (int i = l + 1; i < r + 1; ++ i) {
