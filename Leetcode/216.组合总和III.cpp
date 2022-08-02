@@ -1,25 +1,31 @@
 class Solution {
+private:
+    int k{};
+    vector<vector<int>> res{};
 public:
-    vector<vector<int>> res;
-
-    vector<vector<int>> combinationSum3(int k, int n){
-        //经典套路，就不多说了吧
-        vector<int> mid;
-        solve(k, n, mid, 1);
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<int> temp{};
+        this -> k = k;
+        dfs(temp, 1, n);
         return res;
     }
 
-    void solve(int k, int n, vector<int>& mid, int begin){
-        for (int i = begin; i < 10; i ++ ){
-            if (n > i && mid.size() + 1 <= k){
-                mid.push_back(i);
-                solve(k, n - i, mid, i + 1);
-                mid.pop_back();
-            }else if (n == i && mid.size() + 1 == k){
-                mid.push_back(i);
-                res.push_back(mid);
-                mid.pop_back();
-            }else break;
+    void dfs(vector<int>& temp, int begin, int target) {
+        if (k < temp.size()) {
+            return ;
+        }
+        if (target == 0 && temp.size() == k) {
+            res.push_back(temp);
+        }
+        
+
+        for (int i = begin; i < 10; ++ i) {
+            if (i > target) {
+                return ;
+            }
+            temp.push_back(i);
+            dfs(temp, i + 1, target - i);
+            temp.pop_back();
         }
     }
 };

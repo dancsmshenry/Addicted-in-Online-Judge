@@ -1,41 +1,40 @@
+// 最普通的方法，利用record记录状态
 class Solution {
+private:
+    vector<vector<int>> res{};
+    int n{};
 public:
-    vector<vector<int>> res;
-    int n;
-
     vector<vector<int>> permute(vector<int>& nums) {
         n = nums.size();
-        bool flag[n];
-        memset(flag, false ,sizeof(flag));
-
-        vector<int> v;
-        solve(nums, flag, v);
+        vector<int> record(n, 0);
+        vector<int> temp{};
+        solve(nums, record, temp);
         return res;
     }
 
-    void solve(vector<int>& nums, bool flag[], vector<int>& v) {
+    void solve(vector<int>& nums, vector<int>& record, vector<int>& temp) {
         if (v.size() == n) {
-            res.push_back(v);
+            res.push_back(temp);
             return ;
         }
-        for (int i = 0; i < n; i ++ ) {
-            if (!flag[i]) {
-                v.push_back(nums[i]);
-                flag[i] = true;
-                solve(nums, flag, v);
-                v.pop_back();
-                flag[i] = false;
+        for (int i = 0; i < n; ++ i) {
+            if (!record[i]) {
+                temp.push_back(nums[i]);
+                record[i] = true;
+                solve(nums, record, temp);
+                temp.pop_back();
+                record[i] = false;
             }
         }
     }
 };
 
-//通过交换来实现回溯，非常的聪明
+//通过交换来实现回溯，方法一
 class Solution {
-public:
+private:
     int n;
     vector<vector<int>> result;
-    
+public:  
     vector<vector<int>> permute(vector<int>& nums) {
         n = nums.size();
         solve(nums, 0);
@@ -43,7 +42,7 @@ public:
     }
 
     void solve(vector<int>& nums, int begin) {
-        if (n == begin) {//这里n和n-1都可以
+        if (begin == n - 1) {
             result.push_back(nums);
         }
 
@@ -55,12 +54,12 @@ public:
     }
 };
 
-//另一种做法，思路同上
+//通过交换来实现回溯，方法二
 class Solution {
-public:
+private:
     int n;
     vector<vector<int>> result;
-    
+public:    
     vector<vector<int>> permute(vector<int>& nums) {
         n = nums.size();
         solve(nums, 0);
@@ -68,7 +67,7 @@ public:
     }
 
     void solve(vector<int> nums, int begin) {
-        if (n - 1 == begin) {//这里n和n-1也是一样的
+        if (begin == n - 1) {
             result.push_back(nums);
             return ;
         }
