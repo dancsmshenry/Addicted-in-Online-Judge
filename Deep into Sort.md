@@ -4,7 +4,7 @@
 
 ### 代码实现
 
-递归版本
+递归版本（非稳定版）
 
 - ```cpp
   /*arr为需要排序的数组，left为左边界，right为右边界*/
@@ -63,6 +63,55 @@
   - 不可以。对于一些数据，可能会出现越界的错误
   - 例：9，8，7，6，5，4，3，2，1
   - 假如此时temp选择了9，那么就会导致i一直往右走，而这里是没有对i的范围进行限定的，导致最后越界报错（反之也是一样的）
+
+
+
+
+
+
+
+递归版本（稳定版）
+
+- ```cpp
+  void quick_sort_stable(std::vector<int>& nums, int left, int right) {
+      if (left >= right) {
+          return ;
+      }
+  
+      int a = left, b = right;
+      std::vector<int> temp(right - left + 1, 0); //  用于拷贝的数组
+      int start = 0, end = temp.size() - 1;
+      int e = right, s = left;
+      int privot = nums[left];
+  
+      while (left <= right) {
+          while (left <= right && nums[right] >= privot) {    //  从右往左移动
+              nums[e--] = nums[right--];
+          }
+  
+          while (left <= right && nums[left] < privot) {  //  从左往右移动
+              nums[s++] = nums[left++];
+          }
+          if (left < right) {
+              temp[start++] = nums[left++];// 大的移到temp数组左段
+              temp[end--] = nums[right--];// 小的移到temp数组的右段
+          }
+      }
+  
+      for (int i = end + 1; i < temp.size(); ++ i) {
+          nums[s++] = temp[i];
+      }
+  
+      for (int i = start - 1; i >= 0; -- i) {
+          nums[e--] = temp[i];
+      }
+  
+      quick_sort_stable(nums, a, s - 1);
+      quick_sort_stable(nums, s + 1, b);
+  }
+  ```
+
+- 挖坑，这个稳定版有点没看懂...（后续要补上的）
 
 
 
