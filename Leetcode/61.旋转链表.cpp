@@ -16,7 +16,7 @@ public:
         }
         int length = 0;
         for (auto temp = head; temp; temp = temp -> next) {
-            length ++ ;
+            ++ length;
         }
 
         k = k % length;
@@ -26,7 +26,7 @@ public:
 
         ListNode *slow = head, *fast = head;
 
-        while (k > 0) {
+        while (k) {
             fast = fast -> next;
             k -- ;
         }

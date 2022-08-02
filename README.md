@@ -88,7 +88,15 @@ This is a repository which records some solutions, notes and ideas about the pro
 - 多学有关cpp和stl的语法以及有关类型的api，建议都用cppreference去查
 - 学会看leetcode的报错
 - https://leetcode-cn.com/circle/discuss/qJXzLU/
+
+
+
+### 与时俱进
+
 - https://www.nowcoder.com/discuss/996978
+  - 对于一道题的解法，要有深刻的认识，即不能够仅仅是做出来，其中有关数学方面的一些证明以及其他方法的解答，都要能够融会贯通,,,
+
+
 
 
 
