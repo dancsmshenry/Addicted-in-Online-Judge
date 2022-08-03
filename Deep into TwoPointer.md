@@ -12,8 +12,50 @@
     - 注意，这里还可以继续优化，因为如果说对于left和right指针，它们要移的下一位等于当前的数字，即nums[left] = nums[left - 1]，那就要继续往下移，for循环遍历也是这样，如果nums[i] == nums[i - 1]，就要继续往下移
   - 四数之和也是同理，不过是用的两重for循环进行遍历罢了，剪枝优化的时候要注意一下
   - 最接近的三数之和也是，把判断是否等于target修改一下，比如说当前的值大于target，那right就要减减，right--；小于target，left就要加加，left++；然后就比较绝对值，更新绝对值即可
+  
 - 接雨水
-  - 使用头尾两个指针来维护左右的最大最小值
+  - 对于每一个位置来说，它能够装多少水，取决于左边的最大值和右边的最大值之间的最小值，而双指针法很巧妙的利用了这一点
+  
+  - 首先leftmax和rightmax顾名思义，就是分别记录当前位置左边和右边的最大值
+  
+  - 首先说出一个前提（后续会根据left和right指针的调整来证明），就是如果height[left] > height[right]，就代表height[left]会大于right右边全部的数字
+  
+  - 有了这个前提，再来看，此时就表明存在对于height[right]来说，存在一个位于左边的数大于此时右边所有的数字，那么间接的说明了，当前位置只能找右边的最大值了
+  
+  - 同理可以用于height[left]
+  
+  - 最后需要理解这个前提是证明来的，其实只要从left和right最开始的位置开始模拟一下就能理解，因为每次right或left位置的移动，都说明此刻位置的值小于对方的，所以才要移动，间接就说明了上述的前提
+  
+  - ```cpp
+    class Solution {
+    public:
+        int trap(vector<int>& height) {
+            int res = 0;
+            int n = height.size();
+            int left = 0, right = n - 1;
+            int leftmax = 0, rightmax = 0;
+    
+            while (left < right) {
+                leftmax = max(leftmax, height[left]);
+                rightmax = max(rightmax, height[right]);
+                //	下面是core代码
+                if (height[left] > height[right]) {
+                    res = res + rightmax - height[right];
+                    -- right;
+                } else {
+                    res = res + leftmax - height[left];
+                    ++ left;
+                }
+            }
+    
+            return res;
+        }
+    };
+    ```
+
+
+
+
 
 
 

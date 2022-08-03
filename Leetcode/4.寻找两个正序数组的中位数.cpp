@@ -28,10 +28,10 @@ public:
 
         //二分法核心部分
         //注意这里都是k-k/2，因为15/2=7，但是我们前面加上k/2的时候，筛掉的是7，后面应该再找第8个，而不是第7个
+        //也很容易理解，因为你淘汰的是k/2个，所以后续要找的就应该是k-k/2，而不是k/2
         if (midVal1 < midVal2) {
             return findKth(nums1, i + k / 2, nums2, j, k - k / 2);
         }
         return findKth(nums1, i, nums2, j + k / 2, k - k / 2);
     }
 };
-//https://leetcode-cn.com/problems/median-of-two-sorted-arrays/solution/zong-he-bai-jia-ti-jie-zong-jie-zui-qing-xi-yi-don/
