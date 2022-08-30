@@ -38,45 +38,36 @@ public:
     }
 };
 
-//层序遍历的手法
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
+// 利用队列实现层序遍历
 class Solution {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
-        queue<TreeNode*> q1;
         vector<vector<int>> res;
+        queue<TreeNode*> q;
+        int count{};
         if (root) {
-            q1.push(root);
+            q.push(root);
         }
-        int i = 0;
 
-        while (!q1.empty()) {
-            int n = q1.size();
-            vector<int> mid;
-            for (int j = 0; j < n; j ++ ) {
-                TreeNode* root1 = q1.front();
-                q1.pop();
-                mid.push_back(root1 -> val);
-                if (root1 -> left) {
-                    q1.push(root1 -> left);
+        while (!q.empty()) {
+            int n = q.size();
+            vector<int> temp;
+            for (int i = 0; i < n; ++ i) {
+                TreeNode *node = q.front();
+                q.pop();
+                temp.push_back(node -> val);
+                if (node -> left) {
+                    q.push(node -> left);
                 }
-                if (root1 -> right) {
-                    q1.push(root1 -> right);
+                if (node -> right) {
+                    q.push(node -> right);
                 }
             }
-            if (i % 2 == 1) {
-                reverse(mid.begin(), mid.end());
+            if (count % 2 == 1) {
+                reverse(temp.begin(), temp.end());
             }
-            res.push_back(mid);
-            i ++ ;
+            res.push_back(temp);
+            ++ count;
         }
 
         return res;

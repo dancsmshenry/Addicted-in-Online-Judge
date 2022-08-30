@@ -79,3 +79,28 @@ public:
         return root;
     }
 };
+
+// 另一种边界处理
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        return rebuild(preorder, 0, preorder.size(), inorder, 0, inorder.size());
+    }
+
+    TreeNode* rebuild(vector<int>& preorder, int pleft, int pright, vector<int>& inorder, int inleft, int inright) {
+        if (pleft >= pright) {
+            return nullptr;
+        }
+
+        TreeNode *root = new TreeNode(preorder[pleft]);
+        int count{};
+        while (inorder[inleft + count] != root -> val) {
+            ++ count;
+        }
+
+        root -> left = rebuild(preorder, pleft + 1, pleft + count + 1, inorder, inleft, inleft + count);
+        root -> right = rebuild(preorder, pleft + count + 1, pright, inorder, inleft + count + 1, inright);
+
+        return root;
+    }
+};

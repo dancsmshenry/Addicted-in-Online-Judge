@@ -12,13 +12,12 @@
 class Solution {
 public:
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
-        TreeNode *root = solve(inorder, 0, inorder.size(), postorder, 0, postorder.size());
-        return root;
+        return solve(inorder, 0, inorder.size(), postorder, 0, postorder.size());
     }
 
     TreeNode* solve(vector<int>& ino, int ino_left, int ino_right, vector<int>& pos, int pos_left, int pos_right) {
         //因为我设计的算法中，最后一个数是用不到的，是取不到的，所以，如果两个边界相等，就直接返回nullptr
-        if (ino_left == ino_right) {
+        if (ino_left >= ino_right) {
             return nullptr;
         }
 

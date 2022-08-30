@@ -24,6 +24,8 @@ public:
         TreeNode* root = new TreeNode(pre[pre_left]);
 
         int i = 0;
+        // 这里不能想当然的认为i应该从ino_left开始，因为实际上，两棵子树的范围可能是不一致的，即每个数字对于的下标
+        // 会是不一样的...
         while (root -> val != ino[ino_left + i]) {
             ++ i;
         }

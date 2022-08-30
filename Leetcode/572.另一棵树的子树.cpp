@@ -15,23 +15,22 @@ public:
         if (!root) {
             return false;
         }
-        bool flag = check(root, subRoot);
 
-        return flag || isSubtree(root -> left, subRoot) || isSubtree(root -> right, subRoot);
+        return dfs(root, subRoot) || isSubtree(root -> left, subRoot) || isSubtree(root -> right, subRoot);
     }
 
-    bool check(TreeNode *root, TreeNode *subRoot) {
+    bool dfs(TreeNode* root, TreeNode* subRoot) {
         if (!root && !subRoot) {
             return true;
         }
-        if (!root || !subRoot) {//两者只要有一个是空的，就返回false
+        if (!root || !subRoot) {
             return false;
         }
-
+        
         if (root -> val != subRoot -> val) {
             return false;
         }
 
-        return check(root -> left, subRoot -> left) && check(root -> right, subRoot -> right);
+        return dfs(root -> left, subRoot -> left) && dfs(root -> right, subRoot -> right);
     }
 };

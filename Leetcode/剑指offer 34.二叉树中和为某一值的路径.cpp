@@ -11,27 +11,27 @@
  */
 class Solution {
 private:
-    vector<int> mid;
-    vector<vector<int>> res;
+    vector<vector<int>> res{};
+    vector<int> temp{};
 public:
     vector<vector<int>> pathSum(TreeNode* root, int target) {
         dfs(root, target);
         return res;
     }
 
-    void dfs(TreeNode *root, int target) {
+    void dfs(TreeNode* root, int target) {
         if (!root) {
             return ;
         }
-        
-        mid.push_back(root -> val);
-        if (target == root -> val && !root -> left && !root -> right) {
-            res.push_back(mid);
-        } else {
-            dfs(root -> left, target - root -> val);
-            dfs(root -> right, target - root -> val);
-        }
 
-        mid.pop_back();
+        target -= root -> val;
+        temp.push_back(root -> val);
+        if (!root -> left && !root -> right && target == 0) {
+            res.push_back(temp);
+        } else {
+            dfs(root -> left, target);
+            dfs(root -> right, target);
+        }
+        temp.pop_back();
     }
 };

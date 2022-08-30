@@ -20,7 +20,7 @@ public:
             root -> right = deleteNode(root -> right, key);
         } else if (key < root -> val) {//往左子树找
             root -> left = deleteNode(root -> left, key);
-        } else {//找到了
+        } else {
             //如果没有左子树，就直接返回右子树；如果没有右子树，就返回左子树
             if (!root -> left) {
                 return root -> right;
@@ -28,12 +28,13 @@ public:
                 return root -> left;
             } else {
                 //如果都有，就把左子树接到右子树的最左边的节点上
-                TreeNode* tmp = root -> right;
-                while (tmp -> left) {
-                    tmp = tmp -> left;
+                // 或者把右子树接到左子树最右边的节点上
+                TreeNode* node = root -> right;
+                while (node -> left) {
+                    node = node -> left;
                 }
-                tmp -> left = root -> left;
-                return root -> right;
+                node -> left = root -> left;
+                root = root -> right;
             }
         }
 

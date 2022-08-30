@@ -27,3 +27,23 @@ public:
         return root;
     }
 };
+
+// 另一种边界处理
+class Solution {
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        return rebuild(nums, 0, nums.size());
+    }
+
+    TreeNode* rebuild(vector<int>& nums, int left, int right) {
+        if (left >= right) {
+            return nullptr;
+        }
+        
+        TreeNode *root = new TreeNode(nums[(left + right) / 2]);
+        root -> left = rebuild(nums, left, (left + right) / 2);
+        root -> right = rebuild(nums, (left + right) / 2 + 1, right);
+
+        return root;
+    }
+};

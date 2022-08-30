@@ -1,4 +1,4 @@
-//纯暴力
+// 纯暴力
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -39,50 +39,39 @@ public:
     }
 };
 
-//层序遍历解决
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+// 层序遍历解决
 class Solution {
 public:
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
-        //同样可以用层序遍历来解决
-        queue<TreeNode*> q1;
-        vector<vector<int>> result;
-        int deep = 0;
-        if (root){
-            q1.push(root);
+        vector<vector<int>> res{};
+        queue<TreeNode*> q;
+        if (!root) {
+            return res;
         }
+        q.push(root);
+        int count{};
 
-        while (!q1.empty()){
-            int size = q1.size();
-            vector<int> res;
-            for (int i = 0; i < size; i ++ ){
-                TreeNode* mid = q1.front();
-                q1.pop();
-                res.push_back(mid -> val);
-                if (mid -> left){
-                    q1.push(mid -> left);
+        while (!q.empty()) {
+            vector<int> temp{};
+            int n = q.size();
+            for (int i = 0; i < n; ++ i) {
+                TreeNode *node = q.front();
+                q.pop();
+                temp.push_back(node -> val);
+                if (node -> left) {
+                    q.push(node -> left);
                 }
-                if (mid -> right){
-                    q1.push(mid -> right);
+                if (node -> right) {
+                    q.push(node -> right);
                 }
             }
-            if (deep % 2 == 1){
-                reverse(res.begin(), res.end());
+            if (count % 2 == 1) {
+                reverse(temp.begin(), temp.end());
             }
-            result.push_back(res);
-            deep ++ ;
+            res.push_back(temp);
+            ++ count;
         }
 
-        return result;
+        return res;
     }
 };

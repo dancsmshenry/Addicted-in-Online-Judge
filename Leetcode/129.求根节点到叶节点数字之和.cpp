@@ -27,3 +27,27 @@ public:
         return dfs(root -> left, fatherval * 10 + root -> val) + dfs(root -> right, fatherval * 10 + root -> val);
     }
 };
+
+class Solution {
+private:
+    int res{};
+public:
+    int sumNumbers(TreeNode* root) {
+        dfs(root, 0);
+        return res;
+    }
+
+    void dfs(TreeNode* root, int count) {
+        count = count * 10 + root -> val;
+        if (!root -> left && !root -> right) {
+            res += count;
+            return ;
+        }
+        if (root -> left) {
+            dfs(root -> left, count);
+        }
+        if (root -> right) {
+            dfs(root -> right, count);
+        }
+    }
+};

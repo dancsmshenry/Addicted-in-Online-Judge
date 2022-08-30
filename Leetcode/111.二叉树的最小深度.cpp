@@ -9,33 +9,60 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+// 非递归写法
 class Solution {
 public:
     int minDepth(TreeNode* root) {
-        queue<TreeNode*> q1;
-        int floor = 0;
+        queue<TreeNode*> q;
         if (root) {
-            q1.push(root);
+            q.push(root);
         }
+        int floor{};
 
-        while (!q1.empty()) {
-            int size = q1.size();
-            for (int i = 0; i < size; ++ i) {
-                TreeNode *mid = q1.front();
-                q1.pop();
-                if (!mid -> left && !mid -> right) {
-                    return floor + 1;
+        while (!q.empty()) {
+            ++ floor;
+            int n = q.size();
+            for (int i = 0; i < n; ++ i) {
+                TreeNode* node = q.front();
+                q.pop();
+                if (!node -> left && !node -> right) {
+                    return floor;
                 }
-                if (mid -> left) {
-                    q1.push(mid -> left);
+                if (node -> left) {
+                    q.push(node -> left);
                 }
-                if (mid -> right) {
-                    q1.push(mid -> right);
+                if (node -> right) {
+                    q.push(node -> right);
                 }
             }
-            ++ floor;
         }
 
         return floor;
+    }
+};
+
+// 递归写法
+class Solution {
+private:
+    int res{INT_MAX};
+public:
+    int minDepth(TreeNode* root) {
+        if (!root) {
+            return 0;
+        }
+        dfs(root, 1);
+        return res;
+    }
+
+    void dfs(TreeNode* root, int deepth) {
+        if (!root) {
+            return ;
+        }
+        if (!root -> left && !root -> right) {
+            res = min(deepth, res);
+            return ;
+        }
+        dfs(root -> left, deepth + 1);
+        dfs(root -> right, deepth + 1);
     }
 };

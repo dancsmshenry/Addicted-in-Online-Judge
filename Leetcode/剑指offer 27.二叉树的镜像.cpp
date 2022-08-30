@@ -11,12 +11,11 @@ class Solution {
 public:
     TreeNode* mirrorTree(TreeNode* root) {
         if (!root) {
-            return nullptr;
+            return root;
         }
-
-        TreeNode *left = root -> left;
-        root -> left = mirrorTree(root -> right);
-        root -> right = mirrorTree(left);
+        TreeNode *left = mirrorTree(root -> right);
+        root -> right = mirrorTree(root -> left);
+        root -> left = left;
 
         return root;
     }

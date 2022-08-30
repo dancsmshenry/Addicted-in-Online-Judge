@@ -18,7 +18,7 @@ public:
         return res;
     }
 
-    void dfs(TreeNode *root, string temp) {
+    void dfs(TreeNode* root, string temp) {
         if (!root) {
             return ;
         }
@@ -26,9 +26,9 @@ public:
         temp += to_string(root -> val);
         if (!root -> left && !root -> right) {
             res.push_back(temp);
-            return ;
+        } else {
+            dfs(root -> left, temp + "->");
+            dfs(root -> right, temp + "->");
         }
-        dfs(root -> left, temp + "->");
-        dfs(root -> right, temp + "->");
     }
 };

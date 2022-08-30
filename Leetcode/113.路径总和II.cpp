@@ -10,27 +10,26 @@
  * };
  */
 class Solution {
+private:
+    vector<vector<int>> res{};
 public:
     vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
-        vector<vector<int>> res;
-        vector<int> mid;
-        dfs(res, mid, root, targetSum);
+        vector<int> temp{};
+        dfs(root, temp, targetSum);
         return res;
     }
 
-    void dfs(vector<vector<int>>& res, vector<int>& mid, TreeNode *root, int targetSum) {
+    void dfs(TreeNode* root, vector<int>& temp, int targetSum) {
         if (!root) {
             return ;
         }
-        
-        mid.push_back(root -> val);
+        temp.push_back(root -> val);
         if (targetSum == root -> val && !root -> left && !root -> right) {
-            res.push_back(mid);
+            res.push_back(temp); // 注意，即使是在把temp放入到res中后，最后也还是要pop_back的
         } else {
-            dfs(res, mid, root -> left, targetSum - root -> val);
-            dfs(res, mid, root -> right, targetSum - root -> val);
+            dfs(root -> left, temp, targetSum - root -> val);
+            dfs(root -> right, temp, targetSum - root -> val);
         }
-
-        mid.pop_back();
+        temp.pop_back();
     }
 };

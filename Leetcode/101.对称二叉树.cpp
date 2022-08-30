@@ -15,16 +15,14 @@ public:
         return dfs(root -> left, root -> right);
     }
 
-    bool dfs(TreeNode* left, TreeNode* right) {
+    bool dfs(TreeNode *left, TreeNode *right) {
         if (!left && !right) {
             return true;
         }
-        if (!left || !right) {
+        if (!left || !right || left -> val != right -> val) {
             return false;
         }
-        if (left -> val != right -> val) {
-            return false;
-        }
+
         return dfs(left -> left, right -> right) && dfs(left -> right, right -> left);
     }
 };

@@ -80,7 +80,7 @@ public:
     }
 };
 
-//第二种中序遍历
+// 第二种中序遍历（栈版中序遍历）
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -116,7 +116,7 @@ public:
     }
 };
 
-//第三种中序遍历
+// 第三种中序遍历（递归版中序遍历）
 /**
  * Definition for a binary tree node.
  * struct TreeNode {

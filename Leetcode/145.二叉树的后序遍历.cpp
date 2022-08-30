@@ -1,3 +1,4 @@
+// 递归版
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -12,30 +13,22 @@
 class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
-        vector<int> f;
-        postorder(root, f);
-        return f;
+        vector<int> res{};
+        postorder(res, root);
+        return res;
     }
 
-    void postorder(TreeNode* root, vector<int>& f) {
-        if (!root) return;
-        postorder(root -> left);
-        postorder(root -> right); 
-        f.push_back(root -> val);       
+    void postorder(vector<int>& res, TreeNode* root) {
+        if (!root) {
+            return ;
+        }
+        postorder(res, root -> left);
+        postorder(res, root -> right);
+        res.push_back(root -> val);
     }
 };
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+// 非递归版（1）
 class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
@@ -64,38 +57,26 @@ public:
     }
 };
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+// 非递归版（2）
 class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
-        vector<int> res;
-        stack<TreeNode*> s1;
-        if (!root) {
-            return res;
-        }
-
-        while (!s1.empty() || root) {
+        // 这种做法的思路：左右根，则反过来就是根右左
+        stack<TreeNode*> s;
+        vector<int> res{};
+        
+        while (!s.empty() || root) {
             while (root) {
                 res.push_back(root -> val);
-                s1.push(root);
+                s.push(root);
                 root = root -> right;
             }
-            root = s1.top();
-            s1.pop();
+            root = s.top();
+            s.pop();
             root = root -> left;
         }
-
         reverse(res.begin(), res.end());
+
         return res;
     }
 };

@@ -1,19 +1,19 @@
 class Solution {
 public:
     int numTrees(int n) {
-        vector<int> f(n + 1, 0);
-        f[0] = 1;
-        f[1] = 1;
+        vector<int> record(n + 1, 0);
+        record[0] = 1;
+        record[1] = 1;
 
         for (int i = 2; i <= n; ++ i) {
-            for (int j = 0; j < (i / 2); ++ j) {
-                f[i] += f[j] * f[i - j - 1] * 2;
+            for (int j = 0; j < i / 2; ++ j) {//    这里必须要用j=0，因为这样循环的目的，是为了模拟两边都可能出现的情况，如果是从1开始，就会略过为0的情况
+                record[i] += record[j] * record[i - j - 1] * 2;
             }
             if (i % 2 == 1) {
-                f[i] += f[i / 2] * f[i / 2];
+                record[i] += record[i / 2] * record[i / 2];
             }
         }
 
-        return f[n];
+        return record[n];
     }
 };

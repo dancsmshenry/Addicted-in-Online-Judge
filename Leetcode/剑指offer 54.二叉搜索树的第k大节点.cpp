@@ -29,65 +29,46 @@ public:
     }
 };
 
-/* 正宗的dfs做法 */
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
+// dfs
 class Solution {
+private:
+    int res{};
 public:
-    int result = 0;
     int kthLargest(TreeNode* root, int k) {
         dfs(root, k);
-        return result;
+        return res;
     }
 
-    void dfs(TreeNode* root, int& k) {
-        if (!root || k < 0) {
+    void dfs(TreeNode* root, int &k) {
+        if (!root || k <= 0) {
             return ;
         }
         dfs(root -> right, k);
         -- k;
         if (k == 0) {
-            result = root -> val;
-            return ;
+            res = root -> val;
         }
         dfs(root -> left, k);
     }
 };
 
-//非递归的写法
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-class Solution {
+// 非递归class Solution {
 public:
     int kthLargest(TreeNode* root, int k) {
         stack<TreeNode*> s;
-
-        while (root || !s.empty()) {
+        
+        while (!s.empty() || root) {
             while (root) {
                 s.push(root);
                 root = root -> right;
             }
-            TreeNode *node = s.top();
-            s.pop();
-            k -- ;
+            root = s.top();
+            -- k;
             if (k == 0) {
-                return node -> val;
+                return root -> val;
             }
-            root = node -> left;
+            s.pop();
+            root = root -> left;
         }
 
         return -1;
