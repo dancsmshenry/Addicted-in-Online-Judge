@@ -1,45 +1,51 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
 class Solution {
-    unordered_map<int, TreeNode*> parents;
-    vector<int> ans;
+private:
+    unordered_map<int, TreeNode*> hashmap;
+    vector<int> res{};
 
-    void findParents(TreeNode* node) {
-        if (node->left != nullptr) {
-            parents[node->left->val] = node;
-            findParents(node->left);
+    void findparents(TreeNode* root) {
+        if (root -> left) {
+            hashmap[root -> left -> val] = root;
+            findparents(root -> left);
         }
-        if (node->right != nullptr) {
-            parents[node->right->val] = node;
-            findParents(node->right);
+        if (root -> right) {
+            hashmap[root -> right -> val] = root;
+            findparents(root -> right);
         }
     }
 
-    void findAns(TreeNode* node, TreeNode* from, int depth, int k) {
-        if (node == nullptr) {
-            return;
+    // depth是用来记录此时的层数，root表示当前要检测的节点，pre表示当前节点root是从节点pre推演过来的，以此拒绝循环调用
+    void dfs(TreeNode* root, TreeNode* pre, int depth) {
+        if (!root) {
+            return ;
         }
-        if (depth == k) {
-            ans.push_back(node->val);
-            return;
+        if (depth == 0) {
+            res.push_back(root -> val);
+            return ;
         }
-        if (node->left != from) {
-            findAns(node->left, node, depth + 1, k);
+        if (root -> left != pre) {
+            dfs(root -> left, root, depth - 1);
         }
-        if (node->right != from) {
-            findAns(node->right, node, depth + 1, k);
+        if (root -> right != pre) {
+            dfs(root -> right, root, depth - 1);
         }
-        if (parents[node->val] != from) {
-            findAns(parents[node->val], node, depth + 1, k);
+        if (hashmap[root -> val] != pre) {
+            dfs(hashmap[root -> val], root, depth - 1);
         }
     }
-
 public:
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        // 从 root 出发 DFS，记录每个结点的父结点
-        findParents(root);
-
-        // 从 target 出发 DFS，寻找所有深度为 k 的结点
-        findAns(target, nullptr, 0, k);
-
-        return ans;
+        findparents(root);
+        dfs(target, nullptr, k);
+        return res;
     }
 };

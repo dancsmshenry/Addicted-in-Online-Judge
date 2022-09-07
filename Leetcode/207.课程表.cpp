@@ -1,6 +1,6 @@
 class Solution{
 public:
-    bool canFinish(int numCourses, const vector<vector<int>> &prerequisites){
+    bool canFinish(int numCourses, const vector<vector<int>> &prerequisites) {
         /*
             拓扑排序：
             每门课都有它的先修课程，依此就可以画出一幅结点相连的拓扑图
@@ -18,29 +18,28 @@ public:
         vector<int> indegree(numCourses);      //入度，即课程i有几门先修课
         
         //init
-        for (auto &p : prerequisites){
+        for (auto &p : prerequisites) {
             edges[p[1]].push_back(p[0]);
-            indegree[p[0]] ++ ;
+            ++ indegree[p[0]];
         }
 
         //用一个队列来记录入度为0的课程
         queue<int> q;
-        for (int i = 0; i < numCourses; i ++ ){
-            if (!indegree[i]){
+        for (int i = 0; i < numCourses; ++ i) {
+            if (!indegree[i]) {
                 q.push(i);
             }
         }
 
         int vCount = 0; //正常参与拓扑排序的课程数
-        while (q.size()){
+        while (q.size()) {
             auto v = q.front(); //取出顶点v
             q.pop();
-            vCount ++ ;
+            ++ vCount;
 
-            auto &edge = edges[v];
-            for (auto i : edge){
-                indegree[i] -- ;//有以v为先修的入度都减1
-                if (indegree[i] == 0){
+            for (auto i : edges[v]) {
+                -- indegree[i];//有以v为先修的入度都减1
+                if (indegree[i] == 0) {
                     q.push(i);
                 }
             }

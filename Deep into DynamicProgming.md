@@ -1185,22 +1185,21 @@
   public:
       int numDecodings(string s) {
           int n = s.size();
-          int dp1 = 0, dp2 = 1, dp3 = 0;
+          int dp1 = 0, dp2 = 1;
   
           for (int i = 0; i < n; ++ i) {
-              dp3 = 0;
+              int temp = 0;
               if (s[i] != '0') {
-                  dp3 += dp2;
+                  temp += dp2;
               }
               if (i > 0 && s[i - 1] != '0' && ((s[i - 1] - '0') * 10 + (s[i] - '0')) < 27) {
-                  dp3 += dp1;
+                  temp += dp1;
               }
               dp1 = dp2;
-              dp2 = dp3;
-              // tie(dp1, dp2) = {dp2, dp3};
+              dp2 = temp;
           }
   
-          return dp3;
+          return dp2;
       }
   };
   ```

@@ -15,7 +15,7 @@ public:
                 } else {
                     -- count;
                 }
-            }
+            } 
         }
 
         return target;
