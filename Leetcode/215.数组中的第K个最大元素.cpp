@@ -6,7 +6,7 @@ public:
 
     int quick_sort_k(vector<int>& nums, int left, int right, int k) {
         if (left >= right) {
-            return nums[left];
+            return nums[left];   
         }
 
         int l = left - 1, r = right + 1, mid = nums[left];

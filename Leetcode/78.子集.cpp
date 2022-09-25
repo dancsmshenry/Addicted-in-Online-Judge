@@ -36,6 +36,7 @@ public:
     }
 
     void dfs(vector<int>& nums, vector<int>& temp, int begin) {
+        //	这种做法就是当参数传入的时候，首先将当前不选择元素的情况放入res中，然后再依次for循环
         res.push_back(temp);
 
         for (int i = begin; i < n; ++ i) {

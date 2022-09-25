@@ -91,3 +91,28 @@
 剑指03、数组中的重复的数字
 
 - 对于每个数nums[i]，如果和nums[nums[i]]相等，就返回数字，否则就进行交换
+
+
+
+深信服面试题
+
+- 数组存1-n，其中缺一个数且有个数出现两次
+
+- 找到缺失的那个数
+
+  - ```cpp
+    int solve(std::vector<int>& arrs) {
+        for (int i = 0; i < arrs.size(); ++ i) {
+            while (i + 1 != arrs[i] && arrs[i] != arrs[arrs[i] - 1]) {
+                std::swap(arrs[i], arrs[arrs[i] - 1]);
+            }
+            if (i + 1 != arrs[i] && arrs[i] == arrs[arrs[i] - 1]) {
+    
+                return i + 1;
+            }
+        }
+        return -1;
+    }
+    ```
+
+  - 

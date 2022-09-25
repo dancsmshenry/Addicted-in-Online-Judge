@@ -10,7 +10,7 @@ class Solution {
             return a[0] < b[0];
         });
 
-        priority_queue<int, vector<int>, greater<int>> heap;
+        priority_queue<int, vector<int>, greater<int>> heap;// 最小堆，越小的越放到前面
 
         for (auto&& interval: intervals) {
             if (!heap.empty() && head.top() <= interval[0]) {

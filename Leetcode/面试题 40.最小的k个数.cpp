@@ -24,4 +24,4 @@ public:
             quick_sort_k(arr, j + 1, right, k);
         }
     }
-};
+}; // 笔试的时候写不出来..；求教

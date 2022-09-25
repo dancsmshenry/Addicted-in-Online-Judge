@@ -20,7 +20,7 @@ public:
         TrieNode* p = root;
         for (const char& i: word){
             if (p -> next[i - 'a'] == nullptr){
-                p -> next[i - 'a'] = new TrieNode();//罪魁祸首是他，没有加上()........
+                p -> next[i - 'a'] = new TrieNode();
             }
             p = p -> next[i - 'a'];
         }
@@ -33,14 +33,14 @@ public:
             if (p -> next[i - 'a']){
                 p = p -> next[i - 'a'];
             }else{
-                return false;//忘记加上false了....
+                return false;
             }
         }
 
         return p -> isval;
     }
     
-    bool startsWith(string prefix) {//全部相同也叫做前缀吗...
+    bool startsWith(string prefix) {
         TrieNode* p = root;
         for (const char& i: prefix){
             if (p -> next[i - 'a']){
