@@ -122,3 +122,19 @@ This is a repository which records some solutions, notes and ideas about the pro
 - 控制每次写题的时间
 - 重点还是要多背模板
 - 在面对不会（没背过）的题目的时候，首要问题是free bug的情况下解决问题，后续再想去优化
+
+
+
+### 一些基础知识
+
+- A 到 Z 的ascii码是 65 到 90
+- a 到 z 的ascii码是 97 到 122
+- 刚好每个对应的字母之间差了32
+
+
+
+
+
+### 反思
+
+- 蚂蚁笔试给我的最大的领悟就是，思路很多时候是正确的，如果ac不了，就是因为没有用long long。。。。。

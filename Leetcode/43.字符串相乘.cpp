@@ -11,7 +11,7 @@ public:
         vector<int> res(num1.size() + num2.size(), 0);
         string result = "";
         for (int i = num2.size() - 1; i >= 0; -- i) {
-            int count = 0;
+            int count{};
             for (int j = num1.size() - 1; j >= 0; -- j) {
                 int index = num2.size() - i + num1.size() - j - 2;
                 res[index] = res[index] + count + (num1[j] - '0') * (num2[i] - '0');

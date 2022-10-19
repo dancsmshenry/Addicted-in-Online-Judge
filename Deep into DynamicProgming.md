@@ -276,6 +276,8 @@
 
 - 这里很关键的一步就是dp数组的初始化流程，将每个属性都设为INT_MAX
 
+- 本质上就是**完全背包问题**
+
 - ```cpp
   class Solution {
   public:
@@ -312,6 +314,8 @@
   - 所以要改变循环思路，即改变最后子问题的问法（即此时的子问题不是当前解）
   - 正确的子问题应该是在已经组成amount的方法中，出现了新的一种类型的硬币的时候，再用这种新的硬币组成amount，会有多少种方法
   - 所以要逐枚逐枚的将硬币放入组成amount的方法中
+
+- 简答：求方法数的话，思路应该是，在只拿当前那么多的硬币的情况下，有多少种方法，然后再逐枚逐枚往后推
 
 - ```cpp
   class Solution {
@@ -706,23 +710,25 @@
 
 - jd：
 
-  - 有`N`件物品和一个容量是`V`的背包。每件物品只能使用一次，第`i`件物品的体积是`vi`，价值是`wi`
+  - 有`N`件物品和一个容量是`V`的背包。每件物品**只能使用一次**（所以是01背包），第`i`件物品的体积是`vi`，价值是`wi`
   - 求解将哪些物品装入背包，可使这些物品的总体积不超过背包容量，且总价值最大
   - 输出最大价值
+
+- 因为只能拿一次，所以在一维数组的时候**必须要倒序**
 
 - ```cpp
   class Solution {
   public:
       int zero_one_back_problem(vector<int>& weight, vector<int>& value, int capacity) {
   		int n = weight.size();
-          vector<vector<int>> dp(n + 1, vector<int> (capacity + 1, 0));
+          vector<vector<int>> dp(n + 1, vector<int>(capacity + 1, 0));
           
           for (int i = 1; i <= n; ++ i) {
               for (int j = 1; j <= capacity; ++ j) {
-                  if (j < a[i]) {
+                  if (j < weight[i - 1]) {
                       dp[i][j] = dp[i - 1][j];
                   } else {
-                      dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i]);
+                      dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i - 1]] + value[i - 1]);
                   }
               }
           }
@@ -739,8 +745,8 @@
           vector<vector<int>> dp(capacity + 1, 0);
           
           for (int i = 1; i <= n; ++ i) {
-              for (int j = capacity; j >= weight[i]; -- j) {
-                  dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);
+              for (int j = capacity; j >= weight[i - 1]; -- j) {
+                  dp[j] = max(dp[j], dp[j - weight[i - 1]] + value[i - 1]);
               }
           }
           
@@ -755,9 +761,11 @@
 
 - jd：
 
-  - 有`N`种物品和一个容量是`V`的背包，每种物品都有无限件可用，第`i`种物品的体积是`vi`，价值是 wi
+  - 有`N`种物品和一个容量是`V`的背包，每种物品**都有无限件可用**（所以是完全背包问题），第`i`种物品的体积是`vi`，价值是 wi
   - 求解将哪些物品装入背包，可使这些物品的总体积不超过背包容量，且总价值最大
   - 输出最大价值
+
+- 因为是无限次数的，所以不需要倒序
 
 - ```cpp
   class Solution {
@@ -767,10 +775,10 @@
           vector<vector<int>> dp(n + 1, vector<int>(capacity + 1, 0));
           
           for (int i = 1; i <= n; ++ i) {
-              for (int j = 1; j <= m; ++ j) {
+              for (int j = 1; j <= capacity; ++ j) {
                   dp[i][j] = dp[i - 1][j];
-                  if (j >= a[i]) {
-                      dp[i][j] = max(dp[i][j - weight[i]] + value[i], dp[i][j]);
+                  if (j >= weight[i - 1]) {
+                      dp[i][j] = max(dp[i][j - weight[i - 1]] + value[i - 1], dp[i][j]);
                   }
               }
           }
@@ -787,9 +795,9 @@
           vector<int> dp(capacity + 1, 0);
           
           for (int i = 1; i <= n; ++ i) {
-              for (int j = 1; j <= m; ++ j) {
-                  if (j >= a[i]) {
-                      dp[j] = max(dp[j], dp[j - weight[i]] + b[i]);
+              for (int j = 1; j <= capacity; ++ j) {
+                  if (j >= weight[i - 1]) {
+                      dp[j] = max(dp[j], dp[j - weight[i - 1]] + value[i - 1]);
                   }
               }
           }
@@ -1111,7 +1119,7 @@
 ## 序列型dp
 
 - 正则表达式
-- 编辑距离
+- **编辑距离**
 - 交错字符串
 
 
@@ -1517,7 +1525,19 @@
 
 
 
+### 掷骰子的N种方法
 
+
+
+### 组合总和 Ⅳ
+
+
+
+### 分割等和子集
+
+
+
+### 最后一块石头的重量 II
 
 
 

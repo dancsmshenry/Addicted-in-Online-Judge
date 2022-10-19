@@ -39,9 +39,9 @@
 
 ### 是left<right还是left<=right
 
-- 其实两者在不同的情景下都是可以的
-  - 对于left<right，后续left和right的调整是可以变为mid的
-  - 而left<=right，后续的调整是不可以变为mid的（因为会造成死循环）
+其实两者在不同的情景下都是可以的
+- 对于left<right，后续left和right的调整是可以变为mid的
+- 而left<=right，后续的调整是不可以变为mid的（因为会造成死循环）
 
 
 
@@ -349,7 +349,7 @@
 
 
 
-### 一维二分
+## 一维二分
 
 #### 35、搜索插入位置
 
@@ -682,7 +682,7 @@
 
 
 
-### 二维二分
+## 二维二分
 
 - 二维数组寻找峰值（和一维的类似：先找一列上的峰值，然后看是否为左右峰值，不是的话再继续调整）
 
@@ -792,10 +792,45 @@
 
 
 
-### 双调数组
+## 双调数组
 
 - 双调数组04（对一个先递增后递减的数组去重，要求时间复杂度O(n)）
   - 从左右两个指针开始向中间走，谁小就谁放进去，放完后再去重
+
+
+
+
+
+## 其他
+
+### 二分法找绝对值最小的数
+
+- 有一个已经排好序的整数序列（升序，无重复项），序列中可能有正整数、负整数或者0，请用你认为最优的方法求序列中绝对值最小的数
+
+- ```cpp
+  int find(vector<int>& arrs) {
+      if (arrs[0] >= 0) return arrs[0];
+      else if (arrs.back() <= 0) return arrs.back();
+      
+      int left = 0, right = arrs.size() - 1;
+      while (left < right) {
+          int mid = left + (right - left) / 2;
+          if (arrs[mid] <= 0 && arrs[mid + 1] > 0) {
+              if (abs(arrs[mid]) < abs(arrs[mid + 1])) {
+                  return arrs[mid];
+              } else {
+                  return a
+              }
+          } else if (arrs[mid] > 0) {
+              right = mid - 1;
+          } else if (arrs[mid] < 0) {
+              left = mid + 1;
+          }
+      }
+  }
+  ```
+
+- 
 
 
 

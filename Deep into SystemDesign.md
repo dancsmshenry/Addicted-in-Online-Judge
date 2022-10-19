@@ -1,6 +1,16 @@
-100亿个数据，512M内存，如何找出中位数（归并），别的方法呢（不会）
+# 海量数据排序
 
-https://soulmachine.gitbooks.io/system-design/content/cn/
+- 100亿个数据，512M内存，如何找出中位数（归并），别的方法呢（不会）
+
+
+
+先对数据进行hash分组，将hash结果相同的数据放到同一个文件中
+
+然后对每个文件的数据都单独的进行排序
+
+最后多个文件进行归路排序
+
+
 
 
 
@@ -118,3 +128,11 @@ https://soulmachine.gitbooks.io/system-design/content/cn/
   ```
 
 - 但是如果内存不够的话，就只能用分治的方法了
+
+
+
+
+
+
+
+https://soulmachine.gitbooks.io/system-design/content/cn/

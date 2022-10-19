@@ -1,10 +1,89 @@
 # 目录
 
+### gcd
+
+- ```cpp
+  int gcd(int a, int b) {
+      return b ? gcd(b, a % b) : a;
+  }
+  ```
+
+- 辗转相除法，计算两个整数的最大公约数
+
+
+
+### 质数
+
+- 求解一个数的所有质数因子（1不是质数..）
+
+- ```cpp
+  std::vector<int> solve(int n) {
+      int i = 2;
+      vector<int> res;
+      while (i * i <= n && n >= i) {
+          while (n % i == 0) {
+              n /= i;
+              res.push_back(i);
+          }
+          ++ i;
+      }
+      if (n - 1 != 0) {
+          res.push_back(n);
+      }
+      return res;
+  }
+  ```
+
+
+
+- 求解一个范围内的质数
+
+- ```cpp
+  vector<int> solve(int n) {
+      vector<int> res;
+      for (int i = 2; i <= n; ++ i) {
+          int count{1};
+          for (int j = 2; j * j <= n; ++ j) {
+              if (i % j == 0) {
+                  ++ c
+                  break;
+              }
+          }
+          if (count == 1) res.push_back(i);
+      }
+      return res;
+  }
+  
+  //	筛选法，空间换时间
+  vector<int> solve(int n) {
+      int j;
+      vector<bool> all(n, true);
+      vector<int> res;
+      for (j = 2; j <= sqrt(n); ++ j) {
+          if (all[j] == false) continue;
+          for(int i = 2; i * j <= n; ++ i) {
+              all[i * j] = false;
+          }
+      }
+      for (int i = 2; i <= n; ++ i) {
+          if(all[i] == true) {
+              res.push_back(i);
+          }
+      }
+      return res;
+  }
+  ```
+
+- 
+
+
+
 ### tire树
 
 - 建立结点tirenode，包含一个指向该结点的数组和一个bool值，布尔值是用来判断是否存在以该节点为末的单词
 - 然后依次实现插入，查询单词，查询前缀的操作
 - 这道题没啥好说的，注意细节就行了
+- 上次didi就考了.....，我直接失忆...
 
 
 
