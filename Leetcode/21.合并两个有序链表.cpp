@@ -14,11 +14,11 @@ public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         ListNode *node1 = new ListNode(0), *node2 = node1;
 
-        while(l1 && l2){
-            if (l1 -> val > l2 -> val){
+        while(l1 && l2) {
+            if (l1 -> val > l2 -> val) {
                 node2 -> next = l2;
                 l2 = l2 -> next;
-            }else{
+             }else {
                 node2 -> next = l1;
                 l1 = l1 -> next;
             }

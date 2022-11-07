@@ -89,7 +89,7 @@ public:
             res = res -> next;
         }
 
-        res -> next = (l1 == nullptr) ? l2 : l1;
+        res -> next = (l2) ? l2 : l1;
 
         return result -> next;
     }

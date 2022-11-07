@@ -14,27 +14,50 @@ public:
 };
 */
 class Solution {
+private:
+    unordered_map<Node*, Node*> map_;
 public:
     Node* copyRandomList(Node* head) {
-        unordered_map<int, Node*> hash;
-        Node *res = new Node(0), *result = res;
-        Node* head1 = head;
-
-        for (int i = 0; head1; i ++ ){
-            Node* mid = new Node(head1 -> val);
-            head1 -> val = i;
-            hash[i] = mid;
-            res -> next = mid;
-            res = res -> next;
-            head1 = head1 -> next;
+        if (!head) {
+            return head;
         }
 
-        head1 = head;
-        for (res = result -> next; res; res = res -> next){
-            res -> random = head1 -> random ? hash[head1 -> random -> val] : nullptr;
-            head1 = head1 -> next;
+        if (!map_.count(head)) {
+            Node *node = new Node(head -> val);
+            map_[head] = node;
+            node -> next = copyRandomList(head -> next);
+            node -> random = copyRandomList(head -> random);
         }
 
-        return result -> next;
+        return map_[head];
+    }
+};
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if (!head) {
+            return nullptr;
+        }
+        for (Node *node = head; node != nullptr; node = node -> next -> next) {
+            Node *temp = new Node(node -> val);
+            temp -> next = node -> next;
+            node -> next = temp;
+        }
+
+        for (Node *node = head; node != nullptr; node = node -> next -> next) {
+            if (node -> random != nullptr) {
+                node -> next -> random = node -> random -> next;
+            }
+        }
+        
+        Node *res = head -> next;
+        for (Node *node = head; node != nullptr; node = node -> next) {
+            Node *temp = node -> next;
+            node -> next = temp -> next;
+            temp -> next = (node -> next == nullptr) ? nullptr: temp -> next -> next;
+        }
+
+        return res;
     }
 };

@@ -46,6 +46,27 @@ public:
     }
 };
 
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if (!head) {
+            return head;
+        }
+
+        ListNode *dummy = new ListNode(0, head), *res = dummy;
+
+        while (dummy -> next && dummy -> next -> next) {
+            ListNode *temp = dummy -> next -> next -> next;
+            dummy -> next -> next -> next = dummy -> next;
+            dummy -> next = dummy -> next -> next;
+            dummy -> next -> next -> next = temp;
+            dummy = dummy -> next -> next;
+        }
+
+        return res -> next;
+    }
+};
+
 /**
  * Definition for singly-linked list.
  * struct ListNode {

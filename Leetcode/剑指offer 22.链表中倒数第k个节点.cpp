@@ -42,14 +42,13 @@ public:
             return head;
         }
 
-        ListNode *slow = head, *fast = head;
-
-        while (k > 0) {
+        ListNode *fast = head, *slow = head;
+        
+        while (-- k) {
             fast = fast -> next;
-            k -- ;
         }
 
-        while (fast) {
+        while (fast -> next) {
             slow = slow -> next;
             fast = fast -> next;
         }

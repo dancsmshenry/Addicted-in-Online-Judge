@@ -37,15 +37,14 @@ public:
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        unordered_map<ListNode*, bool> map;
+        unordered_set<ListNode*> set_;
 
-        while (head){
-            if (map.count(head)){
+        while (head) {
+            if (set_.count(head)) {
                 return true;
-            }else{
-                map[head] = true;
-                head = head -> next;
             }
+            set_.insert(head);
+            head = head -> next;
         }
 
         return false;

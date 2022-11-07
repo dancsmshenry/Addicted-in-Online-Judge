@@ -20,7 +20,7 @@ public:
         ListNode *res = new ListNode(0, head);
         ListNode *fast = res, *slow = res;
 
-        for (int i = 0; i < n; ++ i ) {
+        while (n --) {
             fast = fast -> next;
         }
 
