@@ -9,7 +9,7 @@ public:
         for (int i = 0; i < n; i ++ ) {
             if (i > 0) {
                 hashset.erase(s[i - 1]);
-            }else {
+            } else {
                 hashset.insert(s[i]);
             }
 
